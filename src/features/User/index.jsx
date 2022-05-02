@@ -7,7 +7,6 @@ import { logout } from '../Auth/userSlice';
 
 import InfoPage from './pages/InfoPage';
 import PostPage from './pages/PostPage';
-import NewPostPage from './pages/NewPostPage';
 import UserNav from './components/UserNav';
 
 UserFeature.propTypes = {};
@@ -32,7 +31,6 @@ function UserFeature(props) {
         <Routes>
           <Route path="me" element={<InfoPage />} />
           <Route path="post" element={<PostPage />} />
-          <Route path="post/new" element={<NewPostPage />} />
         </Routes>
       </div>
     </section>

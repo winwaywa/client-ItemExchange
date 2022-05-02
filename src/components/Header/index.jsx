@@ -2,6 +2,7 @@ import './styles.scss';
 import ProductIcon from '../../../images/icon-svg/product-icon.svg';
 import UserIcon from '../../../images/icon-svg/user-icon.svg';
 import LoginIcon from '../../../images/icon-svg/login-icon.svg';
+import Logo from '../../../images/logo.png';
 
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -15,8 +16,7 @@ function Header(props) {
 
   return (
     <header className="header">
-      <img className="header__logo" src="../../../images/logo.png" alt="logo" />
-      {/* <div className="header__logo"></div> */}
+      <img src={Logo} className="header__logo" />
       <nav>
         <ul className="header__list">
           <li className="header__item">
