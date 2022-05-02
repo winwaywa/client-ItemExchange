@@ -1,0 +1,52 @@
+.form{
+    display: flex;
+    flex-direction: column;
+
+    width: 30%;
+    min-width: 30rem;
+    background-color: #fff;
+    padding: 2rem 2rem;
+    border-radius: 1rem;
+    box-shadow: 0 5px 10px rgba(#000, 0.2);
+    overflow: hidden;       
+
+    position: absolute;
+    top:50%;
+    left: 50%;
+    
+    animation: formMoveInLeft 1s cubic-bezier(0.34, 1.56, 0.64, 1);
+    animation-fill-mode: forwards; // giữ vị trí khi hoàn tất
+
+    @media only screen and (max-width: 37.5em) { 
+        transform: translate(-50%, -50%);
+        animation:none
+    };
+
+    & > *{
+        width: 100%;
+        padding:1rem 0;
+        margin-bottom: 2rem;
+    }
+    & > h2{
+        font-size: 1.6rem;
+        text-align: center;
+        color:#fff;
+        background-color: var(--color-primary);
+        transform: scale(2);
+        margin-bottom: 4rem;
+    }
+    &__input{
+        outline: none;
+        border: none;
+        border-bottom:1px solid rgb(100, 100, 100);
+        padding: 1.5rem 0;
+    }
+    & > p{
+        margin:0 ;
+        text-align: left;
+        & > a{
+            font-weight: 500;
+        }
+    }
+}
+

@@ -1,0 +1,32 @@
+.user__info{
+    form{
+    }
+    &  div{
+        margin-right: 1rem;
+        text-align: center;
+    }
+    .avatar{
+        width: 10rem;
+        height:10rem;
+    }
+    #avatar{
+        display: none;
+    }
+
+    .form__group{
+        margin-bottom: 2rem;
+        label{
+            cursor: pointer;
+            display: inline-block;
+            min-width: 10rem;
+            text-align: left;
+        }
+        input{
+            padding:1rem;
+            outline: none;
+            border: 1px solid var(--color-grey-dark);
+            border-radius: 5px;
+        }
+        
+    }
+}

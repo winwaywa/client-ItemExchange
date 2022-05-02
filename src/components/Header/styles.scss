@@ -1,0 +1,47 @@
+.header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+
+    &__logo{
+            height: 4rem;
+            margin-left: 1rem;
+    }
+
+    &__list{
+        list-style: none;
+    }
+    &__item{
+        display: inline-block;
+    }
+
+    &__link{
+        &:link,
+        &:visited {
+        font-size: var(--default-font-size);
+        color: var(--color-primary);
+        display: inline-block;
+        text-decoration: none;
+        padding: 0.5rem 1rem;
+        transition: all .2s;
+    } 
+    
+    }
+    .active{
+        background-color: var(--color-white);
+    }
+
+    &__username{
+        display: inline-block;
+        height: 3rem;
+        vertical-align: 1.1rem;
+        margin-left: 0.2rem;
+    }
+
+    &__icon{
+        width: 3rem;
+        height: 3rem;
+    }
+
+}
