@@ -12,7 +12,7 @@ const axiosClient = axios.create({
 axiosClient.interceptors.request.use(
     function (config) {
         // Do something before request is sent
-        // config.headers['Authorization'] = `Bearer ${localStorage.getItem('access_token')}`;
+        config.headers['Authorization'] = `Bearer ${localStorage.getItem('access_token')}`;
         return config;
     },
     function (error) {

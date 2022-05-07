@@ -1,36 +1,38 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import UserInfo from '../components/UserInfo';
-
+import userApi from '../../../api/userApi';
+import { useSnackbar } from 'notistack';
 InfoPage.propTypes = {};
 
-const data = {
-  data: {
-    username: 'hiep',
-    avatar: 'https://gravatar.com/avatar/372107a8ffc361eb59f140a90081371a?s=200&d=robohash&r=x',
-    first_name: 'Hiệp',
-    last_name: 'Nguyễn Văn',
-    phone: '090912323',
-    address: 'Núi Thành, Quảng Nam',
-  },
-};
-
 function InfoPage(props) {
-  const [user, setUser] = useState(data.data);
-  useEffect(() => {
-    //call API lấy thông tin user
-  }, []);
+    const { enqueueSnackbar } = useSnackbar();
+    const [user, setUser] = useState();
 
-  const handleUpdateUser = (data) => {
-    console.log(data);
-    //Cập nhật dữ liệu
-  };
+    useEffect(() => {
+        const getUser = async () => {
+            //call API lấy thông tin user
+            const data = await userApi.getUser();
+            console.log(data.user);
+            setUser(data.user);
+        };
+        getUser();
+    }, []);
 
-  return (
-    <div className="user__info">
-      <UserInfo user={user} handleUpdateUser={handleUpdateUser} />
-    </div>
-  );
+    const handleUpdateUser = async (data) => {
+        try {
+            const user = await userApi.updateUser(data);
+            enqueueSnackbar('Cập nhật thành công!', { variant: 'success' });
+        } catch (err) {
+            enqueueSnackbar('Cập nhật thất bại!', { variant: 'error' });
+        }
+    };
+
+    return (
+        <div className="user__info">
+            {user && <UserInfo user={user} handleUpdateUser={handleUpdateUser} />}
+        </div>
+    );
 }
 
 export default InfoPage;
