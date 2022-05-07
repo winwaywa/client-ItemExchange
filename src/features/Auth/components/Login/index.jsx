@@ -1,27 +1,39 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import LoginForm from '../LoginForm';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { unwrapResult } from '@reduxjs/toolkit';
+import { useSnackbar } from 'notistack';
+import LoginForm from '../LoginForm';
 import { login } from '../../userSlice';
+
 Login.propTypes = {};
 
 function Login(props) {
-  let navigate = useNavigate();
-  let dispatch = useDispatch();
+    let navigate = useNavigate();
+    let dispatch = useDispatch();
+    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-  const handleSubmit = (values) => {
-    console.log(values);
+    const handleSubmit = async (values) => {
+        try {
+            console.log(values);
+            const action = login(values);
+            const resultAction = await dispatch(action);
+            const user = unwrapResult(resultAction);
 
-    dispatch(login(values));
+            navigate('/user/me');
+            enqueueSnackbar('Đăng nhập thành công', { variant: 'success' });
+        } catch (err) {
+            console.log('ERROR:', err);
+            enqueueSnackbar(err.message, { variant: 'error' });
+        }
+    };
 
-    navigate('/products');
-  };
-  return (
-    <div>
-      <LoginForm onSubmit={handleSubmit} />
-    </div>
-  );
+    return (
+        <div>
+            <LoginForm onSubmit={handleSubmit} />
+        </div>
+    );
 }
 
 export default Login;

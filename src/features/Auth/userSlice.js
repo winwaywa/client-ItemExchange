@@ -1,66 +1,59 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-// import userApi from 'api/userApi';
-// import StorageKeys from 'constants/storage-keys';
+import authApi from '../../api/authApi';
 
-// //tạo async action
-// export const register = createAsyncThunk('user/register', async (payload) => {
-//     // call api to register
-//     const data = await userApi.register(payload);
+//tạo async action
+export const register = createAsyncThunk('/register', async (payload) => {
+    // call api to register
+    const data = await authApi.register(payload);
 
-//     //save data local storage
-//     localStorage.setItem(StorageKeys.TOKEN, data.jwt);
-//     localStorage.setItem(StorageKeys.USER, JSON.stringify(data.user));
+    //save data local storage
+    localStorage.setItem('access_token', data.token);
+    localStorage.setItem('user', JSON.stringify(data.user));
 
-//     //return user data
-//     return data.user;
-// });
+    //return user data
+    return data.user;
+});
 
-// export const login = createAsyncThunk('user/login', async (payload) => {
-//     // call api to register
-//     const data = await userApi.login(payload);
+export const login = createAsyncThunk('/login', async (payload) => {
+    // call api to register
+    const data = await authApi.login(payload);
 
-//     //save data local storage
-//     localStorage.setItem(StorageKeys.TOKEN, data.jwt);
-//     localStorage.setItem(StorageKeys.USER, JSON.stringify(data.user));
+    //save data local storage
+    localStorage.setItem('access_token', data.token);
+    localStorage.setItem('user', JSON.stringify(data.user));
 
-//     //return user data
-//     return data.user;
-// });
+    //return user data
+    return data.user;
+});
 
 const userSlice = createSlice({
-  name: 'user',
-  initialState: {
-    current: JSON.parse(localStorage.getItem('user')),
-    settings: {},
-  },
-  reducers: {
-    logout(state) {
-      //clear localStorage
-      localStorage.removeItem('user');
-      localStorage.removeItem('jwt');
-
-      state.current = null;
+    name: 'user',
+    initialState: {
+        current: JSON.parse(localStorage.getItem('user')),
+        settings: {},
     },
-    login(state, action) {
-      // localStorage.setItem('jwt', payload.jwt);
-      localStorage.setItem('user', JSON.stringify(action.payload));
+    reducers: {
+        logout(state) {
+            //clear localStorage
+            localStorage.removeItem('user');
+            localStorage.removeItem('access_token');
 
-      state.current = action.payload;
+            state.current = null;
+        },
     },
-  },
-  //   extraReducers: {
-  //     //tự định nghĩa action type (<=> 'user/register/fullfilled')
-  //     [register.fulfilled]: (state, action) => {
-  //       state.current = action.payload; //action.payload = return data.user ở trên
-  //     },
-  //     [login.fulfilled]: (state, action) => {
-  //       state.current = action.payload; //action.payload = return data.user ở trên
-  //     },
-  //   },
+    extraReducers: {
+        //tự định nghĩa action type (<=> 'user/register/fullfilled')
+        [register.fulfilled]: (state, action) => {
+            state.current = action.payload; //action.payload = return data.user ở trên
+        },
+        [login.fulfilled]: (state, action) => {
+            state.current = action.payload; //action.payload = return data.user ở trên
+        },
+    },
 });
 
 const { actions, reducer } = userSlice;
 
-export const { logout, login } = actions;
+export const { logout } = actions;
 
 export default reducer; //default export
