@@ -1,27 +1,45 @@
-import React from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import PostItem from '../PostItem';
 
 PostList.propTypes = {};
 
-function PostList({ postList, tabIndex }) {
-  return (
-    <div>
-      {tabIndex === 0 && (
-        <ul className="table u-margin-top-small">
-          <li class="table-header">
-            <div class="col col-1">Sản phẩm</div>
-            <div class="col col-2">Trạng thái</div>
-            <div class="col col-3">Thời gian</div>
-            <div class="col col-4">Thao tác</div>
-          </li>
-          {postList.map((post) => (
-            <PostItem post={post} />
-          ))}
-        </ul>
-      )}
-    </div>
-  );
+function PostList({ products, tabIndex }) {
+    const [state, setState] = useState('');
+    useEffect(() => {
+        switch (tabIndex) {
+            case 0:
+                setState('new');
+                break;
+            case 1:
+                setState('requesting');
+                break;
+            case 2:
+                setState('trading');
+                break;
+            case 3:
+                setState('completed');
+                break;
+            default:
+                return;
+        }
+    }, [tabIndex]);
+
+    const productsFilter = useMemo(
+        () => products.filter((product) => product.status === state),
+        [state]
+    );
+
+    return (
+        <>
+            {productsFilter.length === 0 && <div>Chưa có</div>}
+            <ul>
+                {productsFilter.map((product) => (
+                    <PostItem product={product} />
+                ))}
+            </ul>
+        </>
+    );
 }
 
 export default PostList;

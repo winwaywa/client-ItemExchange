@@ -19,13 +19,13 @@ function LoginForm({ onSubmit }) {
 
     return (
         <form className="form" onSubmit={(e) => handleSubmit(e, { username, password })}>
-            <h2>Login</h2>
+            <h2>Đăng nhập</h2>
             <input
                 className="form__input"
                 type="text"
                 name="username"
                 id="username"
-                placeholder="username"
+                placeholder="Tên tài khoản..."
                 onChange={(e) => setUsername(e.target.value)}
             />
             <input
@@ -33,7 +33,7 @@ function LoginForm({ onSubmit }) {
                 type="password"
                 name="password"
                 id="password"
-                placeholder="Password"
+                placeholder="Mật khẩu..."
                 onChange={(e) => setPassword(e.target.value)}
             />
             <div style={{ padding: '0' }}>
@@ -50,16 +50,16 @@ function LoginForm({ onSubmit }) {
                         setIsRemember(!isRemember);
                     }}
                 />
-                <label for="remember">Remember Me</label>
+                <label for="remember">Ghi Nhớ</label>
             </div>
-            <input className="btn btn--primary" type="submit" value="Login" />
+            <input className="btn btn--primary" type="submit" value="Đăng nhập" />
             <p>
-                Forgot?&nbsp;
-                <Link to="/forgot">Password</Link>
+                Quên?&nbsp;
+                <Link to="/forgot">Mật khẩu</Link>
             </p>
             <p>
-                Don't have an account?&nbsp;
-                <Link to="/register">Register now</Link>
+                Chưa có tài khoản?&nbsp;
+                <Link to="/register">Đăng ký</Link>
             </p>
         </form>
     );

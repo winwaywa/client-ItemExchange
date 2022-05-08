@@ -1,10 +1,27 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-
+import { useParams } from 'react-router-dom';
+import ProductApi from '../../../../api/productApi';
+import ProductImages from '../../components/ProductImages';
+import ProductDetails from '../../components/ProductDetails';
 DetailsPage.propTypes = {};
 
 function DetailsPage(props) {
-  return <div>Details page</div>;
+    const { id } = useParams();
+    const [product, setProduct] = useState();
+
+    useEffect(() => {
+        (async () => {
+            const data = await ProductApi.getProduct(id);
+            setProduct(data.product);
+        })();
+    }, []);
+    return (
+        <>
+            <ProductImages />
+            <ProductDetails product={product} />
+        </>
+    );
 }
 
 export default DetailsPage;

@@ -36,6 +36,9 @@
         margin-bottom: 4rem;
     }
     &__input{
+        font-size: 1.6rem;
+        font-weight: 300;
+        font-family: "Josefin Sans", sans-serif;
         outline: none;
         border: none;
         border-bottom:1px solid rgb(100, 100, 100);
@@ -43,6 +46,8 @@
     }
     & > p{
         margin:0 ;
+        padding:0;
+
         text-align: left;
         & > a{
             font-weight: 500;

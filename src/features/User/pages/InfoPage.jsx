@@ -22,6 +22,9 @@ function InfoPage(props) {
     const handleUpdateUser = async (data) => {
         try {
             const user = await userApi.updateUser(data);
+            if (!user) {
+                throw new Error('Cập nhật thất bại!');
+            }
             enqueueSnackbar('Cập nhật thành công!', { variant: 'success' });
         } catch (err) {
             enqueueSnackbar('Cập nhật thất bại!', { variant: 'error' });

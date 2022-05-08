@@ -6,7 +6,7 @@ import Logo from '../../../images/logo.png';
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 Header.propTypes = {};
 
@@ -16,7 +16,9 @@ function Header(props) {
 
     return (
         <header className="header">
-            <img src={Logo} className="header__logo" />
+            <Link to="/">
+                <img src={Logo} className="header__logo" />
+            </Link>
             <nav>
                 <ul className="header__list">
                     <li className="header__item">
@@ -34,7 +36,11 @@ function Header(props) {
                     {isLoggedIn && (
                         <li className="header__item">
                             <NavLink className="header__link header__user" to={'user/me'}>
-                                <img className="header__icon" src={UserIcon} alt="user-icon" />
+                                <img
+                                    className="header__icon"
+                                    src={loggedUser.avatar}
+                                    alt="avatar"
+                                />
                                 <span className="header__username">{loggedUser.username}</span>
                             </NavLink>
                         </li>
