@@ -19,7 +19,7 @@ function DetailsPage(props) {
     return (
         <>
             <ProductImages />
-            <ProductDetails product={product} />
+            {product && <ProductDetails product={product} />}
         </>
     );
 }

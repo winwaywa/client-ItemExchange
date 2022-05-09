@@ -10,6 +10,16 @@ function UserInfo({ user, handleUpdateUser }) {
     const [phone, setPhone] = useState(user.phone);
     const [address, setAddress] = useState(user.address);
 
+    const [previewAvatar, setPreviewAvatar] = useState('');
+
+    // Xử lý ảnh xem trước và set file để post lên server
+    const handleAvatar = (e) => {
+        const files = e.target.files;
+        const preview = URL.createObjectURL(files[0]);
+        setPreviewAvatar(preview);
+        setAvatar(files[0]);
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const newData = {
@@ -19,6 +29,7 @@ function UserInfo({ user, handleUpdateUser }) {
             address,
         };
         handleUpdateUser(newData);
+        console.log(newData);
     };
 
     return (
@@ -26,15 +37,22 @@ function UserInfo({ user, handleUpdateUser }) {
             <h2 className="heading-tertiary">Thông tin cá nhân</h2>
             <form onSubmit={(e) => handleSubmit(e)}>
                 <div className="form__group">
-                    <label htmlFor="avatar">
-                        <img className="avatar" src={avatar} alt="avatar" />
-                    </label>
+                    {!previewAvatar && (
+                        <label htmlFor="avatar">
+                            <img className="avatar" src={avatar} alt="avatar" />
+                        </label>
+                    )}
+                    {previewAvatar && (
+                        <label htmlFor="avatar">
+                            <img className="avatar" src={previewAvatar} alt="preview avatar" />
+                        </label>
+                    )}
                     <input
                         type="file"
                         id="avatar"
                         name="avatar"
-                        accept="image/png, image/jpeg"
-                        onChange={(e) => setAvatar(e.target.value)}
+                        accept="image/*"
+                        onChange={(e) => handleAvatar(e)}
                     />
                 </div>
                 <div className="form__group">

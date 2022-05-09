@@ -19,33 +19,25 @@ function Header(props) {
             <Link to="/">
                 <img src={Logo} className="header__logo" />
             </Link>
-            <nav>
-                <ul className="header__list">
-                    <li className="header__item">
-                        <NavLink className="header__link" to="products">
-                            <img className="header__icon" src={ProductIcon} alt="product-icon" />
-                        </NavLink>
-                    </li>
-                    {!isLoggedIn && (
-                        <li className="header__item">
-                            <NavLink className="header__link" to="login">
-                                <img className="header__icon" src={LoginIcon} alt="login-icon" />
-                            </NavLink>
-                        </li>
-                    )}
-                    {isLoggedIn && (
-                        <li className="header__item">
-                            <NavLink className="header__link header__user" to={'user/me'}>
-                                <img
-                                    className="header__icon"
-                                    src={loggedUser.avatar}
-                                    alt="avatar"
-                                />
-                                <span className="header__username">{loggedUser.username}</span>
-                            </NavLink>
-                        </li>
-                    )}
-                </ul>
+            <nav className="header__nav">
+                <NavLink className="header__link" to="products">
+                    <img className="header__icon" src={ProductIcon} alt="product-icon" />
+                </NavLink>
+                {!isLoggedIn && (
+                    <NavLink className="header__link" to="login">
+                        <img className="header__icon" src={LoginIcon} alt="login-icon" />
+                    </NavLink>
+                )}
+                {isLoggedIn && (
+                    <NavLink className="header__link" to={'user/me'}>
+                        <img
+                            className="header__icon header__avatar"
+                            src={loggedUser.avatar}
+                            alt="avatar"
+                        />
+                        <span className="header__username">{loggedUser.username}</span>
+                    </NavLink>
+                )}
             </nav>
         </header>
     );

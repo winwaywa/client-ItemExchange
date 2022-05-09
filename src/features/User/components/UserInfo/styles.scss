@@ -6,8 +6,11 @@
         text-align: center;
     }
     .avatar{
-        width: 10rem;
-        height:10rem;
+        width: 13rem;
+        height:13rem;
+        box-shadow: 0 0.2rem 0.5rem rgba(#000,0.4);
+        // border-radius: 100%;
+
     }
     #avatar{
         display: none;

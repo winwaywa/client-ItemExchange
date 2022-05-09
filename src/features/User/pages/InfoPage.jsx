@@ -1,22 +1,30 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+
+import { useDispatch } from 'react-redux';
+import { updateUser } from '../../Auth/userSlice';
+
 import UserInfo from '../components/UserInfo';
 import userApi from '../../../api/userApi';
 import { useSnackbar } from 'notistack';
 InfoPage.propTypes = {};
 
 function InfoPage(props) {
+    const dispatch = useDispatch();
     const { enqueueSnackbar } = useSnackbar();
     const [user, setUser] = useState();
 
     useEffect(() => {
-        const getUser = async () => {
-            //call API lấy thông tin user
-            const data = await userApi.getUser();
-            console.log(data.user);
-            setUser(data.user);
-        };
-        getUser();
+        (async () => {
+            try {
+                //call API lấy thông tin user
+                const data = await userApi.getUser();
+                console.log('Chưa khắc phục cái useEffect 2 lần');
+                setUser(data.user);
+            } catch (err) {
+                console.log(err);
+            }
+        })();
     }, []);
 
     const handleUpdateUser = async (data) => {
@@ -25,9 +33,14 @@ function InfoPage(props) {
             if (!user) {
                 throw new Error('Cập nhật thất bại!');
             }
+
+            //cập nhật user ở redux
+            const action = updateUser({ username: user.user.username, avatar: user.user.avatar });
+            dispatch(action);
+
             enqueueSnackbar('Cập nhật thành công!', { variant: 'success' });
         } catch (err) {
-            enqueueSnackbar('Cập nhật thất bại!', { variant: 'error' });
+            enqueueSnackbar(err.message, { variant: 'error' });
         }
     };
 

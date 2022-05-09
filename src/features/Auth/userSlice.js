@@ -40,6 +40,11 @@ const userSlice = createSlice({
 
             state.current = null;
         },
+        updateUser(state, action) {
+            console.log(action.payload);
+            localStorage.setItem('user', JSON.stringify(action.payload));
+            state.current = action.payload;
+        },
     },
     extraReducers: {
         //tự định nghĩa action type (<=> 'user/register/fullfilled')
@@ -54,6 +59,6 @@ const userSlice = createSlice({
 
 const { actions, reducer } = userSlice;
 
-export const { logout } = actions;
+export const { logout, updateUser } = actions;
 
 export default reducer; //default export
