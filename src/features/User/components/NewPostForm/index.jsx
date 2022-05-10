@@ -9,33 +9,42 @@ function NewPostForm({ categories, handleCreateProduct }) {
     const [title, setTitle] = useState('');
     const [price, setPrice] = useState('');
     const [category, setCategory] = useState(categories[0]._id);
+    const [imagesPreview, setImagesPreview] = useState([]);
     const [images, setImages] = useState([]);
 
     const editorRef = useRef(null);
 
     const handlePreviewImages = (e) => {
-        setImages([]);
+        setImagesPreview([]);
         const files = e.target.files;
         const length = files.length;
         const imageList = [];
         for (let i = 0; i < length; i++) {
-            files[i].preview = URL.createObjectURL(files[i]);
-            imageList.push({ name: files[i].name, url: files[i].preview });
+            const preview = URL.createObjectURL(files[i]);
+            imageList.push({ name: files[i].name, url: preview });
         }
-        setImages(imageList);
+        setImagesPreview(imageList);
+        setImages(files);
     };
 
     const handleSubmit = (e) => {
-        e.preventDefault();
-        const values = {
-            product_name: title,
-            describe: editorRef.current.getContent(),
-            price,
-            category_id: category,
-            // images_url: images,
-            images_url: '',
-        };
-        handleCreateProduct(values);
+        try {
+            e.preventDefault();
+            //validate
+            // if (images.length > 6) {
+            //     throw new Error('Số ảnh vượt quá 6');
+            // }
+            const values = {
+                product_name: title,
+                describe: editorRef.current.getContent(),
+                price,
+                category_id: category,
+                images_url: images,
+            };
+            handleCreateProduct(values);
+        } catch (err) {
+            console.log(err);
+        }
     };
 
     return (
@@ -103,18 +112,18 @@ function NewPostForm({ categories, handleCreateProduct }) {
                         </select>
                     </div>
                     <div className="form__group">
-                        <label htmlFor="images">Thêm ảnh +</label>
+                        <label htmlFor="images">Thêm ảnh + (Tối đa 6 ảnh)</label>
                         <input
                             type="file"
                             id="images"
                             name="images"
                             multiple
-                            accept=".jpg, .jpeg, .png"
+                            accept="image/*"
                             onChange={(e) => handlePreviewImages(e)}
                         />
-                        {images && (
+                        {imagesPreview && (
                             <ul className="images">
-                                {images.map((image) => (
+                                {imagesPreview.map((image) => (
                                     <li>
                                         <img
                                             className="images__img"

@@ -42,12 +42,13 @@ function PostPage(props) {
 
     const handleCreateProduct = async (values) => {
         try {
+            console.log(values);
             const product = await ProductApi.createProduct(values);
             console.log(product);
             navigate(`/products/${product.product._id}`);
             enqueueSnackbar('Đăng sản phẩm thành công', { variant: 'success' });
         } catch (err) {
-            enqueueSnackbar('Đăng sản phẩm không thành công', { variant: 'error' });
+            enqueueSnackbar(err.message, { variant: 'error' });
             console.log(err);
         }
     };

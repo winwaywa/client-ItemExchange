@@ -7,11 +7,20 @@ ProductItem.propTypes = {};
 
 function ProductItem({ product }) {
     return (
-        <Link to={`/products/${product._id}`}>
-            <img src="#" alt={product.product_name} />
-            <h4>{product.product_name}</h4>
-            <p>{formatPrice(product.price)}</p>
-        </Link>
+        <>
+            <div className="product__thumbnail">
+                {product.images_url && (
+                    <img src={product.images_url.split(',')[0]} alt={product.product_name} />
+                )}
+                <Link className="btn-details" to={`/products/${product._id}`}>
+                    Chi tiết
+                </Link>
+            </div>
+            <Link className="product__link" to={`/products/${product._id}`}>
+                <h4>{product.product_name}</h4>
+                <p>{formatPrice(product.price)}</p>
+            </Link>
+        </>
     );
 }
 
