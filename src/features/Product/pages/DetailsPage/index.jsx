@@ -1,3 +1,4 @@
+import './styles.scss';
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
@@ -16,11 +17,12 @@ function DetailsPage(props) {
             setProduct(data.product);
         })();
     }, []);
+
     return (
-        <>
-            <ProductImages />
+        <div className="product__details">
+            {product && <ProductImages images_url={product.images_url} />}
             {product && <ProductDetails product={product} />}
-        </>
+        </div>
     );
 }
 

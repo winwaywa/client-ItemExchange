@@ -1,3 +1,4 @@
+import './styles.scss';
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
@@ -16,10 +17,10 @@ function ListPage(props) {
         })();
     }, []);
     return (
-        <>
+        <div className="product__list">
             <ProductFilters />
             <ProductList products={products} />
-        </>
+        </div>
     );
 }
 

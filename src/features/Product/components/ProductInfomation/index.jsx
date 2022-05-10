@@ -7,7 +7,7 @@ ProductInfomation.propTypes = {};
 
 function ProductInfomation({ product, user, categoryName }) {
     return (
-        <div className="products__infomation">
+        <div className="details__infomation">
             <h2>{product.product_name}</h2>
             <p>Giá:{formatPrice(product.price)}</p>
             <p>Loại: {categoryName}</p>

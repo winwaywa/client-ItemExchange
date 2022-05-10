@@ -9,7 +9,7 @@ ProductFeature.propTypes = {};
 
 function ProductFeature(props) {
     return (
-        <div className="products">
+        <div className="product">
             <Routes>
                 <Route path="*" element={<ListPage />} />
                 <Route path="products" element={<ListPage />} />

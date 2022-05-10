@@ -1,11 +1,20 @@
 import React, { useEffect, useState, useMemo } from 'react';
+import { useSnackbar } from 'notistack';
+import PostTable from '../PostTable';
+import productApi from '../../../../api/productApi';
 import PropTypes from 'prop-types';
-import PostItem from '../PostItem';
-
 PostList.propTypes = {};
 
 function PostList({ products, tabIndex }) {
+    const { enqueueSnackbar } = useSnackbar();
     const [state, setState] = useState('');
+
+    const [productsFilter, setproductsFilter] = useState();
+
+    useMemo(() => {
+        setproductsFilter(products.filter((product) => product.status === state));
+    }, [state]);
+
     useEffect(() => {
         switch (tabIndex) {
             case 0:
@@ -25,19 +34,22 @@ function PostList({ products, tabIndex }) {
         }
     }, [tabIndex]);
 
-    const productsFilter = useMemo(
-        () => products.filter((product) => product.status === state),
-        [state]
-    );
+    const handleClickDelete = async (id) => {
+        try {
+            const product = await productApi.deleteProduct(id);
+            console.log(product);
+            setproductsFilter(productsFilter.filter((product) => product._id !== id));
+            enqueueSnackbar('Xoá sản phẩm thành công', { variant: 'success' });
+        } catch (err) {
+            enqueueSnackbar('Xoá sản phẩm không thành công ', { variant: 'error' });
+        }
+    };
 
     return (
         <>
-            {productsFilter.length === 0 && <div>Chưa có</div>}
-            <ul>
-                {productsFilter.map((product) => (
-                    <PostItem product={product} />
-                ))}
-            </ul>
+            {tabIndex === 0 && (
+                <PostTable productsFilter={productsFilter} onDelete={handleClickDelete} />
+            )}
         </>
     );
 }

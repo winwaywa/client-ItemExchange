@@ -1,0 +1,20 @@
+.product{
+    &__details{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        .images{
+            margin: 0 auto;
+            width: 400px;
+
+            .image__item{
+                width: 100%;
+                height: 40rem;
+            }   
+        }
+        .details{
+            flex:1;
+        }
+    }
+}
