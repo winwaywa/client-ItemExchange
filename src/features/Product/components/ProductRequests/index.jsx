@@ -1,28 +1,35 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import swal from 'sweetalert';
-//mui
-import Button from '@mui/material/Button';
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-import Slide from '@mui/material/Slide';
 
 import productApi from '../../../../api/productApi';
+import transactionApi from '../../../../api/transactionApi';
+
+import RequestList from './RequestList';
+import RequestDialog from './RequestDialog';
+import RequestAction from './RequestAction';
 
 ProductRequests.propTypes = {};
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
-});
 
 function ProductRequests({ user, product }) {
     const me = useSelector((state) => state.user.current);
 
-    const [open, setOpen] = React.useState(false);
-    const [products, setProducts] = React.useState();
+    const [open, setOpen] = useState(false);
+    const [products, setProducts] = useState();
+    const [transactions, setTransactions] = useState([]);
+
+    useEffect(() => {
+        (async () => {
+            try {
+                const queryParams = { product_id_requested: product._id };
+                const transactions = await transactionApi.getTransactionsWithCondition(queryParams);
+                setTransactions(transactions.transactions);
+            } catch (err) {
+                console.log(err);
+            }
+        })();
+    }, [product]);
 
     const handleClickOpen = async () => {
         try {
@@ -38,55 +45,49 @@ function ProductRequests({ user, product }) {
         setOpen(false);
     };
 
-    const handleConfirm = async (product_id) => {
+    const handleConfirm = async (value) => {
         const willDelete = await swal({
             title: 'Xác nhận',
             text: 'Bạn chắc chắn muốn đổi không?',
             icon: 'warning',
             dangerMode: true,
         });
-
         if (willDelete) {
-            swal('Đã gửi!', 'Yêu cầu của bạn đã gửi thành công!', 'success');
             //Xử lý yêu cầu đổi
-            console.log('Tôi:', me.username);
-            console.log('Sản phẩm của tôi:', product_id);
-            console.log(user.username);
-            console.log(product._id);
+            try {
+                const values = {
+                    request_recipient: user.username,
+                    product_id_requested: product._id,
+                    exchange_value: value,
+                };
+                const transaction = await transactionApi.createTransaction(values);
+                if (!transaction) {
+                    throw new Error('Yêu cầu của bạn đã gửi không thành công');
+                }
+                setTransactions((preValue) => [...preValue, { ...transaction.transaction }]);
+                swal('Đã gửi!', 'Yêu cầu của bạn đã gửi thành công!', 'success');
+            } catch (err) {
+                swal('Gửi thất bại!', 'Yêu cầu của bạn gửi thất bại!', 'error');
+            }
         }
     };
 
     return (
         <div className="request">
-            {user.username !== me.username && (
-                <a href="#" className="btn-text u-margin-top-small" onClick={handleClickOpen}>
-                    Gửi yêu cầu
-                </a>
-            )}
-            <Dialog open={open} TransitionComponent={Transition} keepMounted onClose={handleClose}>
-                <DialogTitle>{'Chọn một món đồ của bạn !'}</DialogTitle>
-                <DialogContent>
-                    {products &&
-                        products.map((product) => (
-                            <div styles={{ display: 'flex' }}>
-                                <strong>{product.product_name}</strong>
-                                <a
-                                    href="#"
-                                    className="btn-text"
-                                    onClick={() => {
-                                        handleClose();
-                                        handleConfirm(product._id);
-                                    }}
-                                >
-                                    Chọn
-                                </a>
-                            </div>
-                        ))}
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleClose}>Close</Button>
-                </DialogActions>
-            </Dialog>
+            <RequestAction
+                me={me}
+                user={user}
+                product={product}
+                transactions={transactions}
+                handleClickOpen={handleClickOpen}
+            />
+            <RequestList transactions={transactions} />
+            <RequestDialog
+                open={open}
+                handleClose={handleClose}
+                handleConfirm={handleConfirm}
+                products={products}
+            />
         </div>
     );
 }

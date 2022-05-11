@@ -1,30 +1,30 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import { useSnackbar } from 'notistack';
+import swal from 'sweetalert';
+
 import PostTable from '../PostTable';
 import productApi from '../../../../api/productApi';
 import PropTypes from 'prop-types';
 PostList.propTypes = {};
 
-function PostList({ products, tabIndex }) {
-    const { enqueueSnackbar } = useSnackbar();
+function PostList({ products, tabIndex, handleDeleteProduct }) {
     const [state, setState] = useState('');
 
     const [productsFilter, setproductsFilter] = useState();
 
     useMemo(() => {
         setproductsFilter(products.filter((product) => product.status === state));
-    }, [state]);
+    }, [state, products]);
 
     useEffect(() => {
         switch (tabIndex) {
             case 0:
-                setState('new');
+                setState('disable');
                 break;
             case 1:
-                setState('requesting');
+                setState('enable');
                 break;
             case 2:
-                setState('trading');
+                setState('exchanging');
                 break;
             case 3:
                 setState('completed');
@@ -34,15 +34,8 @@ function PostList({ products, tabIndex }) {
         }
     }, [tabIndex]);
 
-    const handleClickDelete = async (id) => {
-        try {
-            const product = await productApi.deleteProduct(id);
-            console.log(product);
-            setproductsFilter(productsFilter.filter((product) => product._id !== id));
-            enqueueSnackbar('Xoá sản phẩm thành công', { variant: 'success' });
-        } catch (err) {
-            enqueueSnackbar('Xoá sản phẩm không thành công ', { variant: 'error' });
-        }
+    const handleClickDelete = (id) => {
+        handleDeleteProduct(id);
     };
 
     return (

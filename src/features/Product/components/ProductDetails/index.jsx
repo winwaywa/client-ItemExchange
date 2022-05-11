@@ -15,14 +15,16 @@ function ProductDetails({ product }) {
     const [value, setValue] = useState(0);
     const [user, setUser] = useState({});
     const [categoryName, setCategoryName] = useState('');
+
     useEffect(() => {
         (async () => {
             const user = await userApi.getUserById(product.createdBy);
             const category = await categoryApi.getCategory(product.category_id);
             setUser({ username: user.user.username, avatar: user.user.avatar });
             setCategoryName(category.category.category_name);
+            setValue(0);
         })();
-    }, []);
+    }, [product]);
 
     const handleChange = (event, newValue) => {
         setValue(newValue);

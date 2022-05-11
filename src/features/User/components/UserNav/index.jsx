@@ -5,6 +5,7 @@ import { NavLink } from 'react-router-dom';
 import UserIcon from '../../../../../images/icon-svg/user-icon.svg';
 import PostIcon from '../../../../../images/icon-svg/post-icon.svg';
 import LogoutIcon from '../../../../../images/icon-svg/logout-icon.svg';
+import ExchangeIcon from '../../../../../images/icon-svg/exchange-icon.svg';
 
 UserNav.propTypes = {};
 
@@ -18,7 +19,12 @@ function UserNav({ handleLogout }) {
             </li>
             <li className="nav__item">
                 <NavLink className="nav__link" to="post">
-                    <img className="nav__icon" src={PostIcon} alt="user-icon" />
+                    <img className="nav__icon" src={PostIcon} alt="post-icon" />
+                </NavLink>
+            </li>
+            <li className="nav__item">
+                <NavLink className="nav__link" to="requests">
+                    <img className="nav__icon" src={ExchangeIcon} alt="exchange-icon" />
                 </NavLink>
             </li>
             <li className="nav__item">

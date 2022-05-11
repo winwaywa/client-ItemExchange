@@ -19,7 +19,7 @@ function InfoPage(props) {
             try {
                 //call API lấy thông tin user
                 const data = await userApi.getUser();
-                console.log('Chưa khắc phục cái useEffect 2 lần');
+                console.log('Chưa khắc phục cái useEffect 2 lần(do IIFE)');
                 setUser(data.user);
             } catch (err) {
                 console.log(err);

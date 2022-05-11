@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { useSnackbar } from 'notistack';
-import { useNavigate } from 'react-router-dom';
+import swal from 'sweetalert';
 //mui
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 
-import ProductApi from '../../../api/productApi';
-import CategoryApi from '../../../api/categoryApi';
+import productApi from '../../../api/productApi';
+import categoryApi from '../../../api/categoryApi';
 
 import PostList from '../components/PostList';
 import NewPostForm from '../components/NewPostForm';
@@ -16,9 +15,6 @@ import NewPostForm from '../components/NewPostForm';
 PostPage.propTypes = {};
 
 function PostPage(props) {
-    const { enqueueSnackbar } = useSnackbar();
-    const navigate = useNavigate();
-
     const [value, setValue] = useState(4);
     const [categories, setCategories] = useState([]);
     const [products, setProducts] = useState([]);
@@ -26,8 +22,9 @@ function PostPage(props) {
     useEffect(() => {
         (async () => {
             try {
-                const products = await ProductApi.getProductsByUser();
-                const categories = await CategoryApi.getAllCategory();
+                console.log('alo');
+                const products = await productApi.getProductsByUser();
+                const categories = await categoryApi.getAllCategory();
                 setCategories(categories.categories);
                 setProducts(products.products);
             } catch (err) {
@@ -41,15 +38,44 @@ function PostPage(props) {
     };
 
     const handleCreateProduct = async (values) => {
-        try {
-            console.log(values);
-            const product = await ProductApi.createProduct(values);
-            console.log(product);
-            navigate(`/products/${product.product._id}`);
-            enqueueSnackbar('Đăng sản phẩm thành công', { variant: 'success' });
-        } catch (err) {
-            enqueueSnackbar(err.message, { variant: 'error' });
-            console.log(err);
+        const willDelete = await swal({
+            title: 'Xác nhận',
+            text: 'Bạn chắc chắn muốn đăng món đồ này?',
+            icon: 'warning',
+            dangerMode: true,
+        });
+        if (willDelete) {
+            try {
+                console.log(values);
+                const product = await productApi.createProduct(values);
+                setProducts((preValue) => [...preValue, { ...product.product }]);
+                setValue(0);
+                swal(
+                    'Đăng thành công!',
+                    ' Người khác có thể nhìn thấy món đồ của bạn sau khi bài đăng được duyệt!',
+                    'success'
+                );
+            } catch (err) {
+                swal('Đăng thất bại!', `${err.message}`, 'error');
+            }
+        }
+    };
+
+    const handleDeleteProduct = async (id) => {
+        const willDelete = await swal({
+            title: 'Xác nhận',
+            text: 'Bạn chắc chắn muốn xoá món đồ này?',
+            icon: 'warning',
+            dangerMode: true,
+        });
+        if (willDelete) {
+            try {
+                const product = await productApi.deleteProduct(id);
+                setProducts(products.filter((product) => product._id !== id));
+                swal('Đã xoá!', 'Xoá sản phẩm thành công', 'success');
+            } catch (err) {
+                swal('Xoá thất bại!', `${err.message}`, 'error');
+            }
         }
     };
 
@@ -66,14 +92,20 @@ function PostPage(props) {
                     }}
                 >
                     <Tabs value={value} onChange={handleChange}>
-                        <Tab label="Mới" value={0} />
-                        <Tab label="Đang gửi yêu cầu" value={1} />
+                        <Tab label="Chưa được duyệt" value={0} />
+                        <Tab label="Có thể đổi" value={1} />
                         <Tab label="Đang trao đổi" value={2} />
                         <Tab label="Đã đổi thành công" value={3} />
                         <Tab label="Thêm sản phẩm" value={4} />
                     </Tabs>
                 </Box>
-                {value === 4 || <PostList products={products} tabIndex={value} />}
+                {value === 4 || (
+                    <PostList
+                        products={products}
+                        tabIndex={value}
+                        handleDeleteProduct={handleDeleteProduct}
+                    />
+                )}
                 {categories.length > 0 && value === 4 && (
                     <NewPostForm
                         categories={categories}

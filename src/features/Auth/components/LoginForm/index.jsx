@@ -50,7 +50,7 @@ function LoginForm({ onSubmit }) {
                         setIsRemember(!isRemember);
                     }}
                 />
-                <label for="remember">Ghi Nhớ</label>
+                <label htmlFor="remember">Ghi Nhớ</label>
             </div>
             <input className="btn btn--primary" type="submit" value="Đăng nhập" />
             <p>

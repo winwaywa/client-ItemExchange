@@ -23,8 +23,8 @@ function ProductImages({ images_url }) {
     return (
         <div className="images">
             <Slider {...settings}>
-                {images_arr.map((url) => (
-                    <div>
+                {images_arr.map((url, index) => (
+                    <div key={index}>
                         <img className="image__item" src={url} alt={url} />
                     </div>
                 ))}

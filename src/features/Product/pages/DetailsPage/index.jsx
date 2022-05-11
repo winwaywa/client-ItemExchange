@@ -1,6 +1,7 @@
 import './styles.scss';
 import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+
 import { useParams } from 'react-router-dom';
 import ProductApi from '../../../../api/productApi';
 import ProductImages from '../../components/ProductImages';
@@ -16,7 +17,7 @@ function DetailsPage(props) {
             const data = await ProductApi.getProduct(id);
             setProduct(data.product);
         })();
-    }, []);
+    }, [id]);
 
     return (
         <div className="product__details">

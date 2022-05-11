@@ -1,8 +1,7 @@
 import './styles.scss';
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Editor } from '@tinymce/tinymce-react';
-// import categoryApi from '../../../../api/categoryApi';
 NewPostForm.propTypes = {};
 
 function NewPostForm({ categories, handleCreateProduct }) {
@@ -123,8 +122,8 @@ function NewPostForm({ categories, handleCreateProduct }) {
                         />
                         {imagesPreview && (
                             <ul className="images">
-                                {imagesPreview.map((image) => (
-                                    <li>
+                                {imagesPreview.map((image, index) => (
+                                    <li key={index}>
                                         <img
                                             className="images__img"
                                             src={image.url}
