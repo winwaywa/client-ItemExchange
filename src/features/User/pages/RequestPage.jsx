@@ -4,6 +4,7 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import RequestList from '../components/RequestList';
 import transactionApi from '../../../api/transactionApi';
+
 RequestPage.propTypes = {};
 
 function RequestPage(props) {
@@ -33,13 +34,9 @@ function RequestPage(props) {
                         borderColor: 'divider',
                     }}
                 >
-                    <Tabs
-                        value={tabIndex}
-                        onChange={handleChange}
-                        aria-label="wrapped label tabs example"
-                    >
-                        <Tab value={0} label="Bạn đã gửi" />
-                        <Tab value={1} label="Người khác yêu cầu" />
+                    <Tabs value={tabIndex} onChange={handleChange}>
+                        <Tab value={0} label="Yêu cầu của bạn" />
+                        <Tab value={1} label="Người khác muốn đổi với bạn" />
                     </Tabs>
                 </Box>
                 {transactions && <RequestList tabIndex={tabIndex} transactions={transactions} />}

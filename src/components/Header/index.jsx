@@ -1,7 +1,8 @@
 import './styles.scss';
-import ProductIcon from '../../../images/icon-svg/product-icon.svg';
-import UserIcon from '../../../images/icon-svg/user-icon.svg';
+import HomeIcon from '../../../images/icon-svg/home-icon.svg';
 import LoginIcon from '../../../images/icon-svg/login-icon.svg';
+import ChatIcon from '../../../images/icon-svg/chat-icon.svg';
+import NotificationIcon from '../../../images/icon-svg/notification-icon.svg';
 import Logo from '../../../images/logo.png';
 
 import React from 'react';
@@ -21,11 +22,20 @@ function Header(props) {
             </Link>
             <nav className="header__nav">
                 <NavLink className="header__link" to="products">
-                    <img className="header__icon" src={ProductIcon} alt="product-icon" />
+                    <img className="header__icon" src={HomeIcon} alt="product-icon" />
                 </NavLink>
-                {!isLoggedIn && (
-                    <NavLink className="header__link" to="login">
-                        <img className="header__icon" src={LoginIcon} alt="login-icon" />
+                {isLoggedIn && (
+                    <NavLink className="header__link" to="notification">
+                        <img
+                            className="header__icon"
+                            src={NotificationIcon}
+                            alt="notification-icon"
+                        />
+                    </NavLink>
+                )}
+                {isLoggedIn && (
+                    <NavLink className="header__link" to="chat">
+                        <img className="header__icon" src={ChatIcon} alt="chat-icon" />
                     </NavLink>
                 )}
                 {isLoggedIn && (
@@ -36,6 +46,11 @@ function Header(props) {
                             alt="avatar"
                         />
                         <span className="header__username">{loggedUser.username}</span>
+                    </NavLink>
+                )}
+                {!isLoggedIn && (
+                    <NavLink className="header__link" to="login">
+                        <img className="header__icon" src={LoginIcon} alt="login-icon" />
                     </NavLink>
                 )}
             </nav>

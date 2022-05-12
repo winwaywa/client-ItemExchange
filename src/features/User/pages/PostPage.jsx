@@ -72,9 +72,9 @@ function PostPage(props) {
             try {
                 const product = await productApi.deleteProduct(id);
                 setProducts(products.filter((product) => product._id !== id));
-                swal('Đã xoá!', 'Xoá sản phẩm thành công', 'success');
+                swal('Thành công!', 'Xoá sản phẩm thành công!', 'success');
             } catch (err) {
-                swal('Xoá thất bại!', `${err.message}`, 'error');
+                swal('Thất bại', `${err.message}!`, 'error');
             }
         }
     };

@@ -15,21 +15,25 @@ function UserNav({ handleLogout }) {
             <li className="nav__item">
                 <NavLink className="nav__link" to="me">
                     <img className="nav__icon" src={UserIcon} alt="user-icon" />
+                    <p>Thông tin cá nhân</p>
                 </NavLink>
             </li>
             <li className="nav__item">
                 <NavLink className="nav__link" to="post">
                     <img className="nav__icon" src={PostIcon} alt="post-icon" />
+                    <p>Bài đăng</p>
                 </NavLink>
             </li>
             <li className="nav__item">
                 <NavLink className="nav__link" to="requests">
                     <img className="nav__icon" src={ExchangeIcon} alt="exchange-icon" />
+                    <p>Yêu cầu</p>
                 </NavLink>
             </li>
             <li className="nav__item">
                 <a href="#" className="nav__link" onClick={(e) => handleLogout(e)}>
                     <img className="nav__icon" src={LogoutIcon} alt="logout-icon" />
+                    <p>Đăng xuất</p>
                 </a>
             </li>
         </ul>

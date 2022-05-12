@@ -2,7 +2,6 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { unwrapResult } from '@reduxjs/toolkit';
-import { useSnackbar } from 'notistack';
 import RegisterForm from '../RegisterForm';
 import { register } from '../../userSlice';
 
@@ -11,7 +10,6 @@ Register.propTypes = {};
 function Register(props) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
     const handleSubmit = async (values) => {
         try {
             console.log(values);
@@ -21,11 +19,12 @@ function Register(props) {
             const action = register(values);
             const resultAction = await dispatch(action);
             const user = unwrapResult(resultAction);
+
             navigate('/user/me');
-            enqueueSnackbar('Đăng kí thành công', { variant: 'success' });
+            swal('Đăng kí thành công', 'Vui lòng cập nhật thông tin cá nhân của bạn!', 'success');
         } catch (err) {
             console.log('ERROR:', err);
-            enqueueSnackbar(err.message, { variant: 'error' });
+            swal('Đăng kí thất bại', `${err.message}!`, 'error');
         }
     };
     return (

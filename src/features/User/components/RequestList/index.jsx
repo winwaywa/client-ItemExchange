@@ -14,17 +14,33 @@ function RequestList({ tabIndex, transactions }) {
             (transaction) =>
                 transaction[condition] === me.username && transaction.status === 'pending'
         );
-    });
+    }, [tabIndex]);
 
     return (
         <div>
-            {tabIndex}
             <ul>
                 {transactionsFilter.map((transaction) => (
-                    <li>
-                        <Link to={`/products/${transaction.product_id_requested}`}>
-                            {transaction.product_id_requested}
-                        </Link>
+                    <li key={transaction._id}>
+                        {tabIndex === 0 && (
+                            <>
+                                <span>Bạn đã yêu cầu trao đổi với sản phẩm </span>
+                                <Link to={`/products/${transaction.product_id_requested}`}>
+                                    {transaction.product_id_requested}
+                                </Link>
+                                <span> vào lúc {transaction.createdAt}</span>
+                            </>
+                        )}
+                        {tabIndex === 1 && (
+                            <>
+                                <span>
+                                    {transaction.request_sender} đã gửi yêu cầu đổi với món đồ{' '}
+                                </span>
+                                <Link to={`/products/${transaction.product_id_requested}`}>
+                                    {transaction.product_id_requested}
+                                </Link>
+                                <span> vào lúc {transaction.createdAt}</span>
+                            </>
+                        )}
                     </li>
                 ))}
             </ul>

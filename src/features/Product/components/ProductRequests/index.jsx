@@ -81,7 +81,7 @@ function ProductRequests({ user, product }) {
                 transactions={transactions}
                 handleClickOpen={handleClickOpen}
             />
-            <RequestList transactions={transactions} />
+            <RequestList me={me} user={user} transactions={transactions} />
             <RequestDialog
                 open={open}
                 handleClose={handleClose}

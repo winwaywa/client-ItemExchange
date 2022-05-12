@@ -28,19 +28,28 @@ function InfoPage(props) {
     }, []);
 
     const handleUpdateUser = async (data) => {
-        try {
-            const user = await userApi.updateUser(data);
-            if (!user) {
-                throw new Error('Cập nhật thất bại!');
+        const willDelete = await swal({
+            title: 'Xác nhận',
+            text: 'Bạn chắc chắn muốn cập nhật thông tin của mình?',
+            icon: 'warning',
+            dangerMode: true,
+        });
+        if (willDelete) {
+            try {
+                const user = await userApi.updateUser(data);
+                if (!user) {
+                    throw new Error('Cập nhật thất bại!');
+                }
+                //cập nhật user ở redux
+                const action = updateUser({
+                    username: user.user.username,
+                    avatar: user.user.avatar,
+                });
+                dispatch(action);
+                swal('Thành công', 'Cập nhật thông tin thành công!', 'success');
+            } catch (err) {
+                swal('Thất bại', `${err.message}!`, 'error');
             }
-
-            //cập nhật user ở redux
-            const action = updateUser({ username: user.user.username, avatar: user.user.avatar });
-            dispatch(action);
-
-            enqueueSnackbar('Cập nhật thành công!', { variant: 'success' });
-        } catch (err) {
-            enqueueSnackbar(err.message, { variant: 'error' });
         }
     };
 
