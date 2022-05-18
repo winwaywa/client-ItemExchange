@@ -1,13 +1,13 @@
 import axiosClient from './axiosClient';
 
 const productApi = {
-    getAllProducts() {
+    getAllProducts(queryParams) {
         const url = '/products';
-        return axiosClient.get(url);
+        return axiosClient.get(url, { params: queryParams });
     },
-    getProductsByUser() {
+    getProductsByUser(queryParams) {
         const url = '/products/me';
-        return axiosClient.get(url);
+        return axiosClient.get(url, { params: queryParams });
     },
     getProduct(id) {
         const url = `/products/${id}`;
@@ -18,6 +18,7 @@ const productApi = {
         const dataForm = new FormData();
         dataForm.append('product_name', data.product_name);
         dataForm.append('describe', data.describe);
+        dataForm.append('percent_new', data.percent_new);
         dataForm.append('price', data.price);
         dataForm.append('category_id', data.category_id);
 

@@ -6,7 +6,7 @@
         justify-content: space-between;
 
         .form__group{
-            margin-bottom: 3rem;
+            margin-bottom: 1.5rem;
             #images{
                 display: none;
             }
@@ -22,8 +22,11 @@
                 width: 100%;
                 padding:1rem;
                 outline: none;
-                border: 1px solid var(--color-grey-dark);
+                border: 1px solid rgb(179, 176, 176);
                 border-radius: 5px;
+                &:hover{
+                    border: 1px solid var(--color-black);
+                }
             }
             select{
                 font-size: 1.6rem;
@@ -32,9 +35,12 @@
                 cursor: pointer;
                 width: 100%;
                 outline: none;
-                border: 1px solid var(--color-grey-dark);
+                border: 1px solid rgb(179, 176, 176);
                 padding:1rem;
                 border-radius: 5px;
+                &:hover{
+                    border: 1px solid var(--color-black);
+                }
                 *{
                     background-color: #777;
                     color: #fff;
@@ -45,8 +51,10 @@
     }
 
     .images{
+        
         &__img{
-            width: 10rem;
+            width:5rem;
+            height: 5rem;
         }
     }
     

@@ -20,7 +20,7 @@ function ProductDetails({ product }) {
         (async () => {
             const user = await userApi.getUserById(product.createdBy);
             const category = await categoryApi.getCategory(product.category_id);
-            setUser({ username: user.user.username, avatar: user.user.avatar });
+            setUser(user.user);
             setCategoryName(category.category.category_name);
             setValue(0);
         })();

@@ -1,17 +1,53 @@
 import './styles.scss';
-import { useState, useRef } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Editor } from '@tinymce/tinymce-react';
+
+import MarkdownIt from 'markdown-it';
+import MdEditor from 'react-markdown-editor-lite';
+// import style manually
+import 'react-markdown-editor-lite/lib/index.css';
+
+//mui
+import { styled } from '@mui/material/styles';
+import Slider from '@mui/material/Slider';
+import MuiInput from '@mui/material/Input';
+
 NewPostForm.propTypes = {};
+
+const Input = styled(MuiInput)`
+    width: 42px;
+`;
 
 function NewPostForm({ categories, handleCreateProduct }) {
     const [title, setTitle] = useState('');
+    const [describe, setDescribe] = useState('');
     const [price, setPrice] = useState('');
     const [category, setCategory] = useState(categories[0]._id);
     const [imagesPreview, setImagesPreview] = useState([]);
     const [images, setImages] = useState([]);
 
-    const editorRef = useRef(null);
+    const mdParser = new MarkdownIt(/* Markdown-it options */);
+
+    //slider %
+    const [value, setValue] = React.useState(50);
+    const handleSliderChange = (event, newValue) => {
+        setValue(newValue);
+    };
+    const handleInputChange = (event) => {
+        setValue(event.target.value === '' ? '' : Number(event.target.value));
+    };
+    const handleBlur = () => {
+        if (value < 0) {
+            setValue(0);
+        } else if (value > 100) {
+            setValue(100);
+        }
+    };
+
+    function handleEditorChange({ html, text }) {
+        console.log('handleEditorChange', html, text);
+        setDescribe(html);
+    }
 
     const handlePreviewImages = (e) => {
         setImagesPreview([]);
@@ -30,16 +66,18 @@ function NewPostForm({ categories, handleCreateProduct }) {
         try {
             e.preventDefault();
             //validate
-            // if (images.length > 6) {
-            //     throw new Error('Số ảnh vượt quá 6');
+            // if (images.length > 5) {
+            //     throw new Error('Số ảnh vượt quá 5');
             // }
             const values = {
                 product_name: title,
-                describe: editorRef.current.getContent(),
+                describe,
                 price,
                 category_id: category,
                 images_url: images,
+                percent_new: value,
             };
+            console.log(values);
             handleCreateProduct(values);
         } catch (err) {
             console.log(err);
@@ -48,11 +86,7 @@ function NewPostForm({ categories, handleCreateProduct }) {
 
     return (
         <div>
-            <form
-                className="post__form u-margin-top-small"
-                encType="multipart/form-data"
-                onSubmit={(e) => handleSubmit(e)}
-            >
+            <form className="post__form u-margin-top-small">
                 <div>
                     <div className="form__group">
                         <input
@@ -65,31 +99,37 @@ function NewPostForm({ categories, handleCreateProduct }) {
                     </div>
                     <div className="form__group">
                         <label htmlFor="describe">Mô tả</label>
-                        <Editor
-                            apiKey="bl5gkgnz9lf4fz7or1lqz3lfr6jwqta733kg1u467skruk4q"
-                            onInit={(evt, editor) => (editorRef.current = editor)}
-                            initialValue="<p>This is the initial content of the editor.</p>"
-                            init={{
-                                height: 200,
-                                menubar: false,
-                                plugins: [
-                                    'advlist autolink lists link image charmap print preview anchor',
-                                    'searchreplace visualblocks code fullscreen',
-                                    'insertdatetime media table paste code help wordcount',
-                                ],
-                                toolbar:
-                                    'undo redo | formatselect | ' +
-                                    'bold italic backcolor | alignleft aligncenter ' +
-                                    'alignright alignjustify | bullist numlist outdent indent | ' +
-                                    'removeformat | help',
-                                content_style:
-                                    'body { font-family:Helvetica,Arial,sans-serif; font-size:14px }',
-                            }}
+                        <MdEditor
+                            style={{ height: '200px' }}
+                            renderHTML={(text) => mdParser.render(text)}
+                            onChange={handleEditorChange}
                         />
                     </div>
-                    <input className="btn btn--submit" type="submit" value="Đăng" />
                 </div>
                 <div>
+                    <div>
+                        <label>Độ mới</label>
+                        <div style={{ display: 'flex', marginBottom: '1rem' }}>
+                            <Slider
+                                sx={{ marginRight: 2 }}
+                                value={typeof value === 'number' ? value : 0}
+                                onChange={handleSliderChange}
+                            />
+                            <Input
+                                value={value}
+                                size="small"
+                                onChange={handleInputChange}
+                                onBlur={handleBlur}
+                                inputProps={{
+                                    step: 10,
+                                    min: 0,
+                                    max: 100,
+                                    type: 'number',
+                                    'aria-labelledby': 'input-slider',
+                                }}
+                            />
+                        </div>
+                    </div>
                     <div className="form__group">
                         <label htmlFor="price">Giá</label>
                         <input
@@ -111,7 +151,7 @@ function NewPostForm({ categories, handleCreateProduct }) {
                         </select>
                     </div>
                     <div className="form__group">
-                        <label htmlFor="images">Thêm ảnh + (Tối đa 6 ảnh)</label>
+                        <label htmlFor="images">Thêm ảnh + (Tối đa 5 ảnh)</label>
                         <input
                             type="file"
                             id="images"
@@ -121,21 +161,23 @@ function NewPostForm({ categories, handleCreateProduct }) {
                             onChange={(e) => handlePreviewImages(e)}
                         />
                         {imagesPreview && (
-                            <ul className="images">
+                            <div className="images">
                                 {imagesPreview.map((image, index) => (
-                                    <li key={index}>
-                                        <img
-                                            className="images__img"
-                                            src={image.url}
-                                            alt={image.name}
-                                        />
-                                    </li>
+                                    <img
+                                        key={index}
+                                        className="images__img"
+                                        src={image.url}
+                                        alt={image.name}
+                                    />
                                 ))}
-                            </ul>
+                            </div>
                         )}
                     </div>
                 </div>
             </form>
+            <button className="btn btn--submit" onClick={(e) => handleSubmit(e)}>
+                Đăng
+            </button>
         </div>
     );
 }

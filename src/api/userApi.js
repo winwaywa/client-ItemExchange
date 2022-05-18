@@ -16,6 +16,7 @@ const userApi = {
         formData.append('full_name', data.full_name);
         formData.append('phone', data.phone);
         formData.append('address', data.address);
+        formData.append('province', data.province);
         // in key : value của formData
         // for (var pair of formData.entries()) {
         //     console.log(pair[0] + ', ' + pair[1]);

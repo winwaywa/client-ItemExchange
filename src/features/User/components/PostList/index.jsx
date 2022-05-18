@@ -1,12 +1,12 @@
 import React, { useEffect, useState, useMemo } from 'react';
-import swal from 'sweetalert';
 
-import PostTable from '../PostTable';
-import productApi from '../../../../api/productApi';
+import TableNoApprove from '../PostTable/TableNoApprove';
+import TableApprove from '../PostTable/TableApprove';
 import PropTypes from 'prop-types';
 PostList.propTypes = {};
 
-function PostList({ products, tabIndex, handleDeleteProduct }) {
+function PostList({ products, transactions, tabIndex, handleDeleteProduct }) {
+    console.log(transactions);
     const [state, setState] = useState('');
 
     const [productsFilter, setproductsFilter] = useState();
@@ -27,7 +27,7 @@ function PostList({ products, tabIndex, handleDeleteProduct }) {
                 setState('exchanging');
                 break;
             case 3:
-                setState('completed');
+                setState('exchanged');
                 break;
             default:
                 return;
@@ -41,7 +41,26 @@ function PostList({ products, tabIndex, handleDeleteProduct }) {
     return (
         <>
             {tabIndex === 0 && (
-                <PostTable productsFilter={productsFilter} onDelete={handleClickDelete} />
+                <TableNoApprove productsFilter={productsFilter} onDelete={handleClickDelete} />
+            )}
+            {tabIndex === 1 && (
+                <TableNoApprove productsFilter={productsFilter} onDelete={handleClickDelete} />
+            )}
+            {tabIndex === 2 && (
+                <TableApprove
+                    tabIndex={tabIndex}
+                    transactions={transactions}
+                    productsFilter={productsFilter}
+                    onDelete={handleClickDelete}
+                />
+            )}
+            {tabIndex === 3 && (
+                <TableApprove
+                    tabIndex={tabIndex}
+                    transactions={transactions}
+                    productsFilter={productsFilter}
+                    onDelete={handleClickDelete}
+                />
             )}
         </>
     );

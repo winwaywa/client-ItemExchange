@@ -1,14 +1,18 @@
 import './styles.scss';
-import React, { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-UserInfo.propTypes = {};
+import TextField from '@mui/material/TextField';
+import Autocomplete from '@mui/material/Autocomplete';
 
-function UserInfo({ user, handleUpdateUser }) {
+InfoForm.propTypes = {};
+
+function InfoForm({ user, provinces, handleUpdateUser }) {
     const [avatar, setAvatar] = useState(user.avatar);
     const [fullName, setFullName] = useState(user.full_name);
     const [phone, setPhone] = useState(user.phone);
     const [address, setAddress] = useState(user.address);
+    const [province, setProvince] = useState(user.province);
 
     const [previewAvatar, setPreviewAvatar] = useState('');
 
@@ -27,6 +31,7 @@ function UserInfo({ user, handleUpdateUser }) {
             full_name: fullName,
             phone,
             address,
+            province,
         };
         handleUpdateUser(newData);
         console.log(newData);
@@ -35,7 +40,7 @@ function UserInfo({ user, handleUpdateUser }) {
     return (
         <div>
             <h2 className="heading-tertiary">Thông tin cá nhân</h2>
-            <form onSubmit={(e) => handleSubmit(e)}>
+            <form>
                 <div className="form__group">
                     {!previewAvatar && (
                         <label htmlFor="avatar">
@@ -85,10 +90,40 @@ function UserInfo({ user, handleUpdateUser }) {
                         onChange={(e) => setAddress(e.target.value)}
                     />
                 </div>
-                <input className="btn btn--submit" type="submit" value="Cập nhật" />
+                <div>
+                    <label
+                        style={{
+                            display: 'inline-block',
+                            minWidth: '10rem',
+                            textAlign: 'left',
+                            fontSize: '1.2rem',
+                        }}
+                        htmlFor="address"
+                    >
+                        Khu vực
+                    </label>
+                    <Autocomplete
+                        disablePortal
+                        id="combo-box-provinces"
+                        options={provinces}
+                        sx={{
+                            width: '20rem',
+                            margin: '0 auto',
+                            marginBottom: '2rem',
+                            display: 'inline-block',
+                        }}
+                        renderInput={(params) => <TextField {...params} label={province} />}
+                        onChange={(e, newValue) => {
+                            setProvince(newValue);
+                        }}
+                    />
+                </div>
+                <button className="btn btn--submit" onClick={(e) => handleSubmit(e)}>
+                    Cập nhật
+                </button>
             </form>
         </div>
     );
 }
 
-export default UserInfo;
+export default InfoForm;

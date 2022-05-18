@@ -20,10 +20,10 @@ function DetailsPage(props) {
     }, [id]);
 
     return (
-        <div className="product__details">
+        <>
             {product && <ProductImages images_url={product.images_url} />}
             {product && <ProductDetails product={product} />}
-        </div>
+        </>
     );
 }
 

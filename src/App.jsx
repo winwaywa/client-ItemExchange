@@ -6,6 +6,7 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 
 import ProductFeature from './features/Product';
+import ChatFeature from './features/Chat';
 import Login from './features/Auth/components/Login';
 import Register from './features/Auth/components/Register';
 
@@ -22,6 +23,7 @@ function App() {
                     <Route path="login" element={<Login />} />
                     <Route path="register" element={<Register />} />
 
+                    <Route path="chat" element={<ChatFeature />} />
                     <Route path="user/*" element={<UserFeature />} />
                 </Routes>
             </div>

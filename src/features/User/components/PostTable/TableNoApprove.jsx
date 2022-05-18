@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -10,18 +11,10 @@ import TableRow from '@mui/material/TableRow';
 
 import PropTypes from 'prop-types';
 
-PostTable.propTypes = {};
+TableNoApprove.propTypes = {};
 
 const columns = [
-    { id: 'product_name', label: 'Tên sản phẩm', minWidth: 170 },
-    // { id: 'code', label: 'ISO\u00a0Code', minWidth: 100 },
-    {
-        id: 'price',
-        label: 'Giá',
-        minWidth: 170,
-        align: 'left',
-        format: (value) => value.toLocaleString('en-US'),
-    },
+    { id: 'product_name', label: 'Đồ của bạn', minWidth: 170 },
     {
         id: 'operation',
         label: 'Thao tác',
@@ -30,7 +23,7 @@ const columns = [
     },
 ];
 
-function PostTable({ productsFilter, onDelete }) {
+function TableNoApprove({ productsFilter, onDelete }) {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(6);
 
@@ -77,7 +70,12 @@ function PostTable({ productsFilter, onDelete }) {
                                             const value = row[column.id];
                                             return (
                                                 <TableCell key={column.id} align={column.align}>
-                                                    {value || (
+                                                    {column.id === 'product_name' && (
+                                                        <Link to={`/products/${row._id}`}>
+                                                            {value}
+                                                        </Link>
+                                                    )}
+                                                    {column.id === 'operation' && (
                                                         <>
                                                             <a href="#">Sửa</a>&nbsp;&nbsp;
                                                             <a
@@ -112,4 +110,4 @@ function PostTable({ productsFilter, onDelete }) {
     );
 }
 
-export default PostTable;
+export default TableNoApprove;

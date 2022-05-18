@@ -1,4 +1,4 @@
-.products__item{
+.product__item{
     color:var(--color-grey-dark);
     border: 1px solid var(--color-grey-light-2);
     transition: all 0.2s;
@@ -10,6 +10,8 @@
 
     &:hover{
         transform: translateY(-3px);
+        border:none;
+        box-shadow: 0 0.2rem 0.4rem rgba(#000,0.3);
     }
 
     .product__thumbnail{
@@ -29,11 +31,16 @@
             transform: translate(-50%,-50%);
         }
         &:hover img{
-                transform: scale(1.5);
-                height: 100%;
+            transform: scale(1.5);
+            height: 100%;
         }
         img{
+            image-rendering: pixelated;
+            object-fit: cover;
+            object-position: center;
+            
             width: 100%;
+            border-radius: 0.5rem;
             height:10rem; 
             transition: all 0.2s;
             &:hover{
@@ -58,6 +65,7 @@
     }
 
     .product__link{
+        font-size: 1.3rem;
         display: inline-block;
         margin-top:1rem;
         color:var(--color-grey-dark);

@@ -35,6 +35,10 @@
     &:focus {
         outline: none;
     }
+
+    &--small{
+        font-size: 1.2rem;
+    }
     
     &--submit {
         background-color: var(--color-primary);

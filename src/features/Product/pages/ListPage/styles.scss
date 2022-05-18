@@ -1,7 +1,37 @@
 .product{
-    &__list{
+    
+    &__filter{
+        width: 20rem;
+        padding:0 1rem;
+    }
+    
+    &__main{
+        flex:1;
+        padding: 0 1rem;
+        margin-left: 8rem;
+    }
+    &__sort-search{
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+    }
+    &__list{
+        display: grid;
+        grid-template-columns: repeat(4,1fr);
+        grid-gap:2rem;
+       
+        @media only screen and (max-width: 37.5em) { 
+            // < 600px
+            grid-template-columns: repeat(2,1fr);
+        };        
+    }
+    &__page {
+        margin-top: 3rem;
+        margin-bottom: 2rem;
+        & ul{
+            justify-content: center;
+        }
     }
 }

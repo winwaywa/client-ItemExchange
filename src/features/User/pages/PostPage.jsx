@@ -8,6 +8,7 @@ import Box from '@mui/material/Box';
 
 import productApi from '../../../api/productApi';
 import categoryApi from '../../../api/categoryApi';
+import transactionApi from '../../../api/transactionApi';
 
 import PostList from '../components/PostList';
 import NewPostForm from '../components/NewPostForm';
@@ -18,13 +19,16 @@ function PostPage(props) {
     const [value, setValue] = useState(4);
     const [categories, setCategories] = useState([]);
     const [products, setProducts] = useState([]);
-
+    const [transactions, setTransactions] = useState([]);
     useEffect(() => {
         (async () => {
             try {
-                console.log('alo');
                 const products = await productApi.getProductsByUser();
                 const categories = await categoryApi.getAllCategory();
+                const transactions = await transactionApi.getTransactionsWithCondition({
+                    status: 'approved',
+                });
+                setTransactions(transactions.transactions);
                 setCategories(categories.categories);
                 setProducts(products.products);
             } catch (err) {
@@ -46,7 +50,6 @@ function PostPage(props) {
         });
         if (willDelete) {
             try {
-                console.log(values);
                 const product = await productApi.createProduct(values);
                 setProducts((preValue) => [...preValue, { ...product.product }]);
                 setValue(0);
@@ -102,6 +105,7 @@ function PostPage(props) {
                 {value === 4 || (
                     <PostList
                         products={products}
+                        transactions={transactions}
                         tabIndex={value}
                         handleDeleteProduct={handleDeleteProduct}
                     />

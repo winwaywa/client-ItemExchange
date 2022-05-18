@@ -1,4 +1,3 @@
-import './styles.scss';
 import PropTypes from 'prop-types';
 import ProductItem from '../ProductItem';
 
@@ -6,9 +5,9 @@ ProductList.propTypes = {};
 
 function ProductList({ products }) {
     return (
-        <div className="products__list">
+        <div className="product__list">
             {products.map((product) => (
-                <div className="products__item" key={product._id}>
+                <div className="product__item" key={product._id}>
                     <ProductItem product={product} />
                 </div>
             ))}

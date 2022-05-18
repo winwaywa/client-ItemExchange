@@ -13,7 +13,9 @@ function RequestPage(props) {
 
     useEffect(() => {
         (async () => {
-            const transactions = await transactionApi.getTransactionsWithCondition({});
+            const transactions = await transactionApi.getTransactionsWithCondition({
+                status: 'pending',
+            });
             setTransactions(transactions.transactions);
         })();
     }, []);

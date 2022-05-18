@@ -1,26 +1,32 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
+import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { updateUser } from '../../Auth/userSlice';
 
-import UserInfo from '../components/UserInfo';
+import InfoForm from '../components/InfoForm';
 import userApi from '../../../api/userApi';
-import { useSnackbar } from 'notistack';
 InfoPage.propTypes = {};
 
 function InfoPage(props) {
     const dispatch = useDispatch();
-    const { enqueueSnackbar } = useSnackbar();
     const [user, setUser] = useState();
+    const [provinces, setProvinces] = useState([]);
 
     useEffect(() => {
         (async () => {
             try {
                 //call API lấy thông tin user
-                const data = await userApi.getUser();
+                const user = await userApi.getUser();
                 console.log('Chưa khắc phục cái useEffect 2 lần(do IIFE)');
-                setUser(data.user);
+                setUser(user.user);
+
+                //lấy ds tỉnh VN
+                const url = 'https://provinces.open-api.vn/api/';
+                const data = await axios.get(url);
+                const provinces = data.data.map((province) => province.name);
+                setProvinces(provinces);
             } catch (err) {
                 console.log(err);
             }
@@ -55,7 +61,9 @@ function InfoPage(props) {
 
     return (
         <div className="user__info">
-            {user && <UserInfo user={user} handleUpdateUser={handleUpdateUser} />}
+            {user && (
+                <InfoForm user={user} provinces={provinces} handleUpdateUser={handleUpdateUser} />
+            )}
         </div>
     );
 }
