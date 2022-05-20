@@ -21,7 +21,7 @@ const Input = styled(MuiInput)`
 function NewPostForm({ categories, handleCreateProduct }) {
     const [title, setTitle] = useState('');
     const [describe, setDescribe] = useState('');
-    const [price, setPrice] = useState('');
+    const [price, setPrice] = useState(0);
     const [category, setCategory] = useState(categories[0]._id);
     const [imagesPreview, setImagesPreview] = useState([]);
     const [images, setImages] = useState([]);
@@ -133,7 +133,7 @@ function NewPostForm({ categories, handleCreateProduct }) {
                     <div className="form__group">
                         <label htmlFor="price">Giá</label>
                         <input
-                            type="text"
+                            type="number"
                             id="price"
                             placeholder="vnd"
                             value={price}

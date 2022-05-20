@@ -7,15 +7,16 @@ ProductSearch.propTypes = {};
 function ProductSearch({ onChange }) {
     const [keyWord, setKeyWord] = useState('');
 
+    const handleSubmit = (e, keyWord) => {
+        e.preventDefault();
+        if (onChange) onChange(keyWord);
+        setKeyWord('');
+    };
     return (
         <div className="product__search">
-            <form
-                onSubmit={(e) => {
-                    e.preventDefault();
-                    onChange(keyWord);
-                }}
-            >
+            <form onSubmit={(e) => handleSubmit(e, keyWord)}>
                 <input
+                    value={keyWord}
                     type="text"
                     placeholder="Tìm kiếm tên sản phẩm ..."
                     onChange={(e) => setKeyWord(e.target.value)}

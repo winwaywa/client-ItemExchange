@@ -8,9 +8,10 @@ import queryString from 'query-string'; // chuyển query thành object
 import ProductApi from '../../../../api/productApi';
 import ProductList from '../../components/ProductList';
 import ProductFilters from '../../components/ProductFilters';
-import FilterViewer from '../../components/ProductFilters/FilterViewer';
+import FilterViewer from '../../components/FilterViewer';
 import ProductSort from '../../components/ProductSort';
 import ProductSearch from '../../components/ProductSearch';
+import ProductsSkeletonList from '../../components/ProductsSkeletonList';
 
 ListPage.propTypes = {};
 
@@ -19,7 +20,7 @@ function ListPage(props) {
     const navigate = useNavigate();
 
     const [products, setProducts] = useState([]);
-
+    const [loading, setLoading] = useState(true);
     const [pagination, setPagination] = useState({ page: 1, total: 12, limit: 12 });
 
     // Khi thay đổi đk lọc -> url thay đổi -> queryParams thay đổi -> useEffect gọi lại -> products thay đổi
@@ -29,17 +30,20 @@ function ListPage(props) {
             ...params,
             _page: Number.parseInt(params._page) || 1,
             _limit: Number.parseInt(params._limit) || 12,
-            _sort: params._sort || 'createdAt:ASC',
-            // _search: '',
+            _sort: params._sort || 'createdAt:DESC',
             status: 'disable',
         };
     }, [location.search]);
-    console.log(queryParams);
+    console.log('queryParams', queryParams);
+
     useEffect(() => {
         (async () => {
-            console.log('queryParams', queryParams);
+            setLoading(true);
             const data = await ProductApi.getAllProducts(queryParams);
+            console.log(data.products);
             setProducts(data.products);
+            setPagination(data.pagination);
+            setLoading(false);
         })();
     }, [queryParams]);
 
@@ -49,7 +53,7 @@ function ListPage(props) {
         const filters = {
             ...queryParams,
             ...newFilters,
-            // _page: 1, // quay về lại trang 1
+            _page: 1, // quay về lại trang 1
         };
         navigate({ search: queryString.stringify(filters) });
     };
@@ -68,10 +72,19 @@ function ListPage(props) {
     //search
     const handleSearchChange = (newKeyWord) => {
         console.log(newKeyWord);
-        // const filters = {
-        //     _search: newKeyWord,
-        // };
-        // navigate({ search: queryString.stringify(filters) });
+        const filters = {
+            ...queryParams,
+            _search: newKeyWord,
+        };
+        navigate({ search: queryString.stringify(filters) });
+    };
+
+    //filters view
+    const setNewFilters = (newFilters) => {
+        const filters = {
+            ...newFilters,
+        };
+        navigate({ search: queryString.stringify(filters) });
     };
 
     // khi chuyển trang
@@ -91,12 +104,16 @@ function ListPage(props) {
                     <ProductSort currentSort={queryParams._sort} onChange={handleSortChange} />
                     <ProductSearch onChange={handleSearchChange} />
                 </div>
-                <FilterViewer />
-                {products.length > 0 ? (
-                    <ProductList products={products} />
+                <FilterViewer filters={queryParams} onChange={setNewFilters} />
+
+                {loading ? (
+                    <ProductsSkeletonList length={12} />
                 ) : (
-                    'Không tìm thấy món đồ nào'
+                    <ProductList products={products} />
                 )}
+
+                {products.length === 0 && 'Không có sản phẩm nào!'}
+
                 <Pagination
                     className="product__page"
                     color="primary"

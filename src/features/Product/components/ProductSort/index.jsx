@@ -18,7 +18,7 @@ function ProductSort({ currentSort, onChange }) {
                 textColor="primary"
                 indicatorColor="primary"
             >
-                <Tab value="createdAt:ASC" label="Mới nhất" />
+                <Tab value="createdAt:DESC" label="Mới nhất" />
                 <Tab value="price:ASC" label="Giá thấp tới cao" />
                 <Tab value="price:DESC" label="Giá cao tới thấp" />
             </Tabs>
