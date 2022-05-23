@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { unwrapResult } from '@reduxjs/toolkit';
 import LoginForm from '../LoginForm';
-import { login } from '../../userSlice';
+import { login, loginWithGoogle } from '../../userSlice';
 
 Login.propTypes = {};
 
@@ -14,8 +14,25 @@ function Login(props) {
 
     const handleSubmit = async (values) => {
         try {
-            console.log(values);
             const action = login(values);
+            const resultAction = await dispatch(action);
+            const user = unwrapResult(resultAction);
+
+            navigate('/user/me');
+            swal(
+                'Đăng nhập thành công',
+                `Chào mừng ${user.username} đến với chợ đồ cũ!`,
+                'success'
+            );
+        } catch (err) {
+            console.log('ERROR:', err);
+            swal('Đăng nhập thất bại', `${err.message}!`, 'error');
+        }
+    };
+
+    const handleLoginWithGoogle = async (credential) => {
+        try {
+            const action = loginWithGoogle({ credential });
             const resultAction = await dispatch(action);
             const user = unwrapResult(resultAction);
 
@@ -33,7 +50,7 @@ function Login(props) {
 
     return (
         <div>
-            <LoginForm onSubmit={handleSubmit} />
+            <LoginForm onSubmit={handleSubmit} handleLoginWithGoogle={handleLoginWithGoogle} />
         </div>
     );
 }

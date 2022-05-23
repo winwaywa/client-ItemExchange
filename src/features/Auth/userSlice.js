@@ -26,6 +26,18 @@ export const login = createAsyncThunk('/login', async (payload) => {
     return data.user;
 });
 
+export const loginWithGoogle = createAsyncThunk('/loginwithgoogle', async (payload) => {
+    // call api to register
+    const data = await authApi.loginWithGoogle(payload);
+    console.log(data);
+    //save data local storage
+    localStorage.setItem('access_token', data.token);
+    localStorage.setItem('user', JSON.stringify(data.user));
+
+    //return user data
+    return data.user;
+});
+
 const userSlice = createSlice({
     name: 'user',
     initialState: {
@@ -52,6 +64,9 @@ const userSlice = createSlice({
             state.current = action.payload; //action.payload = return data.user ở trên
         },
         [login.fulfilled]: (state, action) => {
+            state.current = action.payload; //action.payload = return data.user ở trên
+        },
+        [loginWithGoogle.fulfilled]: (state, action) => {
             state.current = action.payload; //action.payload = return data.user ở trên
         },
     },

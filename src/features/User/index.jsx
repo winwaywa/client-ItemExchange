@@ -10,6 +10,8 @@ import PostPage from './pages/PostPage';
 import UserNav from './components/UserNav';
 import RequestPage from './pages/RequestPage';
 
+// import { googleLogout } from '@react-oauth/google';
+
 UserFeature.propTypes = {};
 
 function UserFeature(props) {
@@ -20,6 +22,7 @@ function UserFeature(props) {
         e.preventDefault();
         const action = logout();
         dispatch(action);
+        // googleLogout();
         navigate('/login');
     };
 
@@ -30,6 +33,7 @@ function UserFeature(props) {
             </nav>
             <div className="user__main">
                 <Routes>
+                    <Route path="" element={<InfoPage />} />
                     <Route path="me" element={<InfoPage />} />
                     <Route path="post" element={<PostPage />} />
                     <Route path="requests" element={<RequestPage />} />

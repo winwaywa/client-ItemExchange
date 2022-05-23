@@ -31,7 +31,7 @@ function ListPage(props) {
             _page: Number.parseInt(params._page) || 1,
             _limit: Number.parseInt(params._limit) || 12,
             _sort: params._sort || 'createdAt:DESC',
-            status: 'disable',
+            status: 'enable',
         };
     }, [location.search]);
     console.log('queryParams', queryParams);

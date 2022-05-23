@@ -7,7 +7,7 @@ import { formatPrice } from '../../../../utils';
 
 RequestList.propTypes = {};
 
-function RequestList({ me, user, transactions, onClickCancel, onClickApprove }) {
+function RequestList({ me, product, transactions, onClickCancel, onClickApprove }) {
     const handleApproveRequest = (e, transaction_id, request_sender, exchange_value) => {
         e.preventDefault();
         onClickApprove(transaction_id, request_sender, exchange_value);
@@ -40,7 +40,7 @@ function RequestList({ me, user, transactions, onClickCancel, onClickApprove }) 
                               <span>{formatPrice(transaction.exchange_value)}</span>
                           )}
                           {/* Nếu là chủ món đồ thì hiện nút để duyệt/huỷ */}
-                          {me && me.username === user.username && (
+                          {me && me.username === product.createdBy && (
                               <>
                                   <a
                                       href="#"

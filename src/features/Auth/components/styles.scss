@@ -5,7 +5,7 @@
     width: 30%;
     min-width: 30rem;
     background-color: #fff;
-    padding: 2rem 2rem;
+    padding: 1.5rem 2rem;
     border-radius: 1rem;
     box-shadow: 0 5px 10px rgba(#000, 0.2);
     overflow: hidden;       
@@ -23,9 +23,8 @@
     };
 
     & > *{
-        width: 100%;
         padding:1rem 0;
-        margin-bottom: 2rem;
+        margin-bottom: 1.5rem;
     }
     & > h2{
         font-size: 1.6rem;
@@ -33,7 +32,7 @@
         color:#fff;
         background-color: var(--color-primary);
         transform: scale(2);
-        margin-bottom: 4rem;
+        margin-bottom: 3rem;
     }
     &__input{
         font-size: 1.6rem;
@@ -52,6 +51,12 @@
         & > a{
             font-weight: 500;
         }
+    }
+
+    .btn,&__button{
+        font-size: 1.3rem;
+        margin-bottom: 1rem;
+
     }
 }
 

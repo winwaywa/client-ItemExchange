@@ -1,7 +1,7 @@
-.user{
+.admin{
     display: flex;
-    flex-direction: row;
-
+    flex-flow: row;
+    
     &__main{
         flex:1;
     }

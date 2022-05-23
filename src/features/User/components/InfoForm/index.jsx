@@ -11,6 +11,7 @@ function InfoForm({ user, provinces, handleUpdateUser }) {
     const [avatar, setAvatar] = useState(user.avatar);
     const [fullName, setFullName] = useState(user.full_name);
     const [phone, setPhone] = useState(user.phone);
+    const [email, setEmail] = useState(user.email);
     const [address, setAddress] = useState(user.address);
     const [province, setProvince] = useState(user.province);
 
@@ -30,6 +31,7 @@ function InfoForm({ user, provinces, handleUpdateUser }) {
             avatar,
             full_name: fullName,
             phone,
+            email,
             address,
             province,
         };
@@ -81,6 +83,16 @@ function InfoForm({ user, provinces, handleUpdateUser }) {
                     />
                 </div>
                 <div className="form__group">
+                    <label htmlFor="email">Email</label>
+                    <input
+                        id="email"
+                        type="email"
+                        placeholder="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                </div>
+                <div className="form__group">
                     <label htmlFor="address">Địa chỉ</label>
                     <input
                         id="address"
@@ -96,7 +108,7 @@ function InfoForm({ user, provinces, handleUpdateUser }) {
                             display: 'inline-block',
                             minWidth: '10rem',
                             textAlign: 'left',
-                            fontSize: '1.2rem',
+                            fontSize: '1.3rem',
                         }}
                         htmlFor="address"
                     >

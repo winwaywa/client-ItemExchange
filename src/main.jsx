@@ -5,6 +5,8 @@ import './index.scss';
 import { BrowserRouter } from 'react-router-dom';
 // toask message
 import { SnackbarProvider } from 'notistack';
+//
+import { GoogleOAuthProvider } from '@react-oauth/google';
 
 //redux
 import { Provider } from 'react-redux';
@@ -15,7 +17,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <Provider store={store}>
             <BrowserRouter>
                 <SnackbarProvider anchorOrigin={{ vertical: 'top', horizontal: 'right' }}>
-                    <App />
+                    <GoogleOAuthProvider clientId="933225985612-0ha2j5bfadfjthia7g57908j431rcd74.apps.googleusercontent.com">
+                        <App />
+                    </GoogleOAuthProvider>
                 </SnackbarProvider>
             </BrowserRouter>
         </Provider>

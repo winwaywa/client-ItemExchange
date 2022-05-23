@@ -11,9 +11,8 @@ function ProductFeature(props) {
     return (
         <div className="product">
             <Routes>
-                <Route path="*" element={<ListPage />} />
-                <Route path="products" element={<ListPage />} />
-                <Route path="products/:id" element={<DetailsPage />} />
+                <Route path="" element={<ListPage />} />
+                <Route path=":id" element={<DetailsPage />} />
             </Routes>
         </div>
     );

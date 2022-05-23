@@ -18,7 +18,7 @@ function ProductDetails({ product }) {
 
     useEffect(() => {
         (async () => {
-            const user = await userApi.getUserById(product.createdBy);
+            const user = await userApi.getUserByUserName(product.createdBy);
             const category = await categoryApi.getCategory(product.category_id);
             setUser(user.user);
             setCategoryName(category.category.category_name);
@@ -50,7 +50,7 @@ function ProductDetails({ product }) {
                 {value === 0 && (
                     <ProductInfomation product={product} user={user} categoryName={categoryName} />
                 )}
-                {value === 1 && <ProductRequests user={user} product={product} />}
+                {value === 1 && <ProductRequests product={product} />}
                 {value === 2 && <ProductComments />}
             </Box>
         </div>

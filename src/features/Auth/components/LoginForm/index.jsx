@@ -2,12 +2,14 @@ import '../styles.scss';
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import { GoogleLogin } from '@react-oauth/google';
 
 LoginForm.propTypes = {
     onSubmit: PropTypes.func,
 };
 
-function LoginForm({ onSubmit }) {
+function LoginForm({ onSubmit, handleLoginWithGoogle }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [isRemember, setIsRemember] = useState(false);
@@ -15,6 +17,12 @@ function LoginForm({ onSubmit }) {
     const handleSubmit = (e, values) => {
         e.preventDefault();
         onSubmit(values);
+    };
+
+    const handleResponseGoogle = async (response) => {
+        const { credential } = response;
+        // https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=credential sẽ trả về thông tin gmail
+        handleLoginWithGoogle(credential);
     };
 
     return (
@@ -52,7 +60,30 @@ function LoginForm({ onSubmit }) {
                 />
                 <label htmlFor="remember">Ghi Nhớ</label>
             </div>
-            <input className="btn btn--primary" type="submit" value="Đăng nhập" />
+            <input className="btn btn--primary form__button" type="submit" value="Đăng nhập" />
+            <p
+                style={{
+                    textAlign: 'center',
+                }}
+            >
+                Hoặc
+            </p>
+            <div
+                style={{
+                    padding: '0px',
+                    textAlign: 'center',
+                    marginBottom: '0',
+                }}
+            >
+                <GoogleLogin
+                    onSuccess={handleResponseGoogle}
+                    onError={() => {
+                        console.log('Login Failed');
+                    }}
+                    useOneTap
+                    // auto_select={true}
+                />
+            </div>
             <p>
                 Quên?&nbsp;
                 <Link to="/forgot">Mật khẩu</Link>

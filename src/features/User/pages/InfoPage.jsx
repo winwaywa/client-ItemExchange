@@ -34,6 +34,7 @@ function InfoPage(props) {
     }, []);
 
     const handleUpdateUser = async (data) => {
+        console.log(data);
         const willDelete = await swal({
             title: 'Xác nhận',
             text: 'Bạn chắc chắn muốn cập nhật thông tin của mình?',

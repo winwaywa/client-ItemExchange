@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 RequestAction.propTypes = {};
 
-function RequestAction({ me, user, product, transactions, handleClickOpen }) {
+function RequestAction({ me, product, transactions, handleClickOpen }) {
     return (
         <div>
             {/* Chưa đăng nhập => thông báo cần đăng nhập */}
@@ -17,9 +17,9 @@ function RequestAction({ me, user, product, transactions, handleClickOpen }) {
                     <span>&nbsp;để có thể gửi yêu cầu trao đổi!</span>
                 </>
             )}
-            {me && user.username === me.username && 'Đây là sản phẩm của bạn'}
+            {me && product.createdBy === me.username && 'Đây là sản phẩm của bạn'}
             {me &&
-                user.username !== me.username &&
+                product.createdBy !== me.username &&
                 transactions.findIndex(
                     (transaction) =>
                         transaction.product_id_requested === product._id &&
@@ -27,7 +27,7 @@ function RequestAction({ me, user, product, transactions, handleClickOpen }) {
                 ) >= 0 &&
                 'Mỗi sản phẩm bạn chỉ có thể gửi tối đa 1 yêu cầu !'}
             {me &&
-                user.username !== me.username &&
+                product.createdBy !== me.username &&
                 transactions.findIndex(
                     (transaction) =>
                         transaction.product_id_requested === product._id &&

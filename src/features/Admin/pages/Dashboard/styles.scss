@@ -1,0 +1,49 @@
+.admin{
+    .dashboard{
+        .navigation{
+            display: flex;
+            flex-flow: row wrap;
+            align-items: center;
+            margin-bottom:2rem;
+            justify-content: space-evenly;
+
+            &__box{
+                min-width: 20rem;
+                padding:1rem;
+                margin-right:1rem;
+                cursor: pointer;
+                border-radius: 5px;
+                transition: all 0.2s;
+                &:hover{
+                    box-shadow: 0 0.5rem 0.5rem rgba(#000,0.2);
+                    transform: translateY(-3px);
+                }
+                text-transform: uppercase;
+                text-align: center;
+                font-weight: 400;
+                color:#fff;
+            }
+            &__quantity{
+                display: block;
+                font-weight: 600;
+                font-size: 3rem;
+            }
+        }
+        .transaction{
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: space-between;
+            text-align: center;
+           
+            &__list{
+                width: 50rem;
+                text-align: left;
+                list-style:disc;
+            }
+
+            &__title{
+                color:var(--color-primary)
+            }
+        }
+    }
+}

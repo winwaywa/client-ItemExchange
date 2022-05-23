@@ -39,7 +39,7 @@ function Header(props) {
                     </NavLink>
                 )}
                 {isLoggedIn && (
-                    <NavLink className="header__link" to={'user/me'}>
+                    <NavLink className="header__link" to="user">
                         <img
                             className="header__icon header__avatar"
                             src={loggedUser.avatar}

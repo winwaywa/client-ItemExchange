@@ -1,12 +1,16 @@
 import axiosClient from './axiosClient';
 
 const userApi = {
-    getUser() {
+    getAllUsers() {
         const url = '/user';
         return axiosClient.get(url);
     },
-    getUserById(id) {
-        const url = `/user/${id}`;
+    getUser() {
+        const url = '/user/me';
+        return axiosClient.get(url);
+    },
+    getUserByUserName(username) {
+        const url = `/user/${username}`;
         return axiosClient.get(url);
     },
     updateUser(data) {
@@ -15,6 +19,7 @@ const userApi = {
         formData.append('file_avatar', data.avatar);
         formData.append('full_name', data.full_name);
         formData.append('phone', data.phone);
+        formData.append('email', data.email);
         formData.append('address', data.address);
         formData.append('province', data.province);
         // in key : value của formData
