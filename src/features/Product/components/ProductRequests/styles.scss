@@ -1,8 +1,19 @@
 .request{
+    &__list{
+        list-style:square;
+    }
     &__item{
-        // display: flex;
-        // flex-direction: row;
-        // justify-content: space-between;
-        // align-items: center;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+
+        .group-action{
+            min-width: 15rem;
+            text-align: right;
+        }
+        button{
+            margin-left:0.5rem;
+        }
     }
 }

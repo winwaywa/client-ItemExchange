@@ -31,7 +31,7 @@ function FilterByProvince({ onChange }) {
     };
     return (
         <div>
-            <h3>Khu vực</h3>
+            <h3 className="heading-tertiary">Khu vực</h3>
             <Autocomplete
                 disablePortal
                 id="combo-box-provinces"

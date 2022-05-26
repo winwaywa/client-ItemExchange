@@ -61,11 +61,11 @@ function InfoPage(props) {
     };
 
     return (
-        <div className="user__info">
+        <>
             {user && (
                 <InfoForm user={user} provinces={provinces} handleUpdateUser={handleUpdateUser} />
             )}
-        </div>
+        </>
     );
 }
 

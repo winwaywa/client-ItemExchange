@@ -1,29 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-ListItem.propTypes = {};
+ProductList.propTypes = {};
 
-function ListItem({ products, handleClose, handleConfirm }) {
+function ProductList({ products, handleClose, handleConfirm }) {
     return (
-        <ul>
+        <ul style={{ listStyle: 'square' }}>
+            <h3 className="heading-tertiary">Đồ của bạn</h3>
             {products &&
                 products.map((product) => (
-                    <li key={product._id} styles={{ display: 'flex' }}>
+                    <li key={product._id}>
                         {product.product_name}
-                        <a
+                        <button
                             href="#"
-                            className="btn-text"
+                            style={{ marginLeft: '1rem' }}
+                            className="btn btn--small btn--success"
                             onClick={() => {
                                 handleClose();
                                 handleConfirm(product._id);
                             }}
                         >
                             Chọn
-                        </a>
+                        </button>
                     </li>
                 ))}
         </ul>
     );
 }
 
-export default ListItem;
+export default ProductList;

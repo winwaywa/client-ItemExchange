@@ -22,36 +22,38 @@ function RegisterForm({ onSubmit }) {
             className="form"
             onSubmit={(e) => handleSubmit(e, { username, password, retypePassword })}
         >
-            <h2>Đăng ký</h2>
-            <input
-                className="form__input"
-                type="text"
-                name="username"
-                id="username"
-                placeholder="Tên tài khoản..."
-                onChange={(e) => setUsername(e.target.value)}
-            />
-            <input
-                className="form__input"
-                type="password"
-                name="password"
-                id="password"
-                placeholder="Mật khẩu..."
-                onChange={(e) => setPassword(e.target.value)}
-            />
-            <input
-                className="form__input"
-                type="password"
-                name="retype-password"
-                id="retype-password"
-                placeholder="Nhập lại mật khẩu..."
-                onChange={(e) => setRetypePassword(e.target.value)}
-            />
-            <input className="btn btn--primary" type="submit" value="Đăng ký" />
-            <p>
-                Đã có tài khoản?&nbsp;
-                <Link to="/login">Đăng nhập</Link>
-            </p>
+            <div className="form__heading"></div>
+            <div className="form__content">
+                <input
+                    className="form__input"
+                    type="text"
+                    name="username"
+                    id="username"
+                    placeholder="Tên tài khoản..."
+                    onChange={(e) => setUsername(e.target.value)}
+                />
+                <input
+                    className="form__input"
+                    type="password"
+                    name="password"
+                    id="password"
+                    placeholder="Mật khẩu..."
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+                <input
+                    className="form__input"
+                    type="password"
+                    name="retype-password"
+                    id="retype-password"
+                    placeholder="Nhập lại mật khẩu..."
+                    onChange={(e) => setRetypePassword(e.target.value)}
+                />
+                <input className="btn btn--primary btn--register" type="submit" value="Đăng ký" />
+                <p>
+                    Đã có tài khoản?&nbsp;
+                    <Link to="/login">Đăng nhập</Link>
+                </p>
+            </div>
         </form>
     );
 }

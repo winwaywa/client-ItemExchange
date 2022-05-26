@@ -151,7 +151,10 @@ function NewPostForm({ categories, handleCreateProduct }) {
                         </select>
                     </div>
                     <div className="form__group">
-                        <label htmlFor="images">Thêm ảnh + (Tối đa 5 ảnh)</label>
+                        <label htmlFor="images">
+                            <button className="btn btn--small btn--secondary">Thêm ảnh +</button>{' '}
+                            (Tối đa 5 ảnh)
+                        </label>
                         <input
                             type="file"
                             id="images"
@@ -175,7 +178,7 @@ function NewPostForm({ categories, handleCreateProduct }) {
                     </div>
                 </div>
             </form>
-            <button className="btn btn--submit" onClick={(e) => handleSubmit(e)}>
+            <button className="btn btn--primary btn--small" onClick={(e) => handleSubmit(e)}>
                 Đăng
             </button>
         </div>

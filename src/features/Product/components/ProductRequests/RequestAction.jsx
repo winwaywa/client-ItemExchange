@@ -11,21 +11,36 @@ function RequestAction({ me, product, transactions, handleClickOpen }) {
             {/* Đã đăng nhập chưa gửi yc=> hiện nút gửi */}
             {/* ngoài ra: đã đăng nhập nhưng là sp của mình=> tbao:Đây là sản phẩm của bạn */}
             {!me && (
-                <>
-                    <span>Vui lòng&nbsp;</span>
-                    <Link to="/login">đăng nhập</Link>
-                    <span>&nbsp;để có thể gửi yêu cầu trao đổi!</span>
-                </>
+                <div class="notes info">
+                    <p>
+                        <strong>Chú ý: </strong>
+                        <span>Vui lòng&nbsp;</span>
+                        <Link to="/login">đăng nhập</Link>
+                        <span>&nbsp;để có thể gửi yêu cầu trao đổi !</span>
+                    </p>
+                </div>
             )}
-            {me && product.createdBy === me.username && 'Đây là sản phẩm của bạn'}
+            {me && product.createdBy === me.username && (
+                <div class="notes info">
+                    <p>
+                        <strong>Chú ý:</strong> Đây là sản phẩm của bạn !
+                    </p>
+                </div>
+            )}
             {me &&
                 product.createdBy !== me.username &&
                 transactions.findIndex(
                     (transaction) =>
                         transaction.product_id_requested === product._id &&
                         transaction.request_sender === me.username
-                ) >= 0 &&
-                'Mỗi sản phẩm bạn chỉ có thể gửi tối đa 1 yêu cầu !'}
+                ) >= 0 && (
+                    <div class="notes info">
+                        <p>
+                            <strong>Chú ý:</strong> Mỗi sản phẩm bạn chỉ có thể gửi tối đa 1 yêu cầu
+                            !
+                        </p>
+                    </div>
+                )}
             {me &&
                 product.createdBy !== me.username &&
                 transactions.findIndex(
@@ -33,9 +48,13 @@ function RequestAction({ me, product, transactions, handleClickOpen }) {
                         transaction.product_id_requested === product._id &&
                         transaction.request_sender === me.username
                 ) < 0 && (
-                    <a href="#" className="btn-text u-margin-top-small" onClick={handleClickOpen}>
+                    <button
+                        href="#"
+                        className="btn btn--primary btn--small u-margin-top-small"
+                        onClick={handleClickOpen}
+                    >
                         Gửi yêu cầu
-                    </a>
+                    </button>
                 )}
         </div>
     );

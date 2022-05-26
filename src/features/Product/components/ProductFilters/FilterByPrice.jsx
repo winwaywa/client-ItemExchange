@@ -19,7 +19,7 @@ function FilterByPrice({ onChange }) {
 
     return (
         <div className="filter__price">
-            <h3>Giá</h3>
+            <h3 className="heading-tertiary">Giá</h3>
             <form onSubmit={(e) => handleSubmit(e, values)}>
                 <div className="filter__group">
                     <label htmlFor="price_gte">Từ</label>
@@ -46,7 +46,7 @@ function FilterByPrice({ onChange }) {
                     />
                 </div>
                 <div className="filter__group">
-                    <button className="btn btn--small filter__btn">Áp dụng</button>
+                    <button className="btn btn--small btn--secondary filter__btn">Áp dụng</button>
                 </div>
             </form>
         </div>

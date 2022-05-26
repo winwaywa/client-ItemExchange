@@ -2,6 +2,7 @@
     font-size: 1rem;
     text-align: center;
     padding: 1rem;
+    background-color: #fff;
 
     display: flex;
     flex-direction: row;
@@ -22,7 +23,6 @@
     &__link {
         &:link,
         &:visited {
-            color: var(--color-grey-dark);
             text-decoration: none;
             text-transform: uppercase;
             display: inline-block;
@@ -39,7 +39,6 @@
         }
     }
     &__copyright{
-        color: var(--color-grey-dark);
         text-transform: uppercase;
     }
 }

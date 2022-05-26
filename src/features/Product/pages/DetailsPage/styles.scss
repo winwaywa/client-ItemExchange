@@ -2,6 +2,7 @@
     .images{
         margin: 0 auto;
         width: 400px;
+        background-color:#fff;
 
         .image__item{
             width: 100%;
@@ -10,5 +11,6 @@
     }
     .details{
         flex:1;
+        background-color: #fff;
     }
 }

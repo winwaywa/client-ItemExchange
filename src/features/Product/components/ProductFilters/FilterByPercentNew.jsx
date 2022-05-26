@@ -41,7 +41,7 @@ function FilterByPercentNew({ onChange }) {
 
     return (
         <div>
-            <h3>Độ mới</h3>
+            <h3 className="heading-tertiary">Độ mới</h3>
             <Slider
                 getAriaLabel={() => 'Percent new'}
                 value={value}

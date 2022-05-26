@@ -1,4 +1,3 @@
-
 .btn {
     &,
     &:link,
@@ -10,26 +9,25 @@
         transition: all .2s;
         position: relative;
         font-size: var(--default-font-size);
-
+        font-weight: 600;
+        letter-spacing: 0.1rem;
+        padding: 1rem 2rem;
+        border-radius: 0.3rem;
+        
         //Change for the <button> element
         border: none;
         cursor: pointer;
     }
     
     &:hover {
-        transform: translateY(-3px);
-        box-shadow: 0 0.5rem 1rem rgba(#000,.2);
-
-        &::after {
-            transform: scaleX(1.4) scaleY(1.6);
-            opacity: 0;
-        }
+        transform: translateY(-1px);
+        box-shadow: 0 0.2rem 0.4rem rgba(#000,.2);
     }
     
     &:active
     {
         outline: none;
-        box-shadow: 0 .25rem 0.5rem rgba(#000,.2);
+        box-shadow: 0 .2rem 0.4rem rgba(#000,.2);
         transform: translateY(-1px);
     }
     &:focus {
@@ -37,70 +35,31 @@
     }
 
     &--small{
+        letter-spacing: 0.1rem;
+        padding:0.5rem 1rem;
         font-size: 1.2rem;
+        font-weight: 500;
     }
     
-    &--submit {
-        background-color: var(--color-primary);
-        color: var(--color-white);
-        padding: 0.5rem 1rem;
-
-        &::after {
-            background-color: var(--color-primary);
-        }
-    }
-
     &--primary {
         background-color: var(--color-primary);
         color: var(--color-white);
-        padding: 1rem 2rem;
-        border-radius: 10rem;
-
-        &::after {
-            background-color: var(--color-primary);
-        }
     }
-    
-    &::after {
-        content: "";
-        display: inline-block;
-        height: 100%;
-        width: 100%;
-        border-radius: 10rem;
-        position: absolute;
-        top: 0;
-        left: 0;
-        z-index: -1;
-        transition: all .4s;
+    &--secondary {
+        background-color: var(--color-secondary);
+        color: var(--color-white);
+    }
+    &--success {
+        background-color: #04AA6D;
+        color: var(--color-white);
+    }
+    &--delete {
+        background-color:#f44336;
+        color: var(--color-white);
     }
     
     &--animated {
-        animation: moveInBottom .5s ease-out .75s;
+        animation: moveInBottom .5s ease-out .2s;
         animation-fill-mode: backwards;
-    }
-}
-
-
-.btn-text {
-    &:link,
-    &:visited {
-        font-size: var(--default-font-size);
-        color: var(--color-primary);
-        display: inline-block;
-        text-decoration: none;
-        padding: 0.5rem 1rem;
-        transition: all .2s;
-    }
-
-    &:hover {
-        background-color: var(--color-primary);
-        color: var(--color-white);
-        box-shadow: 0 1rem 2rem rgba(#000, .15);
-        transform: translateY(-2px);
-    }
-
-    &:active {
-        box-shadow: 0 .5rem 1rem rgba(#000, .15);
-        transform: translateY(0);
     }
 }

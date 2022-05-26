@@ -21,7 +21,8 @@ function ProductRequests({ product }) {
     const me = useSelector((state) => state.user.current);
 
     const [open, setOpen] = useState(false);
-    const [products, setProducts] = useState();
+    const [products, setProducts] = useState([]);
+    const [productList, setProductList] = useState([]);
     const [transactions, setTransactions] = useState([]);
 
     useEffect(() => {
@@ -29,6 +30,11 @@ function ProductRequests({ product }) {
             try {
                 const queryParams = { product_id_requested: product._id, status: 'pending' };
                 const transactions = await transactionApi.getTransactionsWithCondition(queryParams);
+                const products = await productApi.getAllProducts({
+                    _sort: 'createdAt:DESC',
+                    status: 'enable',
+                });
+                setProductList(products.products);
                 setTransactions(transactions.transactions);
             } catch (err) {
                 console.log(err);
@@ -69,7 +75,7 @@ function ProductRequests({ product }) {
                 if (!transaction) {
                     throw new Error('Yêu cầu của bạn đã gửi không thành công');
                 }
-                setTransactions((preValue) => [...preValue, { ...transaction.transaction }]);
+                setTransactions((preValue) => [{ ...transaction.transaction }, ...preValue]);
                 swal('Thành công!', 'Yêu cầu của bạn đã gửi thành công!', 'success');
             } catch (err) {
                 swal('Thất bại!', 'Yêu cầu của bạn gửi thất bại!', 'error');
@@ -179,8 +185,8 @@ function ProductRequests({ product }) {
                 const sender = await userApi.getUserByUserName(request_sender);
                 const dataMail = {
                     email: sender.user.email,
-                    subject: `Thông báo: Bạn đã được ${product.createdBy} chấp nhận yêu cầu trao đổi!`,
-                    content: `<div><p>Bạn đã được ${product.createdBy} chấp nhận yêu cầu trao đổi với
+                    subject: `chodoidoVN Thông báo: Bạn đã được ${product.createdBy} chấp nhận yêu cầu trao đổi!`,
+                    content: `<div><p>${product.createdBy} đã chấp nhận yêu cầu trao đổi của bạn gửi tới
                         <a href="http://localhost:3000/products/${product._id}">sản phẩm này !</a>
                     </p>
                     <p>Note: Vui lòng xác nhận nếu đã đổi thành công !</p>
@@ -206,6 +212,7 @@ function ProductRequests({ product }) {
                     <RequestList
                         me={me}
                         product={product}
+                        productList={productList}
                         transactions={transactions}
                         onClickCancel={handleCancelRequest}
                         onClickApprove={handleApproveRequest}

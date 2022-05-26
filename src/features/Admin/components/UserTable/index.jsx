@@ -9,6 +9,10 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 
+import EditIcon from '../../../../../images/icon-svg/edit-icon.svg';
+import DeleteIcon from '../../../../../images/icon-svg/delete-icon.svg';
+import MessageOutLineIcon from '../../../../../images/icon-svg/message-outline-icon.svg';
+
 import { useSelector } from 'react-redux';
 
 import PropTypes from 'prop-types';
@@ -19,9 +23,12 @@ function UserTable({ userList = [] }) {
     const columns = [
         { id: 'avatar', label: 'Ảnh đại diện', minWidth: 50 },
         { id: 'username', label: 'username', minWidth: 100 },
-        { id: 'full_name', label: 'Tên đầy đủ', minWidth: 100 },
-        { id: 'address', label: 'Địa chỉ', minWidth: 170 },
+        // { id: 'full_name', label: 'Tên đầy đủ', minWidth: 100 },
+        // { id: 'address', label: 'Địa chỉ', minWidth: 100 },
         { id: 'province', label: 'Khu vực', minWidth: 100 },
+        { id: 'email', label: 'Email', minWidth: 100 },
+        { id: 'phone', label: 'SĐT', minWidth: 100 },
+        { id: 'role', label: 'Vai trò', minWidth: 50 },
         {
             id: 'operation',
             label: 'Thao tác',
@@ -44,7 +51,7 @@ function UserTable({ userList = [] }) {
 
     return (
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-            <TableContainer sx={{ maxHeight: 440 }}>
+            <TableContainer sx={{ minHeight: 350 }}>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
                         <TableRow>
@@ -78,14 +85,39 @@ function UserTable({ userList = [] }) {
                                                         </Link>
                                                     )}
                                                     {column.id === 'avatar' && (
-                                                        <img src={value} width="50" />
+                                                        <img
+                                                            style={{ borderRadius: '100%' }}
+                                                            src={value}
+                                                            width="50"
+                                                        />
                                                     )}
                                                     {column.id === 'operation' && (
                                                         <>
-                                                            <a href="#">Liên lạc</a>
+                                                            <a href="#">
+                                                                <img
+                                                                    className="svg-icon"
+                                                                    src={MessageOutLineIcon}
+                                                                    alt="message-icon"
+                                                                />
+                                                            </a>
                                                             &nbsp;&nbsp;
-                                                            <a href="#">Phân quyền</a>&nbsp;&nbsp;
-                                                            <a href="#">Khoá</a>
+                                                            <a href="#">
+                                                                {' '}
+                                                                <img
+                                                                    className="svg-icon"
+                                                                    src={EditIcon}
+                                                                    alt="edit-icon"
+                                                                />
+                                                            </a>
+                                                            &nbsp;&nbsp;
+                                                            <a href="#">
+                                                                {' '}
+                                                                <img
+                                                                    className="svg-icon"
+                                                                    src={DeleteIcon}
+                                                                    alt="delete-icon"
+                                                                />
+                                                            </a>
                                                         </>
                                                     )}
                                                     {column.id === 'username' ||

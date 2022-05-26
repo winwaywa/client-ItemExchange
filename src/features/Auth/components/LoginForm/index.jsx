@@ -27,71 +27,72 @@ function LoginForm({ onSubmit, handleLoginWithGoogle }) {
 
     return (
         <form className="form" onSubmit={(e) => handleSubmit(e, { username, password })}>
-            <h2>Đăng nhập</h2>
-            <input
-                className="form__input"
-                type="text"
-                name="username"
-                id="username"
-                placeholder="Tên tài khoản..."
-                onChange={(e) => setUsername(e.target.value)}
-            />
-            <input
-                className="form__input"
-                type="password"
-                name="password"
-                id="password"
-                placeholder="Mật khẩu..."
-                onChange={(e) => setPassword(e.target.value)}
-            />
-            <div style={{ padding: '0' }}>
+            <div className="form__heading"></div>
+            <div className="form__content">
                 <input
-                    type="checkbox"
-                    id="remember"
-                    value="remember"
+                    className="form__input"
+                    type="text"
+                    name="username"
+                    id="username"
+                    placeholder="Tên tài khoản..."
+                    onChange={(e) => setUsername(e.target.value)}
+                />
+                <input
+                    className="form__input"
+                    type="password"
+                    name="password"
+                    id="password"
+                    placeholder="Mật khẩu..."
+                    onChange={(e) => setPassword(e.target.value)}
+                />
+                <div style={{ marginBottom: '1rem' }}>
+                    <input
+                        type="checkbox"
+                        id="remember"
+                        value="remember"
+                        style={{
+                            marginRight: '1rem',
+                            height: '1rem',
+                            width: '1rem',
+                        }}
+                        onChange={() => {
+                            setIsRemember(!isRemember);
+                        }}
+                    />
+                    <label htmlFor="remember">Ghi Nhớ</label>
+                </div>
+                <input className="btn btn--primary" type="submit" value="Đăng nhập" />
+                <p
                     style={{
-                        marginRight: '1rem',
-                        height: '1rem',
-                        width: '1rem',
+                        textAlign: 'center',
                     }}
-                    onChange={() => {
-                        setIsRemember(!isRemember);
+                >
+                    Hoặc
+                </p>
+                <div
+                    style={{
+                        padding: '0px',
+                        textAlign: 'center',
+                        marginBottom: '0',
                     }}
-                />
-                <label htmlFor="remember">Ghi Nhớ</label>
+                >
+                    <GoogleLogin
+                        onSuccess={handleResponseGoogle}
+                        onError={() => {
+                            console.log('Login Failed');
+                        }}
+                        useOneTap
+                    />
+                </div>
+                <p>
+                    Quên?&nbsp;
+                    <Link to="/forgot">Mật khẩu</Link>
+                </p>
+                <p>
+                    Chưa có tài khoản?&nbsp;
+                    <Link to="/register">Đăng ký</Link>
+                </p>
             </div>
-            <input className="btn btn--primary form__button" type="submit" value="Đăng nhập" />
-            <p
-                style={{
-                    textAlign: 'center',
-                }}
-            >
-                Hoặc
-            </p>
-            <div
-                style={{
-                    padding: '0px',
-                    textAlign: 'center',
-                    marginBottom: '0',
-                }}
-            >
-                <GoogleLogin
-                    onSuccess={handleResponseGoogle}
-                    onError={() => {
-                        console.log('Login Failed');
-                    }}
-                    useOneTap
-                    // auto_select={true}
-                />
-            </div>
-            <p>
-                Quên?&nbsp;
-                <Link to="/forgot">Mật khẩu</Link>
-            </p>
-            <p>
-                Chưa có tài khoản?&nbsp;
-                <Link to="/register">Đăng ký</Link>
-            </p>
         </form>
     );
 }

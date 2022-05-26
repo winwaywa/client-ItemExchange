@@ -1,7 +1,7 @@
 import './styles.scss';
 import HomeIcon from '../../../images/icon-svg/home-icon.svg';
 import LoginIcon from '../../../images/icon-svg/login-icon.svg';
-import ChatIcon from '../../../images/icon-svg/chat-icon.svg';
+import MessageOutlineIcon from '../../../images/icon-svg/message-outline-icon.svg';
 import NotificationIcon from '../../../images/icon-svg/notification-icon.svg';
 import Logo from '../../../images/logo.png';
 
@@ -34,18 +34,14 @@ function Header(props) {
                     </NavLink>
                 )}
                 {isLoggedIn && (
-                    <NavLink className="header__link" to="chat">
-                        <img className="header__icon" src={ChatIcon} alt="chat-icon" />
+                    <NavLink className="header__link" to="message">
+                        <img className="header__icon" src={MessageOutlineIcon} alt="message-icon" />
                     </NavLink>
                 )}
                 {isLoggedIn && (
-                    <NavLink className="header__link" to="user">
-                        <img
-                            className="header__icon header__avatar"
-                            src={loggedUser.avatar}
-                            alt="avatar"
-                        />
-                        <span className="header__username">{loggedUser.username}</span>
+                    <NavLink className="header__link--avatar" to="user/me">
+                        <img className="header__avatar" src={loggedUser.avatar} alt="avatar" />
+                        {/* <span className="header__username">{loggedUser.username}</span> */}
                     </NavLink>
                 )}
                 {!isLoggedIn && (

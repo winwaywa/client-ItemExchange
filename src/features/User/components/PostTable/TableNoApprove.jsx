@@ -9,6 +9,9 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 
+import EditIcon from '../../../../../images/icon-svg/edit-icon.svg';
+import DeleteIcon from '../../../../../images/icon-svg/delete-icon.svg';
+
 import PropTypes from 'prop-types';
 
 TableNoApprove.propTypes = {};
@@ -42,7 +45,7 @@ function TableNoApprove({ productsFilter, onDelete }) {
 
     return (
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-            <TableContainer sx={{ maxHeight: 440 }}>
+            <TableContainer sx={{ minHeight: 350 }}>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
                         <TableRow>
@@ -77,14 +80,25 @@ function TableNoApprove({ productsFilter, onDelete }) {
                                                     )}
                                                     {column.id === 'operation' && (
                                                         <>
-                                                            <a href="#">Sửa</a>&nbsp;&nbsp;
+                                                            <a href="#">
+                                                                <img
+                                                                    className="svg-icon"
+                                                                    src={EditIcon}
+                                                                    alt="edit-icon"
+                                                                />
+                                                            </a>
+                                                            &nbsp;&nbsp;
                                                             <a
                                                                 href="#"
                                                                 onClick={(e) =>
                                                                     handleClickDelete(e, row._id)
                                                                 }
                                                             >
-                                                                Xoá
+                                                                <img
+                                                                    className="svg-icon"
+                                                                    src={DeleteIcon}
+                                                                    alt="delete-icon"
+                                                                />
                                                             </a>
                                                         </>
                                                     )}

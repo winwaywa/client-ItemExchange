@@ -7,7 +7,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 
-import ListItem from './ListItem';
+import ProductList from './ProductList';
 import FormValue from './FormValue';
 
 RequestDialog.propTypes = {};
@@ -15,19 +15,26 @@ const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function RequestDialog({ open, products, handleClose, handleConfirm }) {
+function RequestDialog({ open, products = [], handleClose, handleConfirm }) {
     return (
-        <div>
+        <div className="request__dialog">
             <Dialog open={open} TransitionComponent={Transition} keepMounted onClose={handleClose}>
                 <DialogTitle>
-                    <strong>{'Chọn một món đồ hoặc nhập số tiền mà bạn muốn trao đổi!'}</strong>
+                    <div className="notes info">
+                        <strong>Chú ý : </strong>Chọn một món đồ hoặc nhập số tiền mà bạn muốn trao
+                        đổi!
+                    </div>
                 </DialogTitle>
                 <DialogContent>
-                    <ListItem
-                        products={products}
-                        handleClose={handleClose}
-                        handleConfirm={handleConfirm}
-                    />
+                    {products.length > 0 ? (
+                        <ProductList
+                            products={products}
+                            handleClose={handleClose}
+                            handleConfirm={handleConfirm}
+                        />
+                    ) : (
+                        'Bạn chưa đăng bất kì sản phẩm nào'
+                    )}
                     <FormValue handleClose={handleClose} handleConfirm={handleConfirm} />
                 </DialogContent>
             </Dialog>

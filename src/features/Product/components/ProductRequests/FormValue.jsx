@@ -6,23 +6,30 @@ FormValue.propTypes = {};
 function FormValue({ handleClose, handleConfirm }) {
     const [price, setPrice] = React.useState();
     return (
-        <div>
+        <div style={{ marginTop: '2rem' }}>
             <input
                 type="text"
                 placeholder="Nhập số tiền"
-                style={{ padding: 10, fontSize: 19, outline: 'none' }}
+                style={{
+                    padding: 10,
+                    fontSize: '1.6rem',
+                    outline: 'none',
+                    border: '1px solid rgb(179, 176, 176)',
+                    borderRadius: '5px',
+                }}
                 onChange={(e) => setPrice(e.target.value)}
             />
-            <a
+            <button
                 href="#"
-                className="btn-text"
+                style={{ marginLeft: '1rem' }}
+                className="btn btn--small btn--success"
                 onClick={() => {
                     handleClose();
                     handleConfirm(price);
                 }}
             >
                 Gửi
-            </a>
+            </button>
         </div>
     );
 }

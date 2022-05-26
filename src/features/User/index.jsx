@@ -10,6 +10,7 @@ import PostPage from './pages/PostPage';
 import UserNav from './components/UserNav';
 import RequestPage from './pages/RequestPage';
 
+import NotFound from '../../components/NotFound';
 // import { googleLogout } from '@react-oauth/google';
 
 UserFeature.propTypes = {};
@@ -33,7 +34,7 @@ function UserFeature(props) {
             </nav>
             <div className="user__main">
                 <Routes>
-                    <Route path="" element={<InfoPage />} />
+                    <Route path="*" element={<NotFound />} />
                     <Route path="me" element={<InfoPage />} />
                     <Route path="post" element={<PostPage />} />
                     <Route path="requests" element={<RequestPage />} />

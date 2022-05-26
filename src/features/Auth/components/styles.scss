@@ -1,13 +1,10 @@
 .form{
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
 
-    width: 30%;
-    min-width: 30rem;
     background-color: #fff;
-    padding: 1.5rem 2rem;
     border-radius: 1rem;
-    box-shadow: 0 5px 10px rgba(#000, 0.2);
+    box-shadow: 0 0.2rem 0.4rem rgba(#000, 0.2 );
     overflow: hidden;       
 
     position: absolute;
@@ -22,41 +19,40 @@
         animation:none
     };
 
-    & > *{
-        padding:1rem 0;
-        margin-bottom: 1.5rem;
+    &__heading{
+        width: 20rem;
+        color:#000;
+        background-size:cover;
+        background-position:center;
+        background-image: url('../../../../images/register-background.jpg');
+        
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        
+        @media only screen and (max-width: 37.5em) { 
+           display: none;
+        };
     }
-    & > h2{
-        font-size: 1.6rem;
-        text-align: center;
-        color:#fff;
-        background-color: var(--color-primary);
-        transform: scale(2);
-        margin-bottom: 3rem;
+    &__content{
+        width: 35rem;
+        padding:2rem 4rem;
+        display:flex;
+        flex-direction: column;
     }
     &__input{
         font-size: 1.6rem;
-        font-weight: 300;
+        font-weight: 400;
         font-family: "Josefin Sans", sans-serif;
         outline: none;
         border: none;
         border-bottom:1px solid rgb(100, 100, 100);
+        color:var(--color-grey-dark);
         padding: 1.5rem 0;
+        margin-bottom:1rem;
     }
-    & > p{
-        margin:0 ;
-        padding:0;
-
-        text-align: left;
-        & > a{
-            font-weight: 500;
-        }
-    }
-
-    .btn,&__button{
-        font-size: 1.3rem;
-        margin-bottom: 1rem;
-
+    .btn--register{
+        margin: 1rem 0;
     }
 }
 

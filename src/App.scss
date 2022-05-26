@@ -1,8 +1,7 @@
 .App{
     position: relative;
     min-height: 100vh;
-    // padding: 0 1rem;
-    background-color: var(--color-grey-light-2);
+    background-color: var(--color-grey-light);
     
     display: flex;
     flex-direction: column;
@@ -11,15 +10,20 @@
 
 .main{
     flex: 1;
-    padding:2rem 1rem;
-    background-color: var(--color-white);
+    margin-top: 5rem;
+    padding:2rem 4rem;
 }
 
 ul{
     list-style: none;
 }
+
 a{
     text-decoration: none;
     color: var(--color-primary-dark);
 }
 
+.svg-icon{
+    width: 2rem;
+    height: 2rem;
+}

@@ -9,6 +9,10 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 
+import AcceptIcon from '../../../../../images/icon-svg/accept-icon.svg';
+import CancelIcon from '../../../../../images/icon-svg/cancel-icon.svg';
+import DeleteIcon from '../../../../../images/icon-svg/delete-icon.svg';
+
 import PropTypes from 'prop-types';
 
 TableNoApprove.propTypes = {};
@@ -47,7 +51,7 @@ function TableNoApprove({ tabIndex, productsFilter, onDelete, onApprove }) {
 
     return (
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-            <TableContainer sx={{ maxHeight: 440 }}>
+            <TableContainer sx={{ minHeight: 350 }}>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
                         <TableRow>
@@ -88,7 +92,11 @@ function TableNoApprove({ tabIndex, productsFilter, onDelete, onApprove }) {
                                                                     handleClickApprove(e, row._id)
                                                                 }
                                                             >
-                                                                Duyệt
+                                                                <img
+                                                                    className="svg-icon"
+                                                                    src={AcceptIcon}
+                                                                    alt="accept-icon"
+                                                                />
                                                             </a>
                                                             &nbsp;&nbsp;
                                                             <a
@@ -97,7 +105,11 @@ function TableNoApprove({ tabIndex, productsFilter, onDelete, onApprove }) {
                                                                     handleClickDelete(e, row._id)
                                                                 }
                                                             >
-                                                                Từ chối
+                                                                <img
+                                                                    className="svg-icon"
+                                                                    src={CancelIcon}
+                                                                    alt="cancel-icon"
+                                                                />
                                                             </a>
                                                         </>
                                                     )}
@@ -109,7 +121,11 @@ function TableNoApprove({ tabIndex, productsFilter, onDelete, onApprove }) {
                                                                     handleClickDelete(e, row._id)
                                                                 }
                                                             >
-                                                                Xoá
+                                                                <img
+                                                                    className="svg-icon"
+                                                                    src={DeleteIcon}
+                                                                    alt="delete-icon"
+                                                                />
                                                             </a>
                                                         </>
                                                     )}

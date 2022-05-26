@@ -115,7 +115,7 @@ function FilterViewer({ filters = {}, onChange = null }) {
     }, [filters['category_id']]);
 
     return (
-        <Box padding={1} component="ul">
+        <Box paddingTop={1} paddingBottom={2} component="ul">
             <Stack direction="row" spacing={1}>
                 {visibleFilters.map((x) => (
                     <li key={x.id}>

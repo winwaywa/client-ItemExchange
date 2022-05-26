@@ -51,7 +51,7 @@ function Dashboard(props) {
         }));
 
         console.log(arr); // {name: '21-05-2022', count: 1}
-        return arr;
+        return arr.reverse();
     };
 
     return (
@@ -80,11 +80,11 @@ function Dashboard(props) {
                 <div>
                     <h4 className="transaction__title">Những giao dịch gần đây</h4>
                     <ul className="transaction__list">
-                        {transactions.slice(0, 5).map((transaction) => (
+                        {transactions.slice(0, 4).map((transaction) => (
                             <li key={transaction._id}>
-                                {transaction.request_recipient} ({transaction.product_id_requested})
-                                đã giao dịch thành công với {transaction.request_sender} (
-                                {transaction.exchange_value})
+                                {transaction.request_recipient} đã giao dịch thành công với{' '}
+                                {transaction.request_sender} vào lúc{' '}
+                                {moment(`${transaction.updatedAt}`).format('h:mm a DD-MM-YYYY')}
                             </li>
                         ))}
                     </ul>

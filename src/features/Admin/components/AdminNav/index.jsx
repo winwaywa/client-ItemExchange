@@ -3,7 +3,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 import DashboardIcon from '../../../../../images/icon-svg/dashboard-icon.svg';
-import UserIcon from '../../../../../images/icon-svg/user-icon.svg';
+import MembersIcon from '../../../../../images/icon-svg/members-icon.svg';
 import PostIcon from '../../../../../images/icon-svg/post-icon.svg';
 import LogoutIcon from '../../../../../images/icon-svg/logout-icon.svg';
 import CategoryIcon from '../../../../../images/icon-svg/categories-icon.svg';
@@ -15,13 +15,13 @@ function AdminNav({ handleLogout }) {
         <ul className="nav__list">
             <li className="nav__item">
                 <NavLink className="nav__link" to="dashboard">
-                    <img className="nav__icon" src={DashboardIcon} alt="user-icon" />
-                    <p>Bảng điều kiển</p>
+                    <img className="nav__icon" src={DashboardIcon} alt="dashboard-icon" />
+                    <p>Thống kê</p>
                 </NavLink>
             </li>
             <li className="nav__item">
                 <NavLink className="nav__link" to="user">
-                    <img className="nav__icon" src={UserIcon} alt="user-icon" />
+                    <img className="nav__icon" src={MembersIcon} alt="members-icon" />
                     <p>Thành viên</p>
                 </NavLink>
             </li>

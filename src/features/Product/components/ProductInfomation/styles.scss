@@ -1,13 +1,12 @@
 .details__infomation{
-    .user{
+    .details__user{
         display: flex;
         align-items: center;
-        
-        &__avatar{
-            width: 3rem;
-            height:3rem;
-            border-radius: 100%;
-            margin-right:0.3rem;
-        }
+    }
+    .details__avatar{
+        width: 3rem;
+        height:3rem;
+        border-radius: 100%;
+        margin-right:0.3rem;
     }
 }

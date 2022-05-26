@@ -11,6 +11,10 @@ import TableRow from '@mui/material/TableRow';
 
 import { useSelector } from 'react-redux';
 
+import AcceptIcon from '../../../../../images/icon-svg/accept-icon.svg';
+import CancelIcon from '../../../../../images/icon-svg/cancel-icon.svg';
+import MessageOutLineIcon from '../../../../../images/icon-svg/message-outline-icon.svg';
+
 import PropTypes from 'prop-types';
 
 TableApprove.propTypes = {};
@@ -53,7 +57,7 @@ function TableApprove({ tabIndex, productsFilter, transactions, onDelete }) {
 
     return (
         <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-            <TableContainer sx={{ maxHeight: 440 }}>
+            <TableContainer sx={{ minHeight: 350 }}>
                 <Table stickyHeader aria-label="sticky table">
                     <TableHead>
                         <TableRow>
@@ -141,9 +145,32 @@ function TableApprove({ tabIndex, productsFilter, transactions, onDelete }) {
                                                         )}
                                                     {column.id === 'operation' && (
                                                         <>
-                                                            <a href="#">Liên lạc</a>&nbsp;&nbsp;
-                                                            <a href="#">Đã đổi</a>&nbsp;&nbsp;
-                                                            <a href="#">Huỷ</a>&nbsp;&nbsp;
+                                                            <a href="#">
+                                                                <img
+                                                                    className="svg-icon"
+                                                                    src={MessageOutLineIcon}
+                                                                    alt="message-icon"
+                                                                />
+                                                            </a>
+                                                            &nbsp;&nbsp;
+                                                            <a href="#">
+                                                                {' '}
+                                                                <img
+                                                                    className="svg-icon"
+                                                                    src={AcceptIcon}
+                                                                    alt="message-icon"
+                                                                />
+                                                            </a>
+                                                            &nbsp;&nbsp;
+                                                            <a href="#">
+                                                                {' '}
+                                                                <img
+                                                                    className="svg-icon"
+                                                                    src={CancelIcon}
+                                                                    alt="message-icon"
+                                                                />
+                                                            </a>
+                                                            &nbsp;&nbsp;
                                                         </>
                                                     )}
                                                 </TableCell>

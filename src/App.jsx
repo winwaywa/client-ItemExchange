@@ -20,17 +20,14 @@ function App() {
             <Header />
             <div className="main">
                 <Routes>
-                    <Route path="admin/*" element={<AdminFeature />} />
-
+                    <Route path="*" element={<NotFound />} />
                     <Route path="products/*" element={<ProductFeature />} />
-
                     <Route path="login" element={<Login />} />
                     <Route path="register" element={<Register />} />
 
-                    <Route path="chat" element={<ChatFeature />} />
+                    <Route path="admin/*" element={<AdminFeature />} />
                     <Route path="user/*" element={<UserFeature />} />
-
-                    <Route path="*" element={<NotFound />} />
+                    <Route path="message" element={<ChatFeature />} />
                 </Routes>
             </div>
             <Footer />

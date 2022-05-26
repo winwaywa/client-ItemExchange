@@ -4,19 +4,29 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import RequestList from '../components/RequestList';
 import transactionApi from '../../../api/transactionApi';
+import productApi from '../../../api/productApi';
 
 RequestPage.propTypes = {};
 
 function RequestPage(props) {
     const [tabIndex, setTabIndex] = useState(0);
     const [transactions, setTransactions] = useState();
+    const [productList, setProductList] = useState([]);
+    const [myProduct, setMyProduct] = useState([]);
 
     useEffect(() => {
         (async () => {
             const transactions = await transactionApi.getTransactionsWithCondition({
                 status: 'pending',
             });
+            const products = await productApi.getAllProducts({
+                status: 'enable',
+                _sort: 'createdAt:DESC',
+            });
+            const myProducts = await productApi.getProductsByUser({ status: 'enable' });
             setTransactions(transactions.transactions);
+            setProductList(products.products);
+            setMyProduct(myProducts.products);
         })();
     }, []);
 
@@ -25,7 +35,7 @@ function RequestPage(props) {
     };
 
     return (
-        <div className="user__request request">
+        <div className="user__request">
             <Box sx={{ width: '90%', margin: '0 auto' }}>
                 <Box
                     sx={{
@@ -41,7 +51,14 @@ function RequestPage(props) {
                         <Tab value={1} label="Người khác muốn đổi với bạn" />
                     </Tabs>
                 </Box>
-                {transactions && <RequestList tabIndex={tabIndex} transactions={transactions} />}
+                {transactions && (
+                    <RequestList
+                        tabIndex={tabIndex}
+                        transactions={transactions}
+                        productList={productList}
+                        myProduct={myProduct}
+                    />
+                )}
             </Box>
         </div>
     );

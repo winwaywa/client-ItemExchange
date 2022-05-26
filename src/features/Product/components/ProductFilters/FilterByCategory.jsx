@@ -23,7 +23,7 @@ function FilterByCategory({ onChange }) {
 
     return (
         <div className="filter__category category">
-            <h3>Loại đồ</h3>
+            <h3 className="heading-tertiary">Loại đồ</h3>
             <ul className="category__list">
                 {categoryList.map((category) => (
                     <li

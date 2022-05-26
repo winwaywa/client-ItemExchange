@@ -40,10 +40,11 @@ function InfoForm({ user, provinces, handleUpdateUser }) {
     };
 
     return (
-        <div>
-            <h2 className="heading-tertiary">Thông tin cá nhân</h2>
-            <form>
-                <div className="form__group">
+        <div className="user__info">
+            <h2 className="heading-secondary">Thông tin cá nhân</h2>
+            <p style={{ textAlign: 'center' }}>Xin chào, {user.username}</p>
+            <form className="user__form">
+                <div className="form__avatar">
                     {!previewAvatar && (
                         <label htmlFor="avatar">
                             <img className="avatar" src={avatar} alt="avatar" />
@@ -62,77 +63,82 @@ function InfoForm({ user, provinces, handleUpdateUser }) {
                         onChange={(e) => handleAvatar(e)}
                     />
                 </div>
-                <div className="form__group">
-                    <label htmlFor="full_name">Họ Tên</label>
-                    <input
-                        id="full_name"
-                        type="text"
-                        placeholder="Họ Tên"
-                        value={fullName}
-                        onChange={(e) => setFullName(e.target.value)}
-                    />
-                </div>
-                <div className="form__group">
-                    <label htmlFor="phone">Số điện thoại</label>
-                    <input
-                        id="phone"
-                        type="text"
-                        placeholder="Số điện thoại"
-                        value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
-                    />
-                </div>
-                <div className="form__group">
-                    <label htmlFor="email">Email</label>
-                    <input
-                        id="email"
-                        type="email"
-                        placeholder="Email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                    />
-                </div>
-                <div className="form__group">
-                    <label htmlFor="address">Địa chỉ</label>
-                    <input
-                        id="address"
-                        type="text"
-                        placeholder="Địa chỉ"
-                        value={address}
-                        onChange={(e) => setAddress(e.target.value)}
-                    />
-                </div>
                 <div>
-                    <label
-                        style={{
-                            display: 'inline-block',
-                            minWidth: '10rem',
-                            textAlign: 'left',
-                            fontSize: '1.3rem',
-                        }}
-                        htmlFor="address"
+                    <div className="form__group">
+                        <label htmlFor="full_name">Họ Tên</label>
+                        <input
+                            id="full_name"
+                            type="text"
+                            placeholder="Họ Tên"
+                            value={fullName}
+                            onChange={(e) => setFullName(e.target.value)}
+                        />
+                    </div>
+                    <div className="form__group">
+                        <label htmlFor="phone">Số điện thoại</label>
+                        <input
+                            id="phone"
+                            type="text"
+                            placeholder="Số điện thoại"
+                            value={phone}
+                            onChange={(e) => setPhone(e.target.value)}
+                        />
+                    </div>
+                    <div className="form__group">
+                        <label htmlFor="email">Email</label>
+                        <input
+                            id="email"
+                            type="email"
+                            placeholder="Email"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
+                    </div>
+                    <div className="form__group">
+                        <label htmlFor="address">Địa chỉ</label>
+                        <input
+                            id="address"
+                            type="text"
+                            placeholder="Địa chỉ"
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}
+                        />
+                    </div>
+                    <div>
+                        <label
+                            style={{
+                                display: 'inline-block',
+                                minWidth: '10rem',
+                                textAlign: 'left',
+                                fontSize: '1.6rem',
+                            }}
+                            htmlFor=""
+                        >
+                            Khu vực
+                        </label>
+                        <Autocomplete
+                            disablePortal
+                            id="combo-box-provinces"
+                            options={provinces}
+                            sx={{
+                                width: '20rem',
+                                margin: '0 auto',
+                                marginBottom: '1.5rem',
+                                display: 'inline-block',
+                            }}
+                            renderInput={(params) => <TextField {...params} label={province} />}
+                            onChange={(e, newValue) => {
+                                setProvince(newValue);
+                            }}
+                        />
+                    </div>
+                    <button
+                        className="btn btn--primary btn--small"
+                        onClick={(e) => handleSubmit(e)}
                     >
-                        Khu vực
-                    </label>
-                    <Autocomplete
-                        disablePortal
-                        id="combo-box-provinces"
-                        options={provinces}
-                        sx={{
-                            width: '20rem',
-                            margin: '0 auto',
-                            marginBottom: '2rem',
-                            display: 'inline-block',
-                        }}
-                        renderInput={(params) => <TextField {...params} label={province} />}
-                        onChange={(e, newValue) => {
-                            setProvince(newValue);
-                        }}
-                    />
+                        Cập nhật
+                    </button>
                 </div>
-                <button className="btn btn--submit" onClick={(e) => handleSubmit(e)}>
-                    Cập nhật
-                </button>
             </form>
         </div>
     );

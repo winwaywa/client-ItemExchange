@@ -2,13 +2,17 @@
     
     &__filter{
         width: 20rem;
-        padding:0 1rem;
+        padding:2rem;
+        background-color: #fff;
+        border-radius: 5px;
     }
     
     &__main{
         flex:1;
-        padding: 0 1rem;
-        margin-left: 8rem;
+        padding:2rem;
+        background-color: #fff;
+        border-radius: 5px;
+        margin-left: 4rem;
     }
     &__sort-search{
         display: flex;
