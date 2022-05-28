@@ -14,6 +14,8 @@ import Register from './features/Auth/components/Register';
 import UserFeature from './features/User';
 import AdminFeature from './features/Admin';
 
+import { checkPropTypes } from 'prop-types';
+
 function App() {
     return (
         <div className="App">
@@ -26,7 +28,7 @@ function App() {
                     <Route path="register" element={<Register />} />
 
                     <Route path="admin/*" element={<AdminFeature />} />
-                    <Route path="user/*" element={<UserFeature />} />
+                    <Route path=":username/*" element={<UserFeature />} />
                     <Route path="message" element={<ChatFeature />} />
                 </Routes>
             </div>

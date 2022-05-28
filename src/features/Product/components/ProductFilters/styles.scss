@@ -1,4 +1,6 @@
 .product__filter{
+    box-shadow: 0 0 0.2rem rgb(#000,0.2);
+
     & > div:not(:last-child){
         margin-bottom:3rem;
     }

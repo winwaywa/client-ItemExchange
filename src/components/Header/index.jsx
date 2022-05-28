@@ -39,9 +39,8 @@ function Header(props) {
                     </NavLink>
                 )}
                 {isLoggedIn && (
-                    <NavLink className="header__link--avatar" to="user/me">
+                    <NavLink className="header__link--avatar" to={loggedUser.username}>
                         <img className="header__avatar" src={loggedUser.avatar} alt="avatar" />
-                        {/* <span className="header__username">{loggedUser.username}</span> */}
                     </NavLink>
                 )}
                 {!isLoggedIn && (

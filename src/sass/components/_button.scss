@@ -9,10 +9,10 @@
         transition: all .2s;
         position: relative;
         font-size: var(--default-font-size);
-        font-weight: 600;
+        font-weight: 500;
         letter-spacing: 0.1rem;
         padding: 1rem 2rem;
-        border-radius: 0.3rem;
+        border-radius: 0.5rem;
         
         //Change for the <button> element
         border: none;
@@ -35,10 +35,8 @@
     }
 
     &--small{
-        letter-spacing: 0.1rem;
-        padding:0.5rem 1rem;
+        padding:0.8rem 1rem;
         font-size: 1.2rem;
-        font-weight: 500;
     }
     
     &--primary {
@@ -56,6 +54,14 @@
     &--delete {
         background-color:#f44336;
         color: var(--color-white);
+    }
+    &--white {
+        background-color:#fff;
+        color: var(--color-grey-dark);
+    }
+    &--grey {
+        background-color:#D8DADF;
+        color: var(--color-grey-dark);
     }
     
     &--animated {

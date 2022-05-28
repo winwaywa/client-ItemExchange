@@ -1,15 +1,17 @@
 .product{
     .images{
+        box-shadow: 0 0 0.2rem rgb(#000,0.1);
         margin: 0 auto;
-        width: 400px;
-        background-color:#fff;
-
+        width: 40rem;
+        height:42rem;
         .image__item{
             width: 100%;
-            height: 40rem;
+            height: 42rem;
         }   
     }
     .details{
+        margin-left: 2rem;
+        box-shadow: 0 0 0.2rem rgb(#000,0.1);
         flex:1;
         background-color: #fff;
     }

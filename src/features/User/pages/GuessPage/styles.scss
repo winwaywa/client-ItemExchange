@@ -1,0 +1,23 @@
+.guess{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top:1rem;
+    
+    &__about{
+        width: 25rem;
+        background-color: #fff;
+        padding:1rem;
+
+        border-radius: 0.5rem;
+        box-shadow: 0 0 0.2rem rgb(#000,0.2);
+    }
+    &__post{
+        flex:1;
+        margin-left: 1rem;
+        padding:1rem;
+        
+        border-radius: 0.5rem;
+        box-shadow: 0 0 0.2rem rgb(#000,0.2);
+    }
+}
