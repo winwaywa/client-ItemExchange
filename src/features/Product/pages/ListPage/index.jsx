@@ -112,15 +112,19 @@ function ListPage(props) {
                     <ProductList products={products} />
                 )}
 
-                {products.length === 0 && 'Không có sản phẩm nào!'}
+                {products.length === 0 && (
+                    <p style={{ textAlign: 'center' }}>Không có sản phẩm nào!</p>
+                )}
 
-                <Pagination
-                    className="product__page"
-                    color="primary"
-                    count={Math.ceil(pagination.total / pagination.limit)}
-                    page={pagination.page}
-                    onChange={handlePageChange}
-                ></Pagination>
+                {products.length !== 0 && (
+                    <Pagination
+                        className="product__page"
+                        color="primary"
+                        count={Math.ceil(pagination.total / pagination.limit)}
+                        page={pagination.page}
+                        onChange={handlePageChange}
+                    ></Pagination>
+                )}
             </div>
         </>
     );

@@ -19,13 +19,15 @@ import PropTypes from 'prop-types';
 
 TableApprove.propTypes = {};
 
-function TableApprove({ tabIndex, productsFilter, transactions, onDelete }) {
+function TableApprove({ tabIndex, transactions, onCancel, onDone }) {
     const columns =
         tabIndex === 2
             ? [
-                  { id: 'product_name', label: 'Đồ của bạn', minWidth: 170 },
-                  { id: 'with_name', label: 'Với ai', minWidth: 170 },
-                  { id: 'with_product', label: 'Với gì', minWidth: 170 },
+                  { id: 'request_recipient', label: 'Người nhận', minWidth: 100 },
+                  { id: 'product_id_requested', label: 'Của người nhận', minWidth: 150 },
+                  { id: 'request_sender', label: 'Người gửi', minWidth: 100 },
+                  { id: 'exchange_value', label: 'Của người gửi', minWidth: 150 },
+                  { id: 'updatedAt', label: 'Thời gian', minWidth: 150 },
                   {
                       id: 'operation',
                       label: 'Thao tác',
@@ -34,11 +36,15 @@ function TableApprove({ tabIndex, productsFilter, transactions, onDelete }) {
                   },
               ]
             : [
-                  { id: 'product_name', label: 'Đồ của bạn', minWidth: 170 },
-                  { id: 'with_name', label: 'Với ai', minWidth: 170 },
-                  { id: 'with_product', label: 'Với gì', minWidth: 170 },
+                  { id: 'request_recipient', label: 'Người nhận', minWidth: 170 },
+                  { id: 'product_id_requested', label: 'Của người nhận', minWidth: 170 },
+                  { id: 'request_sender', label: 'Người gửi', minWidth: 170 },
+                  { id: 'exchange_value', label: 'Của người gửi', minWidth: 170 },
+                  { id: 'updatedAt', label: 'Thời gian', minWidth: 150 },
               ];
+
     const me = useSelector((state) => state.user.current);
+
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(6);
 
@@ -50,9 +56,14 @@ function TableApprove({ tabIndex, productsFilter, transactions, onDelete }) {
         setPage(0);
     };
 
-    //handleClickDelete
-    const handleClickDelete = (e, id) => {
-        onDelete(id);
+    //handleClickDone
+    const handleClickDone = (transaction_id, product_id_requested, exchange_value) => {
+        onDone(transaction_id, product_id_requested, exchange_value);
+    };
+
+    //handleClickCancel
+    const handleClickCancel = (transaction_id, product_id_requested, exchange_value) => {
+        onCancel(transaction_id, product_id_requested, exchange_value);
     };
 
     return (
@@ -76,73 +87,16 @@ function TableApprove({ tabIndex, productsFilter, transactions, onDelete }) {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {productsFilter
+                        {transactions
                             .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                             .map((row) => {
-                                const transaction_detail = transactions.find(
-                                    (transaction) =>
-                                        transaction.product_id_requested === row._id ||
-                                        transaction.exchange_value === row._id
-                                );
                                 return (
                                     <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                                         {columns.map((column) => {
                                             const value = row[column.id];
                                             return (
                                                 <TableCell key={column.id} align={column.align}>
-                                                    {column.id === 'product_name' && (
-                                                        <Link to={`/products/${row._id}`}>
-                                                            {value}
-                                                        </Link>
-                                                    )}
-
-                                                    {/* hiện tên của người trao đổi */}
-                                                    {transaction_detail &&
-                                                        column.id === 'with_name' &&
-                                                        transaction_detail.request_sender ===
-                                                            me.username && (
-                                                            <Link
-                                                                to={`/user/${transaction_detail.request_recipient}`}
-                                                            >
-                                                                {
-                                                                    transaction_detail.request_recipient
-                                                                }
-                                                            </Link>
-                                                        )}
-                                                    {transaction_detail &&
-                                                        column.id === 'with_name' &&
-                                                        transaction_detail.request_sender !==
-                                                            me.username && (
-                                                            <Link
-                                                                to={`/user/${transaction_detail.request_sender}`}
-                                                            >
-                                                                {transaction_detail.request_sender}
-                                                            </Link>
-                                                        )}
-
-                                                    {/* hiện đồ của người trao đổi bs mình */}
-                                                    {transaction_detail &&
-                                                        column.id === 'with_product' &&
-                                                        transaction_detail.request_sender ===
-                                                            me.username && (
-                                                            <Link
-                                                                to={`/products/${transaction_detail.product_id_requested}`}
-                                                            >
-                                                                {
-                                                                    transaction_detail.product_id_requested
-                                                                }
-                                                            </Link>
-                                                        )}
-                                                    {transaction_detail &&
-                                                        column.id === 'with_product' &&
-                                                        transaction_detail.request_sender !==
-                                                            me.username && (
-                                                            <Link
-                                                                to={`/products/${transaction_detail.exchange_value}`}
-                                                            >
-                                                                {transaction_detail.exchange_value}
-                                                            </Link>
-                                                        )}
+                                                    {value === me.username ? 'Bạn' : value}
                                                     {column.id === 'operation' && (
                                                         <>
                                                             <a href="#">
@@ -159,6 +113,15 @@ function TableApprove({ tabIndex, productsFilter, transactions, onDelete }) {
                                                                     className="svg-icon"
                                                                     src={AcceptIcon}
                                                                     alt="message-icon"
+                                                                    onClick={() =>
+                                                                        handleClickDone(
+                                                                            row._id,
+                                                                            row[
+                                                                                'product_id_requested'
+                                                                            ],
+                                                                            row['exchange_value']
+                                                                        )
+                                                                    }
                                                                 />
                                                             </a>
                                                             &nbsp;&nbsp;
@@ -168,6 +131,15 @@ function TableApprove({ tabIndex, productsFilter, transactions, onDelete }) {
                                                                     className="svg-icon"
                                                                     src={CancelIcon}
                                                                     alt="message-icon"
+                                                                    onClick={() =>
+                                                                        handleClickCancel(
+                                                                            row._id,
+                                                                            row[
+                                                                                'product_id_requested'
+                                                                            ],
+                                                                            row['exchange_value']
+                                                                        )
+                                                                    }
                                                                 />
                                                             </a>
                                                             &nbsp;&nbsp;
@@ -185,7 +157,7 @@ function TableApprove({ tabIndex, productsFilter, transactions, onDelete }) {
             <TablePagination
                 rowsPerPageOptions={[6, 12, 18]}
                 component="div"
-                count={productsFilter.length}
+                count={transactions.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 onPageChange={handleChangePage}

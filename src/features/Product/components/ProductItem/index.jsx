@@ -1,6 +1,7 @@
 import './styles.scss';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { Link } from 'react-router-dom';
+
 import PropTypes from 'prop-types';
 import { formatPrice } from '../../../../utils';
 import moment from 'moment';
@@ -18,20 +19,17 @@ function ProductItem({ product }) {
     return (
         <>
             <div className="product__thumbnail">
-                {day < 1 && <p className="new">New</p>}
-                {product.images_url && (
-                    <img src={product.images_url.split(',')[0]} alt={product.product_name} />
-                )}
-                <Link className="btn-details" to={`/products/${product._id}`}>
-                    Chi tiết
-                </Link>
+                {day < 1 && <i className="product__new">New</i>}
+                <img
+                    className="product__img"
+                    src={product.images_url.split(',')[0]}
+                    alt={product.product_name}
+                />
             </div>
-            <Link className="product__link" to={`/products/${product._id}`}>
-                <h4>
-                    {product.product_name}
-                    <p>{formatPrice(product.price)}</p>
-                </h4>
-            </Link>
+            <div className="product__text">
+                <p className="product__name">{product.product_name}</p>
+                <strong className="product__price">{formatPrice(product.price)}</strong>
+            </div>
         </>
     );
 }

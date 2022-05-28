@@ -16,17 +16,29 @@ import PropTypes from 'prop-types';
 
 TableNoApprove.propTypes = {};
 
-const columns = [
-    { id: 'product_name', label: 'Đồ của bạn', minWidth: 170 },
-    {
-        id: 'operation',
-        label: 'Thao tác',
-        minWidth: 170,
-        align: 'center',
-    },
-];
-
-function TableNoApprove({ productsFilter, onDelete }) {
+function TableNoApprove({ tabIndex, productsFilter, onDelete }) {
+    const columns =
+        tabIndex === 0
+            ? [
+                  { id: 'product_name', label: 'Đồ của bạn', minWidth: 170 },
+                  { id: 'updatedAt', label: 'Thời gian đăng', minWidth: 100 },
+                  {
+                      id: 'operation',
+                      label: 'Thao tác',
+                      minWidth: 170,
+                      align: 'center',
+                  },
+              ]
+            : [
+                  { id: 'product_name', label: 'Đồ của bạn', minWidth: 170 },
+                  { id: 'updatedAt', label: 'Thời gian duyệt', minWidth: 100 },
+                  {
+                      id: 'operation',
+                      label: 'Thao tác',
+                      minWidth: 170,
+                      align: 'center',
+                  },
+              ];
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(6);
 
@@ -78,6 +90,7 @@ function TableNoApprove({ productsFilter, onDelete }) {
                                                             {value}
                                                         </Link>
                                                     )}
+                                                    {column.id === 'updatedAt' && value}
                                                     {column.id === 'operation' && (
                                                         <>
                                                             <a href="#">

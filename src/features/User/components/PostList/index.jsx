@@ -5,15 +5,23 @@ import TableApprove from '../PostTable/TableApprove';
 import PropTypes from 'prop-types';
 PostList.propTypes = {};
 
-function PostList({ products, transactions, tabIndex, handleDeleteProduct }) {
-    console.log(transactions);
+function PostList({
+    products,
+    transactions,
+    tabIndex,
+    handleDeleteProduct,
+    handleTransactionDone,
+    handleTransactionCancel,
+}) {
     const [state, setState] = useState('');
 
     const [productsFilter, setproductsFilter] = useState();
+    const [transactionFilter, setTransactionFilter] = useState();
 
     useMemo(() => {
         setproductsFilter(products.filter((product) => product.status === state));
-    }, [state, products]);
+        setTransactionFilter(transactions.filter((transaction) => transaction.status === state));
+    }, [state, products, transactions]);
 
     useEffect(() => {
         switch (tabIndex) {
@@ -24,10 +32,10 @@ function PostList({ products, transactions, tabIndex, handleDeleteProduct }) {
                 setState('enable');
                 break;
             case 2:
-                setState('exchanging');
+                setState('approved');
                 break;
             case 3:
-                setState('exchanged');
+                setState('completed');
                 break;
             default:
                 return;
@@ -38,29 +46,40 @@ function PostList({ products, transactions, tabIndex, handleDeleteProduct }) {
         handleDeleteProduct(id);
     };
 
+    const handleClickDone = (transaction_id, product_id_requested, exchange_value) => {
+        handleTransactionDone(transaction_id, product_id_requested, exchange_value);
+    };
+
+    const handleClickCancel = (transaction_id, product_id_requested, exchange_value) => {
+        handleTransactionCancel(transaction_id, product_id_requested, exchange_value);
+    };
+
     return (
         <>
             {tabIndex === 0 && (
-                <TableNoApprove productsFilter={productsFilter} onDelete={handleClickDelete} />
+                <TableNoApprove
+                    tabIndex={tabIndex}
+                    productsFilter={productsFilter}
+                    onDelete={handleClickDelete}
+                />
             )}
             {tabIndex === 1 && (
-                <TableNoApprove productsFilter={productsFilter} onDelete={handleClickDelete} />
+                <TableNoApprove
+                    tabIndex={tabIndex}
+                    productsFilter={productsFilter}
+                    onDelete={handleClickDelete}
+                />
             )}
             {tabIndex === 2 && (
                 <TableApprove
                     tabIndex={tabIndex}
-                    transactions={transactions}
-                    productsFilter={productsFilter}
-                    onDelete={handleClickDelete}
+                    transactions={transactionFilter}
+                    onCancel={handleClickCancel}
+                    onDone={handleClickDone}
                 />
             )}
             {tabIndex === 3 && (
-                <TableApprove
-                    tabIndex={tabIndex}
-                    transactions={transactions}
-                    productsFilter={productsFilter}
-                    onDelete={handleClickDelete}
-                />
+                <TableApprove tabIndex={tabIndex} transactions={transactionFilter} />
             )}
         </>
     );

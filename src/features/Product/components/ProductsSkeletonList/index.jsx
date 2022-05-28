@@ -18,7 +18,7 @@ function ProductsSkeletonList({ length }) {
                     <div className="product__thumbnail">
                         <Skeleton variant="rectangular" width="100%" height={100} />
                     </div>
-                    <div style={{ marginTop: '2rem' }}>
+                    <div className="product__text">
                         <Skeleton />
                         <Skeleton width="60%" />
                     </div>

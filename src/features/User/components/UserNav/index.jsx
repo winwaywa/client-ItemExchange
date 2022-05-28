@@ -24,7 +24,6 @@ function UserNav({ handleLogout }) {
             }
         })();
     }, []);
-    console.log(user);
 
     return (
         <ul className="nav__list">

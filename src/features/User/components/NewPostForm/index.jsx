@@ -152,9 +152,9 @@ function NewPostForm({ categories, handleCreateProduct }) {
                     </div>
                     <div className="form__group">
                         <label htmlFor="images">
-                            <button className="btn btn--small btn--secondary">Thêm ảnh +</button>{' '}
-                            (Tối đa 5 ảnh)
+                            <span className="btn btn--small btn--secondary">Thêm ảnh +</span>
                         </label>
+                        (Tối đa 5 ảnh)
                         <input
                             type="file"
                             id="images"
