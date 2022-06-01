@@ -16,13 +16,13 @@
         }
         &__item{
             position: relative;
-            box-shadow: 0 0 2px rgba(#000,.3);
-            height:20rem;
+            height:12rem;
         }
         &__img{
             width: 100%;
             height:100%;
             border-radius:0.3rem;
+            box-shadow: 0 0 2px rgba(#000,.3);
 
             image-rendering: pixelated;
             object-fit: cover;
@@ -43,7 +43,6 @@
             width: 2rem;
             height:2rem;
             filter:invert(1);
-
 
             &:hover{
             filter:invert(0.7);

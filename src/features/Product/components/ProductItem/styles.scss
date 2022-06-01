@@ -3,9 +3,9 @@
         min-height:20rem;
         transition: all 0.2s;
         position: relative;
-        animation: appear linear 0.2s alternate;
+        animation: moveToBottom linear 0.2s alternate;
 
-        &:hover .product__text{
+        &:hover .product__name{
             color: var(--color-primary-dark);
         }
     }
@@ -50,19 +50,27 @@
         object-fit: cover;
         object-position: center;
     }
-    &__text{
-        margin-top:0.5rem;
-        color: var(--color-grey-dark);
+    &__price{
+        position: absolute;
+        bottom:0rem;
+        right:0rem;
+
+        padding:0.2rem 0.4rem;
+        line-height: 2rem;
+        border-bottom-right-radius: 0.3rem;
+        border-top-left-radius: 0.3rem;
+        background-color:var(--color-grey-dark);
+        color: #fff;
     }
     &__name{
+        margin-top:0.5rem;
+        color: var(--color-grey-dark);
         font-size: 1.5rem;
         letter-spacing: 1px;
     }
-    &__price{
-    }
 }
 
-@keyframes appear{
+@keyframes moveToBottom{
     0%{
         opacity: 0.5;
         transform: translateY(-10px);

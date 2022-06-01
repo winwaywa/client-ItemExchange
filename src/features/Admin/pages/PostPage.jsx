@@ -21,35 +21,37 @@ function PostPage(props) {
 
     useEffect(() => {
         (async () => {
-            var status = '';
+            var status_product = '';
+            var status_transaction = '';
             switch (tabIndex) {
                 case 0:
-                    status = 'disable';
+                    status_product = 'disable';
                     break;
                 case 1:
-                    status = 'enable';
+                    status_product = 'enable';
                     break;
                 case 2:
-                    status = 'exchanging';
+                    status_product = 'exchanging';
+                    status_transaction = 'approved';
                     break;
                 case 3:
-                    status = 'exchanged';
+                    status_product = 'exchanged';
+                    status_transaction = 'completed';
                     break;
                 default:
                     return;
             }
-            console.log(status);
             try {
                 const products = await productApi.getAllProducts({
+                    status: status_product,
                     _sort: 'createdAt:DESC',
-                    status,
                 });
+
                 const transactions = await transactionApi.getTransactionsWithCondition({
-                    status: 'approved',
+                    status: status_transaction,
                 });
                 setTransactions(transactions.transactions);
                 setProducts(products.products);
-                console.log(products);
             } catch (err) {
                 console.log(err);
             }

@@ -8,9 +8,19 @@
         width: 25rem;
         background-color: #fff;
         padding:1rem;
-
         border-radius: 0.5rem;
         box-shadow: 0 0 0.2rem rgb(#000,0.2);
+        overflow-x: auto;
+        .about__item{
+            margin-top:2rem;
+            display: flex;
+            align-items:center;
+            line-height: 2rem;
+
+            span{
+                margin-left: 0.5rem;
+            }
+        }
     }
     &__post{
         flex:1;

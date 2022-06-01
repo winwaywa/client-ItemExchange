@@ -16,7 +16,15 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <React.StrictMode>
         <Provider store={store}>
             <BrowserRouter>
-                <SnackbarProvider anchorOrigin={{ vertical: 'top', horizontal: 'right' }}>
+                <SnackbarProvider
+                    iconVariant={{
+                        success: '✅',
+                        error: '✖️',
+                        warning: '⚠️',
+                        info: 'ℹ️',
+                    }}
+                    anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                >
                     <GoogleOAuthProvider clientId="933225985612-0ha2j5bfadfjthia7g57908j431rcd74.apps.googleusercontent.com">
                         <App />
                     </GoogleOAuthProvider>

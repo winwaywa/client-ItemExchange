@@ -12,38 +12,40 @@ AdminNav.propTypes = {};
 
 function AdminNav({ handleLogout }) {
     return (
-        <ul className="nav__list">
-            <li className="nav__item">
-                <NavLink className="nav__link" to="dashboard">
-                    <img className="nav__icon" src={DashboardIcon} alt="dashboard-icon" />
-                    <p>Thống kê</p>
-                </NavLink>
-            </li>
-            <li className="nav__item">
-                <NavLink className="nav__link" to="user">
-                    <img className="nav__icon" src={MembersIcon} alt="members-icon" />
-                    <p>Thành viên</p>
-                </NavLink>
-            </li>
-            <li className="nav__item">
-                <NavLink className="nav__link" to="post">
-                    <img className="nav__icon" src={PostIcon} alt="post-icon" />
-                    <p>Bài đăng</p>
-                </NavLink>
-            </li>
-            <li className="nav__item">
-                <NavLink className="nav__link" to="category">
-                    <img className="nav__icon" src={CategoryIcon} alt="post-icon" />
-                    <p>Loại đồ</p>
-                </NavLink>
-            </li>
-            <li className="nav__item">
-                <a href="#" className="nav__link" onClick={(e) => handleLogout(e)}>
-                    <img className="nav__icon" src={LogoutIcon} alt="logout-icon" />
-                    <p>Đăng xuất</p>
-                </a>
-            </li>
-        </ul>
+        <nav className="nav">
+            <ul className="nav__list">
+                <li className="nav__item">
+                    <NavLink className="nav__link" to="" end>
+                        <img className="nav__icon" src={DashboardIcon} alt="dashboard-icon" />
+                        <p>Thống kê</p>
+                    </NavLink>
+                </li>
+                <li className="nav__item">
+                    <NavLink className="nav__link" to="user">
+                        <img className="nav__icon" src={MembersIcon} alt="members-icon" />
+                        <p>Thành viên</p>
+                    </NavLink>
+                </li>
+                <li className="nav__item">
+                    <NavLink className="nav__link" to="post">
+                        <img className="nav__icon" src={PostIcon} alt="post-icon" />
+                        <p>Bài đăng</p>
+                    </NavLink>
+                </li>
+                <li className="nav__item">
+                    <NavLink className="nav__link" to="category">
+                        <img className="nav__icon" src={CategoryIcon} alt="post-icon" />
+                        <p>Loại đồ</p>
+                    </NavLink>
+                </li>
+                <li className="nav__item">
+                    <a href="#" className="nav__link" onClick={(e) => handleLogout(e)}>
+                        <img className="nav__icon" src={LogoutIcon} alt="logout-icon" />
+                        <p>Đăng xuất</p>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     );
 }
 

@@ -6,11 +6,12 @@ FormValue.propTypes = {};
 function FormValue({ handleClose, handleConfirm }) {
     const [price, setPrice] = React.useState();
     return (
-        <div style={{ marginTop: '2rem' }}>
+        <div style={{ display: 'flex', marginTop: '2rem' }}>
             <input
                 type="text"
                 placeholder="Nhập số tiền"
                 style={{
+                    flex: 1,
                     padding: 10,
                     fontSize: '1.6rem',
                     outline: 'none',

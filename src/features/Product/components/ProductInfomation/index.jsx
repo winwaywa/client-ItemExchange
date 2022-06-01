@@ -19,7 +19,7 @@ function ProductInfomation({ product, user, categoryName }) {
             <p className="details__user">
                 Người đăng:&nbsp;
                 <img className="details__avatar" src={user.avatar} alt={user.username} />
-                <Link to="">{user.username}</Link>
+                <Link to={`/${user.username}`}>{user.username}</Link>
             </p>
             <p>
                 Địa chỉ: {user.address} - {user.province}

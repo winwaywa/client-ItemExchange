@@ -113,7 +113,9 @@ function ListPage(props) {
                 )}
 
                 {products.length === 0 && (
-                    <p style={{ textAlign: 'center' }}>Không có sản phẩm nào!</p>
+                    <div class="notes info">
+                        <p>Không có sản phẩm nào !</p>
+                    </div>
                 )}
 
                 {products.length !== 0 && (

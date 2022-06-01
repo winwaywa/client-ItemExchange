@@ -27,7 +27,7 @@ function RequestList({ me, product, productList, transactions, onClickCancel, on
                           <div className="request__item">
                               <p>
                                   <span>{formatTime(transaction.createdAt)} : </span>
-                                  <Link to={`/user/${transaction.request_sender}`}>
+                                  <Link to={`/${transaction.request_sender}`}>
                                       {me && me.username === transaction.request_sender
                                           ? 'Bạn'
                                           : transaction.request_sender}

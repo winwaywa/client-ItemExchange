@@ -4,15 +4,23 @@ import PropTypes from 'prop-types';
 import { NavLink } from 'react-router-dom';
 NavBar.propTypes = {};
 
-function NavBar({ handleLogout }) {
+function NavBar({ user, handleLogout }) {
     return (
         <div className="navbar">
-            <NavLink to="">Bài viết</NavLink>
-            <NavLink to="about">Giới thiệu</NavLink>
-            <NavLink to="requests">Yêu cầu</NavLink>
-            <a href="#" onClick={handleLogout}>
-                Đăng xuất
-            </a>
+            <div>
+                <NavLink to="" end>
+                    Bài viết
+                </NavLink>
+                <NavLink to="requests">Yêu cầu</NavLink>
+                <NavLink to="transactions">Giao dịch</NavLink>
+                <NavLink to="about">Giới thiệu</NavLink>
+                {user.role === 'admin' && <NavLink to="/admin">Trang Admin</NavLink>}
+            </div>
+            <div>
+                <a href="#" onClick={handleLogout}>
+                    Đăng xuất
+                </a>
+            </div>
         </div>
     );
 }

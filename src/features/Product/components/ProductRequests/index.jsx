@@ -72,6 +72,7 @@ function ProductRequests({ product }) {
                     exchange_value: value,
                 };
                 const transaction = await transactionApi.createTransaction(values);
+                console.log(transaction);
                 if (!transaction) {
                     throw new Error('Yêu cầu của bạn đã gửi không thành công');
                 }
@@ -173,7 +174,7 @@ function ProductRequests({ product }) {
                 }
 
                 //Chuyển sang trang chat
-                navigate('/chat');
+                navigate('/message');
 
                 swal(
                     'Thành công',
@@ -182,17 +183,22 @@ function ProductRequests({ product }) {
                 );
 
                 //gửi mail cho người được chấp nhận biết
-                const sender = await userApi.getUserByUserName(request_sender);
-                const dataMail = {
-                    email: sender.user.email,
-                    subject: `chodoidoVN Thông báo: Bạn đã được ${product.createdBy} chấp nhận yêu cầu trao đổi!`,
-                    content: `<div><p>${product.createdBy} đã chấp nhận yêu cầu trao đổi của bạn gửi tới
+                const {
+                    user: { email },
+                } = await userApi.getUserByUserName(request_sender);
+                console.log('Gửi email đến người này:', email);
+                if (email) {
+                    const dataMail = {
+                        email: email,
+                        subject: `chodoidoVN Thông báo: Bạn đã được ${product.createdBy} chấp nhận yêu cầu trao đổi!`,
+                        content: `<div><p>${product.createdBy} đã chấp nhận yêu cầu trao đổi của bạn gửi tới
                         <a href="http://localhost:3000/products/${product._id}">sản phẩm này !</a>
-                    </p>
-                    <p>Note: Vui lòng xác nhận nếu đã đổi thành công !</p>
-                    </div>`,
-                };
-                await mailApi.sendMailNotification(dataMail);
+                        </p>
+                        <p>Note: Vui lòng xác nhận nếu đã đổi thành công !</p>
+                        </div>`,
+                    };
+                    await mailApi.sendMailNotification(dataMail);
+                }
             } catch (err) {
                 swal('Thất bại', `Có lỗi:${err.message}!`, 'error');
             }
@@ -225,7 +231,12 @@ function ProductRequests({ product }) {
                     />
                 </>
             ) : (
-                'Hiện tại bạn không thể gửi yêu cầu đến sản phẩm này!'
+                <div class="notes info">
+                    <p>
+                        <strong>Chú ý: </strong>
+                        Không thể gửi yêu cầu đến sản phẩm này !
+                    </p>
+                </div>
             )}
         </div>
     );

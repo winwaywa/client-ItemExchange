@@ -1,4 +1,3 @@
-// import logo from './logo.svg';
 import './App.scss';
 import { Routes, Route } from 'react-router-dom';
 
@@ -8,6 +7,7 @@ import NotFound from './components/NotFound';
 
 import ProductFeature from './features/Product';
 import ChatFeature from './features/Chat';
+import DeliveryFeature from './features/Delivery';
 import Login from './features/Auth/components/Login';
 import Register from './features/Auth/components/Register';
 
@@ -17,6 +17,7 @@ import AdminFeature from './features/Admin';
 import { checkPropTypes } from 'prop-types';
 
 function App() {
+    console.log('a');
     return (
         <div className="App">
             <Header />
@@ -30,6 +31,7 @@ function App() {
                     <Route path="admin/*" element={<AdminFeature />} />
                     <Route path=":username/*" element={<UserFeature />} />
                     <Route path="message" element={<ChatFeature />} />
+                    <Route path="delivery" element={<DeliveryFeature />} />
                 </Routes>
             </div>
             <Footer />

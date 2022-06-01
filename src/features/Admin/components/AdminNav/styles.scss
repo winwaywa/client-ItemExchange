@@ -1,7 +1,5 @@
 .admin{
     .nav{
-        height:20rem;   
-        
         &__list{
             list-style: none;
         }
@@ -9,6 +7,9 @@
             padding-bottom: 1rem;
             .active{
                 background-image: linear-gradient(to right, var(--color-primary) 0.5rem,var(--color-white) 0.5rem 100%);
+                .nav__icon{
+                    filter: invert(0.2);
+                }
             }     
         }
         &__link{
@@ -21,15 +22,12 @@
 
                 display:flex;
             }
-            &:hover{
-                transform: translateY(-2px);
-            }
         }
         &__icon{
             margin-right:0.5rem;  
             width: 3rem;
             height: 3rem;
-            filter: invert(0.3);
+            filter: invert(1);
         }
     }
     

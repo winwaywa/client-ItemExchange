@@ -13,6 +13,10 @@ const transactionApi = {
         const url = `/transactions/${id}`;
         return axiosClient.put(url, data);
     },
+    findAndUpdateTransaction(id, data) {
+        const url = `/transactions/find/${id}`;
+        return axiosClient.put(url, data);
+    },
     deleteTransaction(queryParams) {
         const url = `/transactions`;
         return axiosClient.delete(url, { params: queryParams });

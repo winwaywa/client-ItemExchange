@@ -22,7 +22,7 @@ function Dashboard(props) {
                 _sort: 'createdAt:DESC',
             });
             const transactions = await transactionApi.getTransactionsWithCondition({
-                status: 'approved',
+                status: 'completed',
             });
             setUsers(users.users);
             setProducts(products.products);

@@ -1,7 +1,12 @@
 .navbar{
-    border-top: 1px solid rgb(186, 185, 185) ;
-    padding-top:2rem;
-    margin:0 3rem;
+    border-top: 1px solid rgb(220, 220, 220) ;
+    padding-top:1rem;
+    margin:0 6rem;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
     a{  
         padding:0.5rem 1.5rem;
         text-transform:capitalize;
@@ -9,7 +14,7 @@
         font-weight: 500;
         display: inline-block;
         transition: all 0.2s;
-        // border-radius: 0.5rem;
+        border-bottom: 2px solid transparent;
 
         &:hover{
             background-color: var(--color-grey-light);

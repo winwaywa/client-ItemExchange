@@ -11,8 +11,6 @@ import UserPage from './pages/UserPage';
 import PostPage from './pages/PostPage';
 import CategoryPage from './pages/CategoryPage';
 
-import NotFound from '../../components/NotFound';
-
 AdminFeature.propTypes = {};
 
 function AdminFeature(props) {
@@ -28,13 +26,10 @@ function AdminFeature(props) {
 
     return (
         <section className="admin">
-            <nav className="nav">
-                <AdminNav handleLogout={handleLogout} />
-            </nav>
+            <AdminNav handleLogout={handleLogout} />
             <div className="admin__main">
                 <Routes>
-                    <Route path="*" element={<NotFound />} />
-                    <Route path="dashboard" element={<Dashboard />} />
+                    <Route path="*" element={<Dashboard />} />
                     <Route path="user" element={<UserPage />} />
                     <Route path="post" element={<PostPage />} />
                     <Route path="category" element={<CategoryPage />} />
