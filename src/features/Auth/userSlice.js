@@ -42,6 +42,7 @@ const userSlice = createSlice({
     name: 'user',
     initialState: {
         current: JSON.parse(localStorage.getItem('user')),
+        notification: 0,
         settings: {},
     },
     reducers: {
@@ -56,6 +57,9 @@ const userSlice = createSlice({
             console.log(action.payload);
             localStorage.setItem('user', JSON.stringify(action.payload));
             state.current = action.payload;
+        },
+        updateNotification(state, action) {
+            state.notification = action.payload;
         },
     },
     extraReducers: {
@@ -74,6 +78,6 @@ const userSlice = createSlice({
 
 const { actions, reducer } = userSlice;
 
-export const { logout, updateUser } = actions;
+export const { logout, updateUser, updateNotification } = actions;
 
 export default reducer; //default export

@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import swal from 'sweetalert';
+import { sendNotification } from '../../../hook';
+
 //mui
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -62,7 +64,7 @@ function PostPage(props) {
         setTabIndex(newValue);
     };
 
-    const handleDeletePost = async (id) => {
+    const handleDeletePost = async (value) => {
         const willDelete = await swal({
             title: 'Xác nhận',
             text: 'Bạn chắc chắn muốn từ chối duyệt bài viết này?',
@@ -71,15 +73,19 @@ function PostPage(props) {
         });
         if (willDelete) {
             try {
-                const product = await productApi.deleteProduct(id);
-                setProducts(products.filter((product) => product._id !== id));
+                const product = await productApi.deleteProduct(value._id);
+                setProducts(products.filter((product) => product._id !== value._id));
                 swal('Thành công!', 'Từ chối bài viết thành công!', 'success');
+                sendNotification(
+                    value.createdBy,
+                    `Bài viết ${value.product_name} đã bị admin gỡ !`
+                );
             } catch (err) {
                 swal('Thất bại', `${err.message}!`, 'error');
             }
         }
     };
-    const handleApprovePost = async (id) => {
+    const handleApprovePost = async (value) => {
         const willDelete = await swal({
             title: 'Xác nhận',
             text: 'Bạn chắc chắn muốn duyệt bài viết này?',
@@ -88,9 +94,14 @@ function PostPage(props) {
         });
         if (willDelete) {
             try {
-                const product = await productApi.updateProduct(id, { status: 'enable' });
-                setProducts(products.filter((product) => product._id !== id));
+                const product = await productApi.updateProduct(value._id, { status: 'enable' });
+
+                setProducts(products.filter((product) => product._id !== value._id));
                 swal('Thành công!', 'Bài viết đã được duyệt !', 'success');
+                sendNotification(
+                    value.createdBy,
+                    `Bài viết ${value.product_name} đã được admin duyệt !`
+                );
             } catch (err) {
                 swal('Thất bại', `${err.message}!`, 'error');
             }

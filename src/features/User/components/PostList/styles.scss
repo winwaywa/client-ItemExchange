@@ -17,6 +17,8 @@
         &__item{
             position: relative;
             height:12rem;
+            animation: moveToBottom linear 0.2s alternate;
+
         }
         &__img{
             width: 100%;

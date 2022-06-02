@@ -35,6 +35,8 @@
             height: 100%;
             border-bottom-left-radius: 0.5rem;
             border-bottom-right-radius: 0.5rem;
+            animation: moveToBottom linear 0.2s alternate;
+
         }
         button{
             position: absolute;
@@ -45,6 +47,7 @@
             align-items: center;
             justify-content: space-around;
             z-index:100;
+
 
             .svg-icon{
                 margin-right: 0.5rem;

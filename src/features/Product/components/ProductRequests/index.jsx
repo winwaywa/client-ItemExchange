@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import swal from 'sweetalert';
-import { Navigate } from 'react-router-dom';
 
 import productApi from '../../../../api/productApi';
 import transactionApi from '../../../../api/transactionApi';
@@ -13,6 +12,8 @@ import RequestList from './RequestList';
 import RequestDialog from './RequestDialog';
 import RequestAction from './RequestAction';
 import { useNavigate } from 'react-router-dom';
+
+import { sendNotification } from '../../../../hook';
 
 ProductRequests.propTypes = {};
 
@@ -71,13 +72,18 @@ function ProductRequests({ product }) {
                     product_id_requested: product._id,
                     exchange_value: value,
                 };
-                const transaction = await transactionApi.createTransaction(values);
+
+                const { transaction } = await transactionApi.createTransaction(values);
                 console.log(transaction);
                 if (!transaction) {
                     throw new Error('Yêu cầu của bạn đã gửi không thành công');
                 }
-                setTransactions((preValue) => [{ ...transaction.transaction }, ...preValue]);
+                setTransactions((preValue) => [{ ...transaction }, ...preValue]);
                 swal('Thành công!', 'Yêu cầu của bạn đã gửi thành công!', 'success');
+                sendNotification(
+                    product.createdBy,
+                    `${transaction.request_sender} đã gửi 1 yêu cầu trao đổi tới ${product.product_name}`
+                );
             } catch (err) {
                 swal('Thất bại!', 'Yêu cầu của bạn gửi thất bại!', 'error');
             }
@@ -174,12 +180,18 @@ function ProductRequests({ product }) {
                 }
 
                 //Chuyển sang trang chat
-                navigate('/message');
+                navigate(`/${product.createdBy}/transactions`);
 
                 swal(
                     'Thành công',
                     `Bây giờ Bạn và ${request_sender} có thể xem thông tin và trò chuyện với nhau!`,
                     'success'
+                );
+
+                //gửi thông báo
+                sendNotification(
+                    request_sender,
+                    `${product.createdBy} đã chấp nhận yêu cầu của bạn tới món đồ ${product.product_name}`
                 );
 
                 //gửi mail cho người được chấp nhận biết

@@ -28,7 +28,6 @@ const columns = [
 ];
 
 function TableNoApprove({ tabIndex, productsFilter, onDelete, onApprove }) {
-    console.log(productsFilter);
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(6);
 
@@ -41,12 +40,12 @@ function TableNoApprove({ tabIndex, productsFilter, onDelete, onApprove }) {
     };
 
     //handleClickApprove
-    const handleClickApprove = (e, id) => {
-        onApprove(id);
+    const handleClickApprove = (e, product) => {
+        onApprove(product);
     };
     //handleClickDelete
-    const handleClickDelete = (e, id) => {
-        onDelete(id);
+    const handleClickDelete = (e, product) => {
+        onDelete(product);
     };
 
     return (
@@ -89,7 +88,7 @@ function TableNoApprove({ tabIndex, productsFilter, onDelete, onApprove }) {
                                                             <a
                                                                 href="#"
                                                                 onClick={(e) =>
-                                                                    handleClickApprove(e, row._id)
+                                                                    handleClickApprove(e, row)
                                                                 }
                                                             >
                                                                 <img
@@ -102,7 +101,7 @@ function TableNoApprove({ tabIndex, productsFilter, onDelete, onApprove }) {
                                                             <a
                                                                 href="#"
                                                                 onClick={(e) =>
-                                                                    handleClickDelete(e, row._id)
+                                                                    handleClickDelete(e, row)
                                                                 }
                                                             >
                                                                 <img
@@ -118,7 +117,7 @@ function TableNoApprove({ tabIndex, productsFilter, onDelete, onApprove }) {
                                                             <a
                                                                 href="#"
                                                                 onClick={(e) =>
-                                                                    handleClickDelete(e, row._id)
+                                                                    handleClickDelete(e, row)
                                                                 }
                                                             >
                                                                 <img

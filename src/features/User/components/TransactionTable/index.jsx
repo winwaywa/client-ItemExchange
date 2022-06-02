@@ -84,9 +84,22 @@ function TransactionTable({ user, tabIndex, transactions, productList, onCancel,
     };
 
     //handleClickCancel
-    const handleClickCancel = (e, transaction_id, product_id_requested, exchange_value) => {
+    const handleClickCancel = (
+        e,
+        request_recipient,
+        request_sender,
+        transaction_id,
+        product_id_requested,
+        exchange_value
+    ) => {
         e.preventDefault();
-        onCancel(transaction_id, product_id_requested, exchange_value);
+        onCancel(
+            request_recipient,
+            request_sender,
+            transaction_id,
+            product_id_requested,
+            exchange_value
+        );
     };
 
     return (
@@ -292,6 +305,10 @@ function TransactionTable({ user, tabIndex, transactions, productList, onCancel,
                                                                     onClick={(e) =>
                                                                         handleClickCancel(
                                                                             e,
+                                                                            row[
+                                                                                'request_recipient'
+                                                                            ],
+                                                                            row['request_sender'],
                                                                             row._id,
                                                                             row[
                                                                                 'product_id_requested'

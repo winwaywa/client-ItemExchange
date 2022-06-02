@@ -1,6 +1,7 @@
 .user__form{
     text-align: center;
     padding:2rem;
+    animation: moveToBottom linear 0.2s alternate;
 }
 .form__group{
     margin-bottom: 1.5rem;

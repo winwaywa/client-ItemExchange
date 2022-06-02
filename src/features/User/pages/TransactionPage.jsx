@@ -7,6 +7,8 @@ import transactionApi from '../../../api/transactionApi';
 import productApi from '../../../api/productApi';
 import TransactionTable from '../components/TransactionTable';
 import { useSnackbar } from 'notistack';
+import { sendNotification } from '../../../hook';
+
 TransactionPage.propTypes = {};
 
 function TransactionPage({ user }) {
@@ -44,6 +46,7 @@ function TransactionPage({ user }) {
         setTabIndex(newValue);
     };
 
+    //Xử lí khi 2 bên chọn phương thức giao dịch
     const handleTransactionDone = async (
         transaction_id,
         product_id_requested,
@@ -54,9 +57,8 @@ function TransactionPage({ user }) {
         const { transaction } = await transactionApi.findAndUpdateTransaction(transaction_id, {
             ...method,
         });
-        console.log(transaction);
-        console.log(transaction.transaction_method_of_request_recipient);
-        console.log(transaction.transaction_method_of_request_sender);
+        console.log('transaction', transaction);
+
         if (
             (transaction.transaction_method_of_request_recipient === 'free' &&
                 transaction.transaction_method_of_request_sender) === 'free'
@@ -66,21 +68,29 @@ function TransactionPage({ user }) {
             });
 
             //updated products into exchanged
-            const product1 = await productApi.updateProduct(product_id_requested, {
+            await productApi.updateProduct(product_id_requested, {
                 status: 'exchanged',
             });
-            console.log(transaction, product1);
             if (exchange_value.length > 12) {
-                const product2 = await productApi.updateProduct(product_id_requested, {
+                await productApi.updateProduct(product_id_requested, {
                     status: 'exchanged',
                 });
-                console.log(product2);
             }
+
             enqueueSnackbar(
                 'Các bạn cùng chọn tự trao đổi đồ với nhau ! Giao dịch này sẽ xem như hoàn thành !',
                 {
                     variant: 'success',
                 }
+            );
+            // gửi thông báo
+            sendNotification(
+                transaction.request_recipient,
+                `Bạn và ${transaction.request_sender} đã thống nhất tự trao đổi đồ với nhau`
+            );
+            sendNotification(
+                transaction.request_sender,
+                `Bạn và ${transaction.request_recipient} đã thống nhất tự trao đổi đồ với nhau`
             );
         } else if (
             (transaction.transaction_method_of_request_recipient === 'intermediary' &&
@@ -90,17 +100,40 @@ function TransactionPage({ user }) {
                 variant: 'success',
             });
             navigate('/delivery');
+            //gửi thông báo
+            sendNotification(
+                transaction.request_recipient,
+                `Bạn và ${transaction.request_sender} đã thống nhất đổi đồ qua trung gian`
+            );
+            sendNotification(
+                transaction.request_sender,
+                `Bạn và ${transaction.request_recipient} đã thống nhất đổi đồ qua trung gian`
+            );
         } else {
             enqueueSnackbar(
-                'Các bạn cần chọn cùng một phương thức giao dịch để có thể tiếp tục !',
+                'Các bạn cần xác nhận cùng phương thức giao dịch để có thể tiếp tục !',
                 {
                     variant: 'info',
                 }
             );
+            if (transaction.transaction_method_of_request_recipient !== 'null') {
+                sendNotification(
+                    transaction.request_sender,
+                    `${transaction.request_recipient} đã cập nhật phương thức giao dịch`
+                );
+            }
+            if (transaction.transaction_method_of_request_sender !== 'null') {
+                sendNotification(
+                    transaction.request_recipient,
+                    `${transaction.request_sender} đã cập nhật phương thức giao dịch`
+                );
+            }
         }
     };
 
     const handleTransactionCancel = async (
+        request_recipient,
+        request_sender,
         transaction_id,
         product_id_requested,
         exchange_value
@@ -118,6 +151,10 @@ function TransactionPage({ user }) {
                 status: 'enable',
             });
         }
+
+        sendNotification(request_recipient, `Giao dịch giữa bạn và ${request_sender} đã bị huỷ !`);
+        sendNotification(request_sender, `Giao dịch giữa bạn và ${request_recipient} đã bị huỷ !`);
+
         navigate(`/${user.username}`);
     };
 

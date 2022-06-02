@@ -5,15 +5,17 @@ import MessageOutlineIcon from '../../../images/icon-svg/message-outline-icon.sv
 import NotificationIcon from '../../../images/icon-svg/notification-icon.svg';
 import Logo from '../../../images/logo.png';
 
-import React from 'react';
 import PropTypes from 'prop-types';
 import { NavLink, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import Notification from '../Notification';
+
 Header.propTypes = {};
 
 function Header(props) {
     const loggedUser = useSelector((state) => state.user.current);
     const isLoggedIn = !!loggedUser;
+    const countNotification = useSelector((state) => state.user.notification);
 
     return (
         <header className="header">
@@ -25,13 +27,19 @@ function Header(props) {
                     <img className="header__icon" src={HomeIcon} alt="product-icon" />
                 </NavLink>
                 {isLoggedIn && (
-                    <NavLink className="header__link" to="notification">
-                        <img
-                            className="header__icon"
-                            src={NotificationIcon}
-                            alt="notification-icon"
-                        />
-                    </NavLink>
+                    <div className="header__notification">
+                        <a href="" className="header__link" onClick={(e) => e.preventDefault()}>
+                            <img
+                                className="header__icon"
+                                src={NotificationIcon}
+                                alt="notification-icon"
+                            />
+                            {countNotification > 0 && (
+                                <span className="header__count">{countNotification}</span>
+                            )}
+                        </a>
+                        <Notification />
+                    </div>
                 )}
                 {isLoggedIn && (
                     <NavLink className="header__link" to="message">
