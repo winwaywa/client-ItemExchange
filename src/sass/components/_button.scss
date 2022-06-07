@@ -18,10 +18,32 @@
         border: none;
         cursor: pointer;
     }
+      
+    &::after {
+        content: "";
+        display: inline-block;
+        height: 100%;
+        width: 100%;
+        border-radius: 10rem;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+        transition: all .4s;
+    }
+    &--animated {
+        animation: moveInBottom .5s ease-out .75s;
+        animation-fill-mode: backwards;
+    }
     
     &:hover {
         transform: translateY(-1px);
         box-shadow: 0 0.2rem 0.4rem rgba(#000,.2);
+
+        &::after {
+            transform: scaleX(1.4) scaleY(1.6);
+            opacity: 0;
+        }
     }
     
     &:active
@@ -55,17 +77,18 @@
         background-color:#f44336;
         color: var(--color-white);
     }
+
     &--white {
         background-color:#fff;
         color: var(--color-grey-dark);
+        &::after {
+            background-color: #fff;
+        }
     }
+
     &--grey {
         background-color:#D8DADF;
         color: var(--color-grey-dark);
     }
-    
-    &--animated {
-        animation: moveInBottom .5s ease-out .2s;
-        animation-fill-mode: backwards;
-    }
+
 }

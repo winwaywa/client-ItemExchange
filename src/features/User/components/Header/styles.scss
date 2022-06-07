@@ -4,12 +4,19 @@
         padding:0 16rem;
         margin: 0 -4rem;
         box-shadow: 0 0.1rem 0.2rem rgba(#000,0.1);
+        
+        @media only screen and (max-width: 56.25em) { 
+            padding:0;
+            margin: 0 ;
+        }; 
     }
     // ảnh lớn
     &__img-cover{
         height: 35rem;
-        cursor: pointer;
         position: relative;
+        @media only screen and (max-width: 37.5em) { 
+            height: 30rem;
+        }; 
 
         &::after{
             content:'';
@@ -48,9 +55,16 @@
             justify-content: space-around;
             z-index:100;
 
-
+            span{
+                @media only screen and (max-width: 37.5em) { 
+                    display: none;
+                };    
+            }
             .svg-icon{
                 margin-right: 0.5rem;
+                @media only screen and (max-width: 37.5em) { 
+                    margin-right: 0;
+                };
             }
         }
     }
@@ -61,6 +75,10 @@
         justify-content: space-around;
         align-items: center;
         padding-bottom:2rem;
+        @media only screen and (max-width: 37.5em) { 
+            flex-direction: column;
+
+        };
         label{
             position: relative;
         }
@@ -90,6 +108,11 @@
         cursor: pointer;
         z-index: 100;
 
+        @media only screen and (max-width: 37.5em) { 
+        margin-top:-50%;
+            margin-left: 0;
+        };
+
         &:hover{
             filter: brightness(0.9)
         }
@@ -101,6 +124,11 @@
     &__action{
         margin-right:6rem;
         margin-left:auto;
+
+        @media only screen and (max-width: 37.5em) { 
+            margin-right:0;
+            margin:0 auto;
+        };
         button{
             display:flex;
             align-items: center;

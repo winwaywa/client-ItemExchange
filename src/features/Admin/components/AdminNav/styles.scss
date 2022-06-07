@@ -1,33 +1,37 @@
 .admin{
     .nav{
+        position:fixed;
+        width: 20rem;
+        padding:2rem ;
+
         &__list{
             list-style: none;
         }
         &__item{
-            padding-bottom: 1rem;
+            margin-bottom: 1rem;
+
             .active{
-                background-image: linear-gradient(to right, var(--color-primary) 0.5rem,var(--color-white) 0.5rem 100%);
-                .nav__icon{
-                    filter: invert(0.2);
-                }
+                // box-shadow: 0 1px 0.1rem rgba(#000,0.1  );
+                background-color: var(--color-primary-light);
             }     
         }
         &__link{
             &:link,
             &:visited {
-                color: var(--color-primary);
+                color: var(--color-grey-dark);
                 text-decoration: none;
                 padding: 0.5rem 1rem;
                 transition: all .2s;
+                border-radius: 0.5rem;
 
                 display:flex;
             }
         }
         &__icon{
-            margin-right:0.5rem;  
+            margin-right:1rem;  
             width: 3rem;
             height: 3rem;
-            filter: invert(1);
+            filter: invert(0.4);
         }
     }
     

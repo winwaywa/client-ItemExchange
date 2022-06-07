@@ -10,7 +10,7 @@ import MessageFillIcon from '../../../../../images/icon-svg/message-fill-icon.sv
 
 Header.propTypes = {};
 
-function Header({ user, me, handleLogout, handleUpdateUser }) {
+function Header({ user, me, handleLogout, handleUpdateAvatar }) {
     const [avatar, setAvatar] = useState('');
 
     //dialog
@@ -39,11 +39,9 @@ function Header({ user, me, handleLogout, handleUpdateUser }) {
         });
         if (willDelete) {
             //update
-            handleUpdateUser({ file: files[0], url: preview });
+            handleUpdateAvatar({ file: files[0], url: preview });
         }
     };
-
-    //
 
     return (
         <section className="user__header">

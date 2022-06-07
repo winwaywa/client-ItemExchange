@@ -4,7 +4,6 @@ import { Routes, Route, useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import Header from './components/Header';
-import NotFound from '../../components/NotFound';
 
 import GuessPage from './pages/GuessPage';
 import PostPage from './pages/PostPage';
@@ -19,6 +18,8 @@ import { logout } from '../Auth/userSlice';
 // import { googleLogout } from '@react-oauth/google';
 
 import PropTypes from 'prop-types';
+import DeliveryPage from './pages/DeliveryPage';
+
 UserFeature.propTypes = {};
 
 function UserFeature(props) {
@@ -46,15 +47,15 @@ function UserFeature(props) {
     }, [username]);
     console.log({ me, user });
 
-    //Update User
-    const handleUpdateUser = async ({ file, url }) => {
+    //Update avatar
+    const handleUpdateAvatar = async ({ file, url }) => {
         const newValue = { ...user, avatar: file };
         try {
             const user = await userApi.updateUser(newValue);
             if (!user) {
                 throw new Error('Cập nhật thất bại!');
             }
-            //cập nhật lại trang
+            //cập nhật lại avatar ở client
             setUser((newValue) => ({ ...newValue, avatar: url }));
             //cập nhật user ở redux
             const action = updateUser({
@@ -65,6 +66,28 @@ function UserFeature(props) {
             swal('Thành công', 'Cập nhật thông tin thành công!', 'success');
         } catch (err) {
             swal('Thất bại', `${err.message}!`, 'error');
+        }
+    };
+
+    //Update user
+    const handleUpdateUser = async (data) => {
+        const willDelete = await swal({
+            title: 'Xác nhận',
+            text: 'Bạn chắc chắn muốn cập nhật thông tin của mình?',
+            icon: 'warning',
+            dangerMode: true,
+        });
+        if (willDelete) {
+            try {
+                const { user } = await userApi.updateUser(data);
+                if (!user) {
+                    throw new Error('Cập nhật thất bại!');
+                }
+                setUser({ ...user });
+                swal('Thành công', 'Cập nhật thông tin thành công!', 'success');
+            } catch (err) {
+                swal('Thất bại', `${err.message}!`, 'error');
+            }
         }
     };
 
@@ -83,7 +106,7 @@ function UserFeature(props) {
                 user={user}
                 me={me}
                 handleLogout={handleLogout}
-                handleUpdateUser={handleUpdateUser}
+                handleUpdateAvatar={handleUpdateAvatar}
             />
             <div className="user__main">
                 {/* Check xem trang user đó phải của mình không */}
@@ -91,9 +114,15 @@ function UserFeature(props) {
                     <div className="user__me">
                         <Routes>
                             <Route path="" element={<PostPage />} />
-                            <Route path="about" element={<AboutPage />} />
+                            <Route
+                                path="about"
+                                element={
+                                    <AboutPage user={user} handleUpdateUser={handleUpdateUser} />
+                                }
+                            />
                             <Route path="requests" element={<RequestPage />} />
                             <Route path="transactions" element={<TransactionPage user={user} />} />
+                            <Route path="delivery" element={<DeliveryPage />} />
                         </Routes>
                     </div>
                 )}

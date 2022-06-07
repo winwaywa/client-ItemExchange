@@ -7,17 +7,14 @@ import NotFound from './components/NotFound';
 
 import ProductFeature from './features/Product';
 import ChatFeature from './features/Chat';
-import DeliveryFeature from './features/Delivery';
 import Login from './features/Auth/components/Login';
 import Register from './features/Auth/components/Register';
+import About from './features/About';
 
 import UserFeature from './features/User';
 import AdminFeature from './features/Admin';
 
-import { checkPropTypes } from 'prop-types';
-
 function App() {
-    console.log('a');
     return (
         <div className="App">
             <Header />
@@ -27,11 +24,11 @@ function App() {
                     <Route path="products/*" element={<ProductFeature />} />
                     <Route path="login" element={<Login />} />
                     <Route path="register" element={<Register />} />
+                    <Route path="about" element={<About />} />
 
                     <Route path="admin/*" element={<AdminFeature />} />
                     <Route path=":username/*" element={<UserFeature />} />
-                    <Route path="message" element={<ChatFeature />} />
-                    <Route path="delivery" element={<DeliveryFeature />} />
+                    <Route path="message/*" element={<ChatFeature />} />
                 </Routes>
             </div>
             <Footer />

@@ -1,0 +1,13 @@
+.input--text{
+    padding:1rem;
+    outline:none;
+    border-radius: 3px;
+    border: 1px solid rgb(179, 176, 176);
+    font-family: "Josefin Sans", sans-serif;
+    font-weight: 300;
+    font-size: 1.6rem;
+
+    &:hover{
+        border: 1px solid #000;
+    }
+}

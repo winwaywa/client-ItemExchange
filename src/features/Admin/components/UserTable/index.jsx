@@ -10,7 +10,7 @@ import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 
 import EditIcon from '../../../../../images/icon-svg/edit-icon.svg';
-import DeleteIcon from '../../../../../images/icon-svg/delete-icon.svg';
+import BlockIcon from '../../../../../images/icon-svg/block-icon.svg';
 import MessageOutLineIcon from '../../../../../images/icon-svg/message-outline-icon.svg';
 
 import { useSelector } from 'react-redux';
@@ -25,9 +25,9 @@ function UserTable({ userList = [] }) {
         { id: 'username', label: 'username', minWidth: 100 },
         // { id: 'full_name', label: 'Tên đầy đủ', minWidth: 100 },
         // { id: 'address', label: 'Địa chỉ', minWidth: 100 },
-        { id: 'province', label: 'Khu vực', minWidth: 100 },
-        { id: 'email', label: 'Email', minWidth: 100 },
-        { id: 'phone', label: 'SĐT', minWidth: 100 },
+        // { id: 'province', label: 'Khu vực', minWidth: 100 },
+        // { id: 'email', label: 'Email', minWidth: 100 },
+        // { id: 'phone', label: 'SĐT', minWidth: 100 },
         { id: 'role', label: 'Vai trò', minWidth: 50 },
         {
             id: 'operation',
@@ -80,9 +80,7 @@ function UserTable({ userList = [] }) {
                                             return (
                                                 <TableCell key={column.id} align={column.align}>
                                                     {column.id === 'username' && (
-                                                        <Link to={`/products/${row._id}`}>
-                                                            {value}
-                                                        </Link>
+                                                        <Link to={`/${value}`}>{value}</Link>
                                                     )}
                                                     {column.id === 'avatar' && (
                                                         <img
@@ -114,7 +112,7 @@ function UserTable({ userList = [] }) {
                                                                 {' '}
                                                                 <img
                                                                     className="svg-icon"
-                                                                    src={DeleteIcon}
+                                                                    src={BlockIcon}
                                                                     alt="delete-icon"
                                                                 />
                                                             </a>

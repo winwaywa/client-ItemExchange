@@ -13,10 +13,6 @@ function ProductSort({ currentSort, onChange }) {
     return (
         <div className="product__sort">
             <Tabs
-                sx={{
-                    borderBottom: 1,
-                    borderColor: 'divider',
-                }}
                 value={currentSort}
                 onChange={handleChange}
                 textColor="primary"

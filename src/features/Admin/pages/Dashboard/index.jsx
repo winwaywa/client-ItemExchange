@@ -1,11 +1,17 @@
 import './styles.scss';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import moment from 'moment';
+import LookIcon from '../../../../../images/icon-svg/look-icon.svg';
+import PostIcon from '../../../../../images/icon-svg/post-icon.svg';
+import UserIcon from '../../../../../images/icon-svg/user-icon.svg';
+import ReportIcon from '../../../../../images/icon-svg/report-icon.svg';
+
 import PropTypes from 'prop-types';
 import userApi from '../../../../api/userApi';
 import productApi from '../../../../api/productApi';
 import transactionApi from '../../../../api/transactionApi';
 import RenderLineChart from '../../components/RenderLineChart';
-import moment from 'moment';
 
 Dashboard.propTypes = {};
 
@@ -57,19 +63,40 @@ function Dashboard(props) {
     return (
         <div className="dashboard">
             <div className="navigation">
-                <div style={{ backgroundColor: 'orange' }} className="navigation__box">
-                    <span className="navigation__quantity">1205</span> lượt truy cập
+                <div
+                    style={{ backgroundColor: 'var(--color-primary)' }}
+                    className="navigation__box"
+                >
+                    <img className="navigation__icon" src={LookIcon} alt="look-icon" />
+                    <div>
+                        <span className="navigation__quantity">1205</span> lượt truy cập
+                    </div>
                 </div>
-                <div style={{ backgroundColor: 'green' }} className="navigation__box">
-                    <span className="navigation__quantity">{users.length}</span>
-                    Người dùng
-                </div>
-                <div style={{ backgroundColor: 'blue' }} className="navigation__box">
-                    <span className="navigation__quantity">{countPostByStatus('disable')}</span> Bài
-                    viết chưa duyệt
-                </div>
-                <div style={{ backgroundColor: 'violet' }} className="navigation__box">
-                    <span className="navigation__quantity">10</span> Bình luận mới
+                <Link style={{ backgroundColor: '#04AA6D ' }} to="user" className="navigation__box">
+                    <img className="navigation__icon" src={UserIcon} alt="look-icon" />
+                    <div>
+                        <span className="navigation__quantity">{users.length}</span>
+                        Người dùng mới
+                    </div>
+                </Link>
+
+                <Link
+                    style={{ backgroundColor: 'var(--color-secondary)' }}
+                    to="post"
+                    className="navigation__box"
+                >
+                    <img className="navigation__icon" src={PostIcon} alt="look-icon" />
+                    <div>
+                        <span className="navigation__quantity">{countPostByStatus('disable')}</span>{' '}
+                        Bài viết chưa duyệt
+                    </div>
+                </Link>
+                <div style={{ backgroundColor: '#f44336' }} className="navigation__box">
+                    <img className="navigation__icon" src={ReportIcon} alt="look-icon" />
+                    <div>
+                        <span className="navigation__quantity">10</span>
+                        Báo cáo vi phạm mới
+                    </div>
                 </div>
             </div>
             <div className="transaction">

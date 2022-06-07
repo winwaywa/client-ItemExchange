@@ -15,8 +15,9 @@
 
     &__logo{
         height: 5rem;
-        padding-top: 1rem;
-        margin-left: 1rem;
+        padding: 0.2rem;
+        margin-left: 4rem;
+        margin-right: 0.5rem;
     }
     &__nav{
         display: flex;
@@ -72,10 +73,11 @@
         width: 2rem;
         background-color: red;
         color:#fff;
-        font-size: 1.5rem;
-        padding:0.4rem;
+        font-size: 1.4rem;
+        font-weight: 300;
+        padding:0.2rem;
         text-align: center;
-        line-height: 1.5rem;
+        line-height: 1.8rem;
         vertical-align: bottom;
         border-radius: 100%;
     }

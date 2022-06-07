@@ -15,6 +15,7 @@ function GuessPage({ user }) {
     useEffect(() => {
         (async () => {
             const products = await productApi.getAllProducts({
+                status: 'enable',
                 username: user.username,
                 _sort: 'createdAt:DESC',
             });

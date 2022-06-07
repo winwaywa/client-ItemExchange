@@ -1,6 +1,12 @@
 .user{
     &__main{
         padding:0 18rem;
+        @media only screen and (max-width: 56.25em) { 
+           padding:0;
+        }; 
+        @media only screen and (max-width: 37.5em) { 
+            padding:1rem;
+         }; 
     }
     &__me{
         margin-top:1rem;

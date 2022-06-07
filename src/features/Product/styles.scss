@@ -1,6 +1,10 @@
 .product{
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     justify-content: center;
+
+    @media only screen and (max-width: 37.5em) { 
+        flex-direction: column;
+    }; 
 }

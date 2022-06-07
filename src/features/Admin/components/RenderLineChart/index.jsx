@@ -9,7 +9,7 @@ function RenderLineChart({ data = [] }) {
     return (
         <>
             <LineChart
-                width={500}
+                width={450}
                 height={300}
                 data={data}
                 margin={{ top: 0, right: 0, bottom: 0, left: 0 }}

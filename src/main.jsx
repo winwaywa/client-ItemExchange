@@ -18,10 +18,10 @@ ReactDOM.createRoot(document.getElementById('root')).render(
             <BrowserRouter>
                 <SnackbarProvider
                     iconVariant={{
-                        success: '✅',
-                        error: '✖️',
-                        warning: '⚠️',
-                        info: 'ℹ️',
+                        success: ' ✅ ',
+                        error: ' ✖️ ',
+                        warning: ' ⚠️ ',
+                        info: ' ℹ️ ',
                     }}
                     anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                 >

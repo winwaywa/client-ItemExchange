@@ -7,6 +7,7 @@ import productApi from '../../../../api/productApi';
 import transactionApi from '../../../../api/transactionApi';
 import userApi from '../../../../api/userApi';
 import mailApi from '../../../../api/mailApi';
+import conversationApi from '../../../../api/conversationApi';
 
 import RequestList from './RequestList';
 import RequestDialog from './RequestDialog';
@@ -121,6 +122,7 @@ function ProductRequests({ product }) {
             icon: 'warning',
             dangerMode: true,
         });
+
         if (willDelete) {
             try {
                 // Khi đồng ý đổi , tất cả transaction có product_id_requested và exchange_value(nếu là đồ)
@@ -179,9 +181,13 @@ function ProductRequests({ product }) {
                     console.log(product_of_sender);
                 }
 
+                //Mở chat cho cả 2
+                await conversationApi.openConversation({
+                    members: [product.createdBy, request_sender],
+                });
+
                 //Chuyển sang trang chat
                 navigate(`/${product.createdBy}/transactions`);
-
                 swal(
                     'Thành công',
                     `Bây giờ Bạn và ${request_sender} có thể xem thông tin và trò chuyện với nhau!`,

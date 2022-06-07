@@ -1,0 +1,17 @@
+.transaction{
+        &__table{
+            border-collapse: collapse;
+            padding: 1rem;
+            width:100%;
+            text-align: center;
+
+        th{
+            background-color: var(--color-primary-light);
+            // color:#fff;
+        }
+        td, th {
+            border: 1px solid #dddddd;
+            padding:1rem;
+        }
+    }
+}

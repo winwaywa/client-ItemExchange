@@ -1,71 +1,39 @@
 import './styles.scss';
-import { useState, useEffect, useRef } from 'react';
-import socketIOClient from 'socket.io-client';
+import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import ChatList from './components/ChatList';
-const host = 'http://localhost:5000';
+import ChatBox from './components/ChatBox';
+import conversationApi from '../../api/conversationApi';
 
 function ChatFeature() {
     const me = useSelector((state) => state.user.current);
-
-    const [mess, setMess] = useState([]);
-    const [message, setMessage] = useState('');
-    const [user, setUser] = useState(me?.username);
-
-    const socketRef = useRef();
+    const [conversations, setConversations] = useState([]);
+    const [conversationId, setConversationId] = useState();
 
     useEffect(() => {
-        //kết nối
-        socketRef.current = socketIOClient.connect(host);
-
-        socketRef.current.on('sendDataServer', (dataGot) => {
-            setMess((oldMsgs) => [...oldMsgs, dataGot]);
-        }); // mỗi khi có tin nhắn thì mess sẽ được render thêm
-
-        return () => {
-            socketRef.current.disconnect();
-        };
+        (async () => {
+            const { conversations } = await conversationApi.getConversationsByUser();
+            setConversations(conversations);
+            if (conversations.length > 0) setConversationId(conversations[0]._id);
+        })();
     }, []);
 
-    const sendMessage = (event) => {
-        event.preventDefault();
-        if (message !== null) {
-            const msg = {
-                content: message,
-                user: user,
-            };
-            socketRef.current.emit('sendDataClient', msg);
-            setMessage('');
-        }
+    const handleClickChatItem = (conversationId) => {
+        setConversationId(conversationId);
     };
 
-    const renderMess = mess.map((m, index) => (
-        <div
-            key={index}
-            className={`${m.user === user ? 'your-message' : 'other-people'} chat-item`}
-        >
-            {m.user} : {m.content}
-        </div>
-    ));
-    console.log(mess);
     return (
-        <div>
-            <ChatList me={me} />
-            <div class="box-chat">
-                <div class="send-box">
-                    <form>
-                        <input
-                            type="text"
-                            value={message}
-                            onChange={(e) => setMessage(e.target.value)}
-                            // onChange={}
-                            placeholder="Nhập tin nhắn ..."
-                        />
-                        <button onClick={sendMessage}>Send</button>
-                    </form>
+        <div className="chat">
+            {conversations.length > 0 && (
+                <ChatList me={me} conversations={conversations} onClick={handleClickChatItem} />
+            )}
+            {conversationId && <ChatBox me={me} conversationId={conversationId} />}
+
+            {conversations.length === 0 && (
+                <div className="notes info">
+                    <p>Hiện tại bạn không có trong cuộc trò chuyện với người nào!</p>
                 </div>
-                <div class="box-chat_message">{renderMess}</div>
-            </div>
+            )}
         </div>
     );
 }

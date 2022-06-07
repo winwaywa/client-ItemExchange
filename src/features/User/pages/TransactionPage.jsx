@@ -5,9 +5,10 @@ import Box from '@mui/material/Box';
 import { useNavigate } from 'react-router-dom';
 import transactionApi from '../../../api/transactionApi';
 import productApi from '../../../api/productApi';
-import TransactionTable from '../components/TransactionTable';
 import { useSnackbar } from 'notistack';
 import { sendNotification } from '../../../hook';
+import TransactionTable from '../components/TransactionTable';
+import conversationApi from '../../../api/conversationApi';
 
 TransactionPage.propTypes = {};
 
@@ -21,8 +22,8 @@ function TransactionPage({ user }) {
     useEffect(() => {
         const status =
             tabIndex === 0
-                ? { status_product: ['exchanging', 'exchanged'], status_transaction: 'approved' }
-                : { status_product: ['exchanging', 'exchanged'], status_transaction: 'completed' };
+                ? { status_product: 'exchanging', status_transaction: 'approved' }
+                : { status_product: 'exchanged', status_transaction: 'completed' };
         (async () => {
             const { transactions } = await transactionApi.getTransactionsWithCondition({
                 status: status.status_transaction,
@@ -72,7 +73,7 @@ function TransactionPage({ user }) {
                 status: 'exchanged',
             });
             if (exchange_value.length > 12) {
-                await productApi.updateProduct(product_id_requested, {
+                await productApi.updateProduct(exchange_value, {
                     status: 'exchanged',
                 });
             }
@@ -83,6 +84,13 @@ function TransactionPage({ user }) {
                     variant: 'success',
                 }
             );
+
+            //đóng chat
+            //Còn trường hợp cả 2 vẫn còn giao dịch khác nên chưa đóng.
+            // await conversationApi.closeConversation({
+            //     members: [transaction.request_recipient, transaction.request_sender],
+            // });
+
             // gửi thông báo
             sendNotification(
                 transaction.request_recipient,
@@ -99,7 +107,7 @@ function TransactionPage({ user }) {
             enqueueSnackbar('Đơn trao đổi của bạn sẽ được xác nhận sớm !', {
                 variant: 'success',
             });
-            navigate('/delivery');
+            navigate(`/${user.username}/delivery`);
             //gửi thông báo
             sendNotification(
                 transaction.request_recipient,
@@ -171,17 +179,20 @@ function TransactionPage({ user }) {
                     <Tab value={1} label="Hoàn thành" />
                 </Tabs>
             </Box>
-            {transactions.length > 0 ? (
+
+            {transactions.length > 0 && (
                 <TransactionTable
-                    user={user}
                     tabIndex={tabIndex}
+                    user={user}
                     transactions={transactions}
                     productList={productList}
                     onDone={handleTransactionDone}
                     onCancel={handleTransactionCancel}
                 />
-            ) : (
-                <div class="notes info">
+            )}
+
+            {transactions.length === 0 && (
+                <div className="notes info">
                     <p>Hiện chưa có giao dịch nào !</p>
                 </div>
             )}

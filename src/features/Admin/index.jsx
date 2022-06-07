@@ -1,9 +1,7 @@
 import './styles.scss';
-import React from 'react';
+import { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import { useNavigate, Routes, Route } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
-import { logout } from '../Auth/userSlice';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 
 import AdminNav from './components/AdminNav';
 import Dashboard from './pages/Dashboard';
@@ -11,31 +9,39 @@ import UserPage from './pages/UserPage';
 import PostPage from './pages/PostPage';
 import CategoryPage from './pages/CategoryPage';
 
+import userApi from '../../api/userApi';
+
 AdminFeature.propTypes = {};
 
 function AdminFeature(props) {
-    const dispatch = useDispatch();
     const navigate = useNavigate();
+    const [isAdmin, setIsAdmin] = useState(false);
 
-    const handleLogout = (e) => {
-        e.preventDefault();
-        const action = logout();
-        dispatch(action);
-        navigate('/login');
-    };
+    useEffect(() => {
+        (async () => {
+            const { user } = await userApi.getUser();
+            const isTrue = user.role === 'admin' ? true : false;
+            if (!isTrue) navigate(`/${user.username}`, { replace: true });
+            setIsAdmin(isTrue);
+        })();
+    }, []);
 
     return (
-        <section className="admin">
-            <AdminNav handleLogout={handleLogout} />
-            <div className="admin__main">
-                <Routes>
-                    <Route path="*" element={<Dashboard />} />
-                    <Route path="user" element={<UserPage />} />
-                    <Route path="post" element={<PostPage />} />
-                    <Route path="category" element={<CategoryPage />} />
-                </Routes>
-            </div>
-        </section>
+        <>
+            {isAdmin && (
+                <section className="admin">
+                    <AdminNav />
+                    <div className="admin__main">
+                        <Routes>
+                            <Route path="*" element={<Dashboard />} />
+                            <Route path="user" element={<UserPage />} />
+                            <Route path="post" element={<PostPage />} />
+                            <Route path="category" element={<CategoryPage />} />
+                        </Routes>
+                    </div>
+                </section>
+            )}
+        </>
     );
 }
 

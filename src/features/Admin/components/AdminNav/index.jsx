@@ -38,12 +38,6 @@ function AdminNav({ handleLogout }) {
                         <p>Loại đồ</p>
                     </NavLink>
                 </li>
-                <li className="nav__item">
-                    <a href="#" className="nav__link" onClick={(e) => handleLogout(e)}>
-                        <img className="nav__icon" src={LogoutIcon} alt="logout-icon" />
-                        <p>Đăng xuất</p>
-                    </a>
-                </li>
             </ul>
         </nav>
     );

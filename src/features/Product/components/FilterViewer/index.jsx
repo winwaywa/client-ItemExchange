@@ -115,11 +115,12 @@ function FilterViewer({ filters = {}, onChange = null }) {
     }, [filters['category_id']]);
 
     return (
-        <Box paddingTop={1} paddingBottom={2} component="ul">
-            <Stack direction="row" spacing={1}>
+        <Box paddingTop={1} paddingBottom={4} component="ul">
+            <Stack direction="row" flexWrap="wrap">
                 {visibleFilters.map((x) => (
                     <li key={x.id}>
                         <Chip
+                            sx={{ mt: 1, mr: 1 }}
                             label={x.getLabel(filters, categoryName)}
                             color={x.isActive(filters) ? 'primary' : 'default'}
                             clickable={!x.isRemovable}

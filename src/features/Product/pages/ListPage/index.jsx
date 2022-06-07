@@ -12,6 +12,7 @@ import FilterViewer from '../../components/FilterViewer';
 import ProductSort from '../../components/ProductSort';
 import ProductSearch from '../../components/ProductSearch';
 import ProductsSkeletonList from '../../components/ProductsSkeletonList';
+import MenuIcon from '../../../../../images/icon-svg/menu-icon.svg';
 
 ListPage.propTypes = {};
 
@@ -98,7 +99,12 @@ function ListPage(props) {
 
     return (
         <>
+            <input type="checkbox" id="open-filter" name="open-filter" />
+            <label id="nav-icon" htmlFor="open-filter">
+                <img className="svg-icon" src={MenuIcon} alt="menu-icon" />
+            </label>
             <ProductFilters filters={queryParams} onChange={handleFilterChange} />
+
             <div className="product__main">
                 <div className="product__sort-search">
                     <ProductSort currentSort={queryParams._sort} onChange={handleSortChange} />
@@ -113,9 +119,7 @@ function ListPage(props) {
                 )}
 
                 {products.length === 0 && (
-                    <div class="notes info">
-                        <p>Không có sản phẩm nào !</p>
-                    </div>
+                    <p style={{ textAlign: 'center' }}>Không có sản phẩm nào !</p>
                 )}
 
                 {products.length !== 0 && (

@@ -5,7 +5,6 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import userApi from '../../../../api/userApi';
 import categoryApi from '../../../../api/categoryApi';
-import ProductComments from '../ProductComments';
 import ProductRequests from '../ProductRequests';
 import ProductInfomation from '../ProductInfomation';
 
@@ -44,14 +43,12 @@ function ProductDetails({ product }) {
                     <Tabs value={value} onChange={handleChange}>
                         <Tab label="Thông tin" value={0} />
                         <Tab label="Yêu cầu" value={1} />
-                        <Tab label="Bình luận" value={2} />
                     </Tabs>
                 </Box>
                 {value === 0 && (
                     <ProductInfomation product={product} user={user} categoryName={categoryName} />
                 )}
                 {value === 1 && <ProductRequests product={product} />}
-                {value === 2 && <ProductComments />}
             </Box>
         </div>
     );

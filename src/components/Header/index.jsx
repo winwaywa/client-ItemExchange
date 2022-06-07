@@ -19,8 +19,9 @@ function Header(props) {
 
     return (
         <header className="header">
-            <Link to="/">
+            <Link to="/" style={{ display: 'flex', alignItems: 'flex-end' }}>
                 <img src={Logo} className="header__logo" />
+                <h3 style={{ color: '#999' }}>chodoido.vn</h3>
             </Link>
             <nav className="header__nav">
                 <NavLink className="header__link" to="products">
