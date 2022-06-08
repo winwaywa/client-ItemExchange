@@ -99,8 +99,8 @@ function ListPage(props) {
 
     return (
         <>
-            <input type="checkbox" id="open-filter" name="open-filter" />
-            <label id="nav-icon" htmlFor="open-filter">
+            <input type="checkbox" id="filter-toggle" name="filter-toggle" />
+            <label id="filter-btn" htmlFor="filter-toggle">
                 <img className="svg-icon" src={MenuIcon} alt="menu-icon" />
             </label>
             <ProductFilters filters={queryParams} onChange={handleFilterChange} />

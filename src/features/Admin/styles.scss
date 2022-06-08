@@ -1,11 +1,16 @@
 .admin{
     position: relative;
-
+    
     &__main{
         margin-left: 20rem;
         padding:2rem 1rem;
         background-color: #fff;
         box-shadow: 0 0 0.2rem rgba(#000,0.1);
         min-height: calc(100vh - 14rem);    
+
+        @media only screen and (max-width: 56.25em) {
+            margin-left: 0rem;
+            padding:4rem 1rem;
+        };
     }
 }

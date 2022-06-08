@@ -23,7 +23,7 @@
     }
     
     //responsive
-    #nav-icon{
+    #filter-btn{
         display: none;
         transition: all 0.2s;
         @media only screen and (max-width: 37.5em) { 
@@ -34,12 +34,12 @@
             left:1rem;
         };
     }
-    #open-filter {
+    #filter-toggle{
         display: none;
         &:checked ~ .product__filter{
             left:0;
         }
-        &:checked ~ #nav-icon{
+        &:checked ~ #filter-btn{
             left:16rem;
         }
     }

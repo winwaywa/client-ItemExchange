@@ -1,7 +1,13 @@
 .post__form{
     padding:1rem 2rem;
+
+    @media only screen and (max-width: 37.5em) { 
+        padding:0.5rem;
+    };
+
     .form__group{
         margin-bottom: 1.5rem;
+       
         #images{
             display: none;
         }

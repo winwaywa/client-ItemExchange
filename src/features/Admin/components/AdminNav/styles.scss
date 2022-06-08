@@ -1,8 +1,43 @@
 .admin{
+    //responsive
+    #nav-btn{
+        display: none;
+        transition: all 0.2s;
+        @media only screen and (max-width: 56.25em) { 
+            display: inline-block;
+            z-index: 1000;
+            position: fixed;
+            top:6rem;
+            left:1rem;
+        };
+    }
+    #nav-toggle{
+        display: none;
+        &:checked ~ .nav{
+            left:0;
+        }
+        &:checked ~ #nav-btn{
+            left:16rem;
+        }
+    }
+
     .nav{
         position:fixed;
+        top:5rem;
+        left:0;
         width: 20rem;
         padding:2rem ;
+        transition: all 0.2s;
+        
+        @media only screen and (max-width: 56.25em) {
+            left:-20rem;
+            height: 100%;
+            padding-top:4rem ;
+            background-color: #fff;
+            box-shadow: 0 0 0.4rem rgba(#000,0.2);
+            z-index:100;
+        };
+
 
         &__list{
             list-style: none;

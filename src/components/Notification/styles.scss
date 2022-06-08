@@ -14,10 +14,16 @@
         background-color: #fff;
         border-radius: 0.5rem;
         box-shadow: 0 0 0.5rem rgb(0 0 0 / 20%);
-
         position: absolute;
         top:5rem;
-        right: -8rem;   
+        right: -8rem;  
+
+        @media only screen and (max-width: 37.5em) {
+            width: 100vw;
+            height: calc(100vh - 5rem);
+        };
+        
+        
 
       
         &::before{
@@ -40,12 +46,17 @@
     }
     &__heading{
         padding-left: 1rem;
+
+        @media only screen and (max-width: 37.5em) {
+            text-align: center;
+        };
     }
     //item
     &__list{
         height: 40rem;
         margin-bottom:1rem;
         overflow: auto;
+        
     }
 
     &__item{

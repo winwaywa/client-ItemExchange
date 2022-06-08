@@ -63,7 +63,7 @@ function PostDialog({ handleClose }) {
             aria-describedby="alert-dialog-slide-description"
         >
             <DialogTitle>
-                <h2 style={{ marginLeft: '2rem' }} className="heading-secondary">
+                <h2 style={{ textAlign: 'center' }} className="heading-secondary">
                     Bài viết mới
                 </h2>
             </DialogTitle>

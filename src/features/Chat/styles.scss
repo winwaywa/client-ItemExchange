@@ -1,7 +1,30 @@
 .chat{
     position: relative;
     margin-top: 2rem;
-    
+
+
+    //responsive
+    #nav-btn{
+        display: none;
+        transition: all 0.2s;
+        @media only screen and (max-width: 56.25em) { 
+            display: inline-block;
+            z-index: 1000;
+            position: fixed;
+            top:6rem;
+            left:1rem;
+        };
+    }
+    #nav-toggle{
+        display: none;
+        &:checked ~ .chat__list{
+            left:0;
+        }
+        &:checked ~ #nav-btn{
+            left:22rem;
+        }
+    }
+
     &__list{
         position: absolute;
         top:0;
@@ -13,6 +36,21 @@
         padding:1rem;
         box-shadow: 0 0 0.2rem rgba($color: #000000, $alpha: 0.2);
         border-radius: 0.5rem;
+        transition: all 0.2s;
+
+        @media only screen and (max-width: 56.25em) { 
+            width: 25rem;
+        };
+        @media only screen and (max-width: 37.5em) { 
+            position: fixed;
+            top:5rem;
+            border-radius: 0;
+            left:-25rem;
+            padding:4rem 1rem;
+            height: calc(100vh - 5rem);
+            overflow-y: auto;
+        };
+
     }
     &__box{
         margin-left:32rem;
@@ -20,5 +58,13 @@
         box-shadow: 0 0 0.4rem rgba($color: #000000, $alpha: 0.2);
         border-radius: 0.5rem;
         background-color: #fff;
+        @media only screen and (max-width: 56.25em) { 
+            margin-left:26rem;
+        };
+        @media only screen and (max-width: 37.5em) { 
+            margin-left:1rem;
+            margin-right: 1rem;
+        };
+       
     }
 }
