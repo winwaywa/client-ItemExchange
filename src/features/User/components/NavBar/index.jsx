@@ -37,7 +37,7 @@ function NavBar({ user, handleLogout }) {
                 </label> */}
                 <img src={MoreIcon} alt="more-icon" />
                 <div className="navbar__sub">
-                    <Link to="/admin">Trang Admin</Link>
+                    {user.role === 'admin' && <Link to="/admin">Trang Admin</Link>}
                     <Link to="delivery">Vận chuyển</Link>
                     <Link to="about">Giới thiệu</Link>
                     <a href="#" onClick={handleLogout}>

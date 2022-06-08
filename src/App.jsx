@@ -9,7 +9,7 @@ import ProductFeature from './features/Product';
 import ChatFeature from './features/Chat';
 import Login from './features/Auth/components/Login';
 import Register from './features/Auth/components/Register';
-import About from './features/About';
+import About from './components/About';
 
 import UserFeature from './features/User';
 import AdminFeature from './features/Admin';

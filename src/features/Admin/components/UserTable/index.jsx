@@ -87,6 +87,7 @@ function UserTable({ userList = [] }) {
                                                             style={{ borderRadius: '100%' }}
                                                             src={value}
                                                             width="50"
+                                                            height="50"
                                                         />
                                                     )}
                                                     {column.id === 'operation' && (

@@ -18,7 +18,7 @@ function Login(props) {
             const resultAction = await dispatch(action);
             const user = unwrapResult(resultAction);
 
-            navigate(`/${user.username}`);
+            navigate(`/${user.username}/about`);
             swal(
                 'Đăng nhập thành công',
                 `Chào mừng ${user.username} đến với chợ đồ cũ!`,
@@ -36,7 +36,7 @@ function Login(props) {
             const resultAction = await dispatch(action);
             const user = unwrapResult(resultAction);
 
-            navigate(`/${user.username}`);
+            navigate(`/${user.username}/about`);
 
             swal(
                 'Đăng nhập thành công',

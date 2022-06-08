@@ -14,8 +14,8 @@
 .filter{
     //category
     .category__item{
-        cursor: pointer;
         &:hover{
+            cursor: pointer;
             color:var(--color-secondary)
         }
     }

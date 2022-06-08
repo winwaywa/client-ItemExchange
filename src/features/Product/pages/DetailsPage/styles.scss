@@ -1,6 +1,6 @@
 .product{
     .images{
-        margin: 0 auto;
+        margin-top:2rem;
         width: 40rem;
         min-height:calc(100vh - 10rem);
         box-shadow: 0 0 0.2rem rgb(#000,0.1);
@@ -13,12 +13,12 @@
         .image__item{
             width: 100%;
             height:calc(100vh - 14rem);
-
         }   
     }
     
     .details{
         flex:1;
+        margin-top:2rem;
         box-shadow: 0 0 0.2rem rgb(#000,0.1);
         background-color: #fff;
         border-bottom-right-radius: 0.5rem;

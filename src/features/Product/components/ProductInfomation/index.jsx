@@ -3,11 +3,13 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { formatPrice } from '../../../../utils';
 import { formatTime } from '../../../../utils';
-import moment from 'moment';
+import DOMPurify from 'dompurify';
 
 ProductInfomation.propTypes = {};
 
 function ProductInfomation({ product, user, categoryName }) {
+    // sanitize html trước để cho an toàn tránh lỗi XSS
+    const safeDescription = DOMPurify.sanitize(product.describe);
     return (
         <div className="details__infomation">
             <h2 className="heading-secondary">{product.product_name}</h2>
@@ -24,8 +26,9 @@ function ProductInfomation({ product, user, categoryName }) {
             <p>
                 Địa chỉ: {user.address} - {user.province}
             </p>
-            <p>Mô tả: {product.describe} </p>
-            <p>Cập nhật lần cuối vào {formatTime(product.updatedAt)}</p>
+            {/* thuộc tính dangerouslySetInnerHTML của React */}
+            <div dangerouslySetInnerHTML={{ __html: safeDescription }} />
+            <p style={{ fontStyle: 'italic' }}>Cập nhật: {formatTime(product.updatedAt)}</p>
         </div>
     );
 }

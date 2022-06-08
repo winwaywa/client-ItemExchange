@@ -20,7 +20,7 @@ function ProductsFilters({ filters, onChange }) {
     };
 
     return (
-        <div className="product__filter">
+        <div className="product__filter filter">
             <FilterByCategory onChange={handleChange} />
             <FilterByPrice onChange={handleChange} />
             <FilterByPercentNew onChange={handleChange} />

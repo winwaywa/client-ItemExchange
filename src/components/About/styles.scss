@@ -14,10 +14,14 @@
         animation: moveInBottom .5s ease-out .5s;
         animation-fill-mode: backwards;
         position: relative;
-
         width: 100vw;
         height:100%;
 
+        @media only screen and (max-width: 37.5em) {
+            margin-right: 0;
+            margin-left: 0;
+        };
+        
         .btn--next{
             position: absolute;
             right:2rem;
@@ -38,6 +42,10 @@
         
         h1{
             text-transform: uppercase;
+
+            @media only screen and (max-width: 37.5em) {
+                font-size: 2rem;
+            };
         }
         p{
             padding:1rem;

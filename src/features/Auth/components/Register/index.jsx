@@ -20,7 +20,7 @@ function Register(props) {
             const resultAction = await dispatch(action);
             const user = unwrapResult(resultAction);
 
-            navigate(`/${user.username}`);
+            navigate(`/${user.username}/about`);
             swal('Đăng kí thành công', 'Vui lòng cập nhật thông tin cá nhân của bạn!', 'success');
         } catch (err) {
             console.log('ERROR:', err);

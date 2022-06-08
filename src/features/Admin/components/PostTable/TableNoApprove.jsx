@@ -19,6 +19,7 @@ TableNoApprove.propTypes = {};
 
 const columns = [
     { id: 'product_name', label: 'Bài viết', minWidth: 170 },
+    { id: 'createdBy', label: 'Người đăng', minWidth: 170 },
     {
         id: 'operation',
         label: 'Thao tác',
@@ -79,9 +80,12 @@ function TableNoApprove({ tabIndex, productsFilter, onDelete, onApprove }) {
                                             return (
                                                 <TableCell key={column.id} align={column.align}>
                                                     {column.id === 'product_name' && (
-                                                        <Link to={`/products/${row._id}`}>
+                                                        <Link to={`/products/${value}`}>
                                                             {value}
                                                         </Link>
+                                                    )}
+                                                    {column.id === 'createdBy' && (
+                                                        <Link to={`/${value}`}>{value}</Link>
                                                     )}
                                                     {tabIndex === 0 && column.id === 'operation' && (
                                                         <>
