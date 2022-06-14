@@ -27,12 +27,20 @@ html {
 body {
     box-sizing: border-box;
 
+    //chống copy
+    -webkit-touch-callout: none;
+   -webkit-user-select: none; 
+   -moz-user-select: none;    
+   -ms-user-select: none;     
+   -o-user-select: none;
+    user-select: none;
+
     @include respond(tab-port) {
         padding: 0;
     }
 }
 
-::selection {
-    background-color: var(--color-primary);
-    color: var(--color-white);
-}
+// ::selection {
+//     background-color: var(--color-primary);
+//     color: var(--color-white);
+// }

@@ -10,6 +10,8 @@ import PostPage from './pages/PostPage';
 import CategoryPage from './pages/CategoryPage';
 
 import userApi from '../../api/userApi';
+import TransactionPage from './pages/TransactionPage';
+import DeliveryPage from './pages/DeliveryPage';
 
 AdminFeature.propTypes = {};
 
@@ -19,10 +21,14 @@ function AdminFeature(props) {
 
     useEffect(() => {
         (async () => {
-            const { user } = await userApi.getUser();
-            const isTrue = user.role === 'admin' ? true : false;
-            if (!isTrue) navigate(`/${user.username}`, { replace: true });
-            setIsAdmin(isTrue);
+            try {
+                const { user } = await userApi.getUser();
+                const isTrue = user.role === 'admin' ? true : false;
+                if (!isTrue) navigate(`/${user.username}`, { replace: true });
+                setIsAdmin(isTrue);
+            } catch (err) {
+                navigate('/');
+            }
         })();
     }, []);
 
@@ -36,6 +42,8 @@ function AdminFeature(props) {
                             <Route path="*" element={<Dashboard />} />
                             <Route path="user" element={<UserPage />} />
                             <Route path="post" element={<PostPage />} />
+                            <Route path="transactions" element={<TransactionPage />} />
+                            <Route path="delivery" element={<DeliveryPage />} />
                             <Route path="category" element={<CategoryPage />} />
                         </Routes>
                     </div>

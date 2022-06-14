@@ -118,8 +118,21 @@
         }
     }
 
-    &__name{
+    &__text{
         margin-left: 1rem;
+        margin-bottom: 1rem;
+        p{
+            font-size: 1.4rem;
+            font-style: italic;
+            
+            @media only screen and (max-width:37.5em){
+                text-align: center;
+            }
+        }
+        span{
+            color:var(--color-primary-dark);
+            font-size: 1.6rem;
+        }
     }
     &__action{
         margin-right:6rem;

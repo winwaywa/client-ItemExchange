@@ -16,6 +16,9 @@ import { useNavigate } from 'react-router-dom';
 
 import { sendNotification } from '../../../../hook';
 
+import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
+
 ProductRequests.propTypes = {};
 
 function ProductRequests({ product }) {
@@ -26,10 +29,12 @@ function ProductRequests({ product }) {
     const [products, setProducts] = useState([]);
     const [productList, setProductList] = useState([]);
     const [transactions, setTransactions] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         (async () => {
             try {
+                setIsLoading(true);
                 const queryParams = { product_id_requested: product._id, status: 'pending' };
                 const transactions = await transactionApi.getTransactionsWithCondition(queryParams);
                 const products = await productApi.getAllProducts({
@@ -38,6 +43,7 @@ function ProductRequests({ product }) {
                 });
                 setProductList(products.products);
                 setTransactions(transactions.transactions);
+                setIsLoading(false);
             } catch (err) {
                 console.log(err);
             }
@@ -126,7 +132,7 @@ function ProductRequests({ product }) {
         if (willDelete) {
             try {
                 // Khi đồng ý đổi , tất cả transaction có product_id_requested và exchange_value(nếu là đồ)
-                //sẽ bị xoá hết(ngoại trừ transaction đươc approve)
+                //sẽ bị xoá hết(ngoại trừ transaction đươc approved)
 
                 //cập nhật status của transaction thành approved
                 const transaction_approved = await transactionApi.updateTransaction(
@@ -187,7 +193,8 @@ function ProductRequests({ product }) {
                 });
 
                 //Chuyển sang trang chat
-                navigate(`/${product.createdBy}/transactions`);
+                navigate(`/message`);
+
                 swal(
                     'Thành công',
                     `Bây giờ Bạn và ${request_sender} có thể xem thông tin và trò chuyện với nhau!`,
@@ -195,10 +202,21 @@ function ProductRequests({ product }) {
                 );
 
                 //gửi thông báo
+                //cho người đc chấp nhận
                 sendNotification(
                     request_sender,
                     `${product.createdBy} đã chấp nhận yêu cầu của bạn tới món đồ ${product.product_name}`
                 );
+                //cho người ko dc chấp nhận
+                transactions
+                    .filter((transaction) => transaction.request_sender !== request_sender)
+                    .map((transaction) => transaction.request_sender)
+                    .forEach((user) =>
+                        sendNotification(
+                            user,
+                            `Yêu cầu của bạn tới món đồ ${product.product_name} đã huỷ do ${product.createdBy} chấp nhận yêu cầu của người khác`
+                        )
+                    );
 
                 //gửi mail cho người được chấp nhận biết
                 const {
@@ -225,13 +243,16 @@ function ProductRequests({ product }) {
 
     return (
         <div className="request">
-            {product.status === 'enable' ? (
+            {!isLoading && product.status === 'enable' && (
                 <>
                     <RequestAction
                         me={me}
                         product={product}
+                        productList={productList}
                         transactions={transactions}
                         handleClickOpen={handleClickOpen}
+                        onClickCancel={handleCancelRequest}
+                        onClickApprove={handleApproveRequest}
                     />
                     <RequestList
                         me={me}
@@ -248,13 +269,19 @@ function ProductRequests({ product }) {
                         products={products}
                     />
                 </>
-            ) : (
+            )}
+            {!isLoading && product.status !== 'enable' && (
                 <div class="notes info">
                     <p>
                         <strong>Chú ý: </strong>
                         Không thể gửi yêu cầu đến sản phẩm này !
                     </p>
                 </div>
+            )}
+            {isLoading && (
+                <Box sx={{ marginTop: '1rem', textAlign: 'center' }}>
+                    <CircularProgress />
+                </Box>
             )}
         </div>
     );

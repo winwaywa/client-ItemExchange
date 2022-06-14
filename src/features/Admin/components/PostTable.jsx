@@ -9,13 +9,13 @@ import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
 
-import AcceptIcon from '../../../../../images/icon-svg/accept-icon.svg';
-import CancelIcon from '../../../../../images/icon-svg/cancel-icon.svg';
-import DeleteIcon from '../../../../../images/icon-svg/delete-icon.svg';
+import AcceptIcon from '../../../../images/icon-svg/accept-icon.svg';
+import CancelIcon from '../../../../images/icon-svg/cancel-icon.svg';
+import DeleteIcon from '../../../../images/icon-svg/delete-icon.svg';
 
 import PropTypes from 'prop-types';
 
-TableNoApprove.propTypes = {};
+PostTable.propTypes = {};
 
 const columns = [
     { id: 'product_name', label: 'Bài viết', minWidth: 170 },
@@ -28,7 +28,7 @@ const columns = [
     },
 ];
 
-function TableNoApprove({ tabIndex, productsFilter, onDelete, onApprove }) {
+function PostTable({ tabIndex, productsFilter, onDelete, onApprove }) {
     const [page, setPage] = React.useState(0);
     const [rowsPerPage, setRowsPerPage] = React.useState(6);
 
@@ -58,7 +58,10 @@ function TableNoApprove({ tabIndex, productsFilter, onDelete, onApprove }) {
                             {columns.map((column) => (
                                 <TableCell
                                     sx={{
-                                        textTransform: 'uppercase',
+                                        fontSize: '1.4rem',
+                                        fontWeight: 600,
+                                        backgroundColor: 'var(--color-primary-light)',
+                                        color: 'var(--color-grey-dark)',
                                     }}
                                     key={column.id}
                                     align={column.align}
@@ -78,9 +81,16 @@ function TableNoApprove({ tabIndex, productsFilter, onDelete, onApprove }) {
                                         {columns.map((column) => {
                                             const value = row[column.id];
                                             return (
-                                                <TableCell key={column.id} align={column.align}>
+                                                <TableCell
+                                                    key={column.id}
+                                                    align={column.align}
+                                                    sx={{
+                                                        fontSize: '1.2rem',
+                                                        fontWeight: 400,
+                                                    }}
+                                                >
                                                     {column.id === 'product_name' && (
-                                                        <Link to={`/products/${value}`}>
+                                                        <Link to={`/products/${row._id}`}>
                                                             {value}
                                                         </Link>
                                                     )}
@@ -154,4 +164,4 @@ function TableNoApprove({ tabIndex, productsFilter, onDelete, onApprove }) {
     );
 }
 
-export default TableNoApprove;
+export default PostTable;

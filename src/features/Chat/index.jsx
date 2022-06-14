@@ -4,17 +4,21 @@ import { useSelector } from 'react-redux';
 import ChatList from './components/ChatList';
 import ChatBox from './components/ChatBox';
 import conversationApi from '../../api/conversationApi';
+import LinearProgress from '@mui/material/LinearProgress';
 
 function ChatFeature() {
     const me = useSelector((state) => state.user.current);
     const [conversations, setConversations] = useState([]);
     const [conversationId, setConversationId] = useState();
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         (async () => {
+            setIsLoading(false);
             const { conversations } = await conversationApi.getConversationsByUser();
             setConversations(conversations);
             if (conversations.length > 0) setConversationId(conversations[0]._id);
+            setIsLoading(true);
         })();
     }, []);
 
@@ -24,12 +28,13 @@ function ChatFeature() {
 
     return (
         <div className="chat">
-            {conversations.length > 0 && (
+            {!isLoading && <LinearProgress />}
+            {isLoading && (
                 <ChatList me={me} conversations={conversations} onClick={handleClickChatItem} />
             )}
-            {conversationId && <ChatBox me={me} conversationId={conversationId} />}
+            {isLoading && <ChatBox me={me} conversationId={conversationId} />}
 
-            {conversations.length === 0 && (
+            {isLoading && conversations.length === 0 && (
                 <div className="notes info">
                     <p>Hiện tại bạn không có trong cuộc trò chuyện với người nào!</p>
                 </div>

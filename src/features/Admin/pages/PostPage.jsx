@@ -11,34 +11,24 @@ import Box from '@mui/material/Box';
 import productApi from '../../../api/productApi';
 import transactionApi from '../../../api/transactionApi';
 
-import TableNoApprove from '../components/PostTable/TableNoApprove';
-import TableApprove from '../components/PostTable/TableApprove';
+import PostSearch from '../components/PostSearch';
+import PostTable from '../components/PostTable';
 
 PostPage.propTypes = {};
 
 function PostPage(props) {
     const [tabIndex, setTabIndex] = useState(0);
     const [products, setProducts] = useState([]);
-    const [transactions, setTransactions] = useState([]);
 
     useEffect(() => {
         (async () => {
             var status_product = '';
-            var status_transaction = '';
             switch (tabIndex) {
                 case 0:
                     status_product = 'disable';
                     break;
                 case 1:
                     status_product = 'enable';
-                    break;
-                case 2:
-                    status_product = 'exchanging';
-                    status_transaction = 'approved';
-                    break;
-                case 3:
-                    status_product = 'exchanged';
-                    status_transaction = 'completed';
                     break;
                 default:
                     return;
@@ -49,10 +39,6 @@ function PostPage(props) {
                     _sort: 'createdAt:DESC',
                 });
 
-                const transactions = await transactionApi.getTransactionsWithCondition({
-                    status: status_transaction,
-                });
-                setTransactions(transactions.transactions);
                 setProducts(products.products);
             } catch (err) {
                 console.log(err);
@@ -111,6 +97,7 @@ function PostPage(props) {
     return (
         <div className="post">
             <Box sx={{ width: '90%', margin: '0 auto' }}>
+                <PostSearch />
                 <Box
                     sx={{
                         display: 'flex',
@@ -123,40 +110,15 @@ function PostPage(props) {
                     <Tabs value={tabIndex} onChange={handleChange}>
                         <Tab label="Chưa duyệt" value={0} />
                         <Tab label="Đã duyệt" value={1} />
-                        <Tab label="Đang trao đổi" value={2} />
-                        <Tab label="Đã đổi thành công" value={3} />
                     </Tabs>
                 </Box>
                 <div>
-                    {tabIndex === 0 && (
-                        <TableNoApprove
-                            tabIndex={tabIndex}
-                            productsFilter={products}
-                            onApprove={handleApprovePost}
-                            onDelete={handleDeletePost}
-                        />
-                    )}
-                    {tabIndex === 1 && (
-                        <TableNoApprove
-                            tabIndex={tabIndex}
-                            productsFilter={products}
-                            onDelete={handleDeletePost}
-                        />
-                    )}
-                    {tabIndex === 2 && (
-                        <TableApprove
-                            tabIndex={tabIndex}
-                            transactions={transactions}
-                            productsFilter={products}
-                        />
-                    )}
-                    {tabIndex === 3 && (
-                        <TableApprove
-                            tabIndex={tabIndex}
-                            transactions={transactions}
-                            productsFilter={products}
-                        />
-                    )}
+                    <PostTable
+                        tabIndex={tabIndex}
+                        productsFilter={products}
+                        onApprove={handleApprovePost}
+                        onDelete={handleDeletePost}
+                    />
                 </div>
             </Box>
         </div>

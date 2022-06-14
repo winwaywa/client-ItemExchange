@@ -28,10 +28,12 @@
         "react-redux": "^8.0.1",
         "react-router-dom": "6",
         "react-slick": "^0.29.0",
+        "react-to-print": "^2.14.7",
         "recharts": "^2.1.10",
         "sass": "^1.52.1",
         "socket.io-client": "^4.5.1",
-        "sweetalert": "^2.1.2"
+        "sweetalert": "^2.1.2",
+        "swiper": "^8.2.3"
     },
     "devDependencies": {
         "@types/react": "^18.0.0",

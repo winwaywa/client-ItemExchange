@@ -25,7 +25,7 @@ function ProductItem({ product }) {
                     src={product.images_url.split(',')[0]}
                     alt={product.product_name}
                 />
-                <strong className="product__price">{formatPrice(product.price)}</strong>
+                <span className="product__price">{formatPrice(product.price)}</span>
             </div>
             <p className="product__name">{product.product_name}</p>
         </>

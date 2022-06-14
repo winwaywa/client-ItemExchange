@@ -3,6 +3,9 @@ import React, { useEffect, useState } from 'react';
 import { Routes, Route, useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
+import Box from '@mui/material/Box';
+import LinearProgress from '@mui/material/LinearProgress';
+
 import Header from './components/Header';
 
 import GuessPage from './pages/GuessPage';
@@ -15,7 +18,7 @@ import userApi from '../../api/userApi';
 
 import { updateUser } from '../Auth/userSlice';
 import { logout } from '../Auth/userSlice';
-// import { googleLogout } from '@react-oauth/google';
+import { googleLogout } from '@react-oauth/google';
 
 import PropTypes from 'prop-types';
 import DeliveryPage from './pages/DeliveryPage';
@@ -31,21 +34,27 @@ function UserFeature(props) {
     const isLoggedIn = !!loggedUser;
 
     const [me, setMe] = useState({});
-    const [user, setUser] = useState({});
-    console.log(user);
+    const [user, setUser] = useState();
+
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
         (async () => {
-            const user = await userApi.getUserByUserName(username);
-            setUser(user.user);
-            //check có đăng nhập chưa, có thì gọi api lấy thông tin của mình
-            if (isLoggedIn) {
-                const me = await userApi.getUser();
-                setMe(me.user);
+            try {
+                setIsLoading(false);
+                const user = await userApi.getUserByUserName(username);
+                setUser(user.user);
+                //check có đăng nhập chưa, có thì gọi api lấy thông tin của mình
+                if (isLoggedIn) {
+                    const me = await userApi.getUser();
+                    setMe(me.user);
+                }
+                setIsLoading(true);
+            } catch (err) {
+                console.log(err);
             }
         })();
     }, [username]);
-    console.log({ me, user });
 
     //Update avatar
     const handleUpdateAvatar = async ({ file, url }) => {
@@ -96,21 +105,23 @@ function UserFeature(props) {
         e.preventDefault();
         const action = logout();
         dispatch(action);
-        // googleLogout();
+        googleLogout();
         navigate('/login');
     };
 
     return (
         <section className="user">
-            <Header
-                user={user}
-                me={me}
-                handleLogout={handleLogout}
-                handleUpdateAvatar={handleUpdateAvatar}
-            />
+            {isLoading && (
+                <Header
+                    user={user}
+                    me={me}
+                    handleLogout={handleLogout}
+                    handleUpdateAvatar={handleUpdateAvatar}
+                />
+            )}
             <div className="user__main">
                 {/* Check xem trang user đó phải của mình không */}
-                {user.username === me.username && (
+                {isLoading && user.username === me.username && (
                     <div className="user__me">
                         <Routes>
                             <Route path="" element={<PostPage />} />
@@ -126,7 +137,13 @@ function UserFeature(props) {
                         </Routes>
                     </div>
                 )}
-                {user.username !== me.username && <GuessPage user={user} />}
+                {isLoading && user.username !== me.username && <GuessPage user={user} me={me} />}
+
+                {!isLoading && (
+                    <Box sx={{ width: '100%' }}>
+                        <LinearProgress />
+                    </Box>
+                )}
             </div>
         </section>
     );

@@ -26,7 +26,9 @@ function RequestList({ me, product, productList, transactions, onClickCancel, on
                       <li key={transaction._id}>
                           <div className="request__item">
                               <p>
-                                  <span>{formatTime(transaction.createdAt)} : </span>
+                                  <span className="request__time">
+                                      {formatTime(transaction.createdAt)} :{' '}
+                                  </span>
                                   <Link to={`/${transaction.request_sender}`}>
                                       {me && me.username === transaction.request_sender
                                           ? 'Bạn'
@@ -40,7 +42,7 @@ function RequestList({ me, product, productList, transactions, onClickCancel, on
                                                   productList.filter(
                                                       (product) =>
                                                           product._id === transaction.exchange_value
-                                                  )[0].product_name
+                                                  )[0]?.product_name
                                               }
                                           </Link>
                                       </>

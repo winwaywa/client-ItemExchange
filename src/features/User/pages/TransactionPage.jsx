@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import Box from '@mui/material/Box';
 import { useNavigate } from 'react-router-dom';
 import transactionApi from '../../../api/transactionApi';
 import productApi from '../../../api/productApi';
@@ -9,6 +8,10 @@ import { useSnackbar } from 'notistack';
 import { sendNotification } from '../../../hook';
 import TransactionTable from '../components/TransactionTable';
 import conversationApi from '../../../api/conversationApi';
+import deliveryApi from '../../../api/deliveryApi';
+
+import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
 
 TransactionPage.propTypes = {};
 
@@ -18,6 +21,7 @@ function TransactionPage({ user }) {
     const [tabIndex, setTabIndex] = useState(0);
     const [transactions, setTransactions] = useState([]);
     const [productList, setProductList] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const status =
@@ -25,6 +29,7 @@ function TransactionPage({ user }) {
                 ? { status_product: 'exchanging', status_transaction: 'approved' }
                 : { status_product: 'exchanged', status_transaction: 'completed' };
         (async () => {
+            setIsLoading(true);
             const { transactions } = await transactionApi.getTransactionsWithCondition({
                 status: status.status_transaction,
             });
@@ -40,6 +45,7 @@ function TransactionPage({ user }) {
 
             setTransactions(my_transaction);
             setProductList(products.products);
+            setIsLoading(false);
         })();
     }, [tabIndex]);
 
@@ -107,6 +113,10 @@ function TransactionPage({ user }) {
             enqueueSnackbar('Đơn trao đổi của bạn sẽ được xác nhận sớm !', {
                 variant: 'success',
             });
+
+            //tạo đơn vận chuyển
+            await deliveryApi.createDelivery({ transaction_id });
+
             navigate(`/${user.username}/delivery`);
             //gửi thông báo
             sendNotification(
@@ -139,6 +149,7 @@ function TransactionPage({ user }) {
         }
     };
 
+    // nếu huỷ giao dịch
     const handleTransactionCancel = async (
         request_recipient,
         request_sender,
@@ -146,8 +157,10 @@ function TransactionPage({ user }) {
         product_id_requested,
         exchange_value
     ) => {
-        // delete transaction
-        await transactionApi.deleteTransaction({ _id: transaction_id });
+        // update transaction to cancelled
+        await transactionApi.findAndUpdateTransaction(transaction_id, {
+            status: 'cancelled',
+        });
 
         //updated products into exchanged
         await productApi.updateProduct(product_id_requested, {
@@ -180,7 +193,7 @@ function TransactionPage({ user }) {
                 </Tabs>
             </Box>
 
-            {transactions.length > 0 && (
+            {!isLoading ? (
                 <TransactionTable
                     tabIndex={tabIndex}
                     user={user}
@@ -189,9 +202,13 @@ function TransactionPage({ user }) {
                     onDone={handleTransactionDone}
                     onCancel={handleTransactionCancel}
                 />
+            ) : (
+                <Box sx={{ marginTop: '1rem', textAlign: 'center' }}>
+                    <CircularProgress />
+                </Box>
             )}
 
-            {transactions.length === 0 && (
+            {!isLoading && transactions.length === 0 && (
                 <div className="notes info">
                     <p>Hiện chưa có giao dịch nào !</p>
                 </div>

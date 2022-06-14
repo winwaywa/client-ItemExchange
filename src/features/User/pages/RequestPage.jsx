@@ -1,21 +1,25 @@
 import { useState, useEffect } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import Box from '@mui/material/Box';
 import RequestList from '../components/RequestList';
 import transactionApi from '../../../api/transactionApi';
 import productApi from '../../../api/productApi';
+
+import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
 
 RequestPage.propTypes = {};
 
 function RequestPage(props) {
     const [tabIndex, setTabIndex] = useState(0);
-    const [transactions, setTransactions] = useState();
+    const [transactions, setTransactions] = useState([]);
     const [productList, setProductList] = useState([]);
     const [myProduct, setMyProduct] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         (async () => {
+            setIsLoading(true);
             const transactions = await transactionApi.getTransactionsWithCondition({
                 status: 'pending',
             });
@@ -27,6 +31,7 @@ function RequestPage(props) {
             setTransactions(transactions.transactions);
             setProductList(products.products);
             setMyProduct(myProducts.products);
+            setIsLoading(false);
         })();
     }, []);
 
@@ -47,7 +52,11 @@ function RequestPage(props) {
                     <Tab value={1} label="Người khác muốn đổi với bạn" />
                 </Tabs>
             </Box>
-            {transactions && (
+            {isLoading ? (
+                <Box sx={{ marginTop: '1rem', textAlign: 'center' }}>
+                    <CircularProgress />
+                </Box>
+            ) : (
                 <RequestList
                     tabIndex={tabIndex}
                     transactions={transactions}

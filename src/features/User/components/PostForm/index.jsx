@@ -30,7 +30,7 @@ function PostForm({ categories, handleCreateProduct }) {
     useEffect(() => setCategory(categories[0]?._id), [categories]);
 
     //slider %
-    const [value, setValue] = React.useState(50);
+    const [value, setValue] = React.useState(99);
     const handleSliderChange = (event, newValue) => {
         setValue(newValue);
     };

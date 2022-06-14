@@ -1,8 +1,9 @@
 import './styles.scss';
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import NavBar from '../../components/NavBar';
-
+import transactionApi from '../../../../api/transactionApi';
 import PostDialog from '../PostDialog';
 import CameraFillIcon from '../../../../../images/icon-svg/camera-fill-icon.svg';
 import PlusFillIcon from '../../../../../images/icon-svg/plus-fill-icon.svg';
@@ -11,7 +12,52 @@ import MessageFillIcon from '../../../../../images/icon-svg/message-fill-icon.sv
 Header.propTypes = {};
 
 function Header({ user, me, handleLogout, handleUpdateAvatar }) {
-    const [avatar, setAvatar] = useState('');
+    const [avatar, setAvatar] = useState(user?.avatar);
+    const [transactionCancelled, setTransactionCancelled] = useState(0);
+    const [transactionCompleted, setTransactionCompleted] = useState(0);
+    const [isExchanging, setIsExchanging] = useState(false);
+
+    useEffect(() => {
+        (async () => {
+            const { transactions } = await transactionApi.getTransactionsWithCondition({
+                status: ['cancelled', 'approved', 'completed'],
+            });
+            //lọc
+            const myTransaction = transactions.filter(
+                (transaction) =>
+                    user.username === transaction.request_sender ||
+                    user.username === transaction.request_recipient
+            );
+            console.log(myTransaction);
+
+            const transactionCancelled = myTransaction.filter(
+                (transaction) => transaction.status === 'cancelled'
+            );
+            console.log(transactionCancelled);
+            setTransactionCancelled(transactionCancelled.length);
+
+            const transactionCompleted = myTransaction.filter(
+                (transaction) => transaction.status === 'completed'
+            );
+            console.log(transactionCompleted);
+
+            //xem người này có đang giao dịch với mình ko để hiện nút nhắn tin
+            const isTransaction = transactions.filter(
+                (transaction) =>
+                    transaction.status === 'approved' &&
+                    (transaction.request_recipient === user.username ||
+                        transaction.request_sender === user.username) &&
+                    (transaction.request_recipient === me.username ||
+                        transaction.request_sender === me.username)
+            );
+            console.log('Dang co giao dich:', isTransaction);
+            setIsExchanging(isTransaction.length === 0 ? false : true);
+
+            setTransactionCompleted(transactionCompleted.length);
+        })();
+
+        setAvatar(user.avatar);
+    }, [user]);
 
     //dialog
     const [open, setOpen] = useState(false);
@@ -21,10 +67,6 @@ function Header({ user, me, handleLogout, handleUpdateAvatar }) {
     const handleClose = () => {
         setOpen(false);
     };
-
-    useEffect(() => {
-        setAvatar(user.avatar);
-    }, [user]);
 
     // Xử lý ảnh xem trước và set file để post lên server
     const handleAvatar = async (e) => {
@@ -73,8 +115,25 @@ function Header({ user, me, handleLogout, handleUpdateAvatar }) {
                         />
                     </>
                 )}
+                <div className="user__text">
+                    <h2>{user.full_name}</h2>
+                    <p>
+                        Đã huỷ: <span>{transactionCancelled}</span>&nbsp;-&nbsp; Đã hoàn thành:{' '}
+                        <span>{transactionCompleted}</span>
+                    </p>
+                    <p>
+                        Tỉ lệ thành công:{' '}
+                        <span>
+                            {(
+                                (transactionCompleted /
+                                    (transactionCompleted + transactionCancelled || 1)) *
+                                100
+                            ).toFixed(2)}
+                            %
+                        </span>
+                    </p>
+                </div>
 
-                <h2 className="user__name">{user.full_name}</h2>
                 {/* check để thay đổi button*/}
                 {user.username === me.username && (
                     <div className="user__action">
@@ -82,18 +141,24 @@ function Header({ user, me, handleLogout, handleUpdateAvatar }) {
                             <img className="svg-icon" src={PlusFillIcon} alt="plus-icon" />
                             <span>Thêm bài viết</span>
                         </button>
-                        {/* <button className="btn btn--small btn--grey">
-                            Chỉnh sửa trang cá nhân
-                        </button> */}
                     </div>
                 )}
-                {user.username !== me.username && (
+                {user.username !== me.username && isExchanging && (
                     <div className="user__action">
-                        <button className="btn btn--small btn--primary">
-                            <img className="svg-icon" src={MessageFillIcon} alt="message-icon" />
-                            <span>Nhắn tin</span>
-                        </button>
+                        <Link style={{ color: '#fff' }} to={`/message`}>
+                            <button className="btn btn--small btn--primary">
+                                <img
+                                    className="svg-icon"
+                                    src={MessageFillIcon}
+                                    alt="message-icon"
+                                />
+                                <span>Nhắn tin</span>
+                            </button>
+                        </Link>
                     </div>
+                )}
+                {user.username !== me.username && !isExchanging && (
+                    <div className="user__action"></div>
                 )}
             </div>
             {/* check để thay đổi navbar*/}

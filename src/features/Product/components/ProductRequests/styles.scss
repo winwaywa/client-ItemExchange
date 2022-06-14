@@ -1,6 +1,6 @@
 .request{
     &__list{
-        list-style:square;
+
     }
     &__item{
         display: flex;
@@ -15,5 +15,8 @@
         button{
             margin-left:0.5rem;
         }
+    }
+    &__time{
+        font-style: italic; 
     }
 }

@@ -12,12 +12,15 @@ const host = 'http://localhost:5000';
 function ChatBox({ me, conversationId }) {
     const [messageList, setMessageList] = useState([]);
     const [entering, setEntering] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
     const messagesEnd = useRef(null);
 
     useEffect(() => {
         (async () => {
+            setIsLoading(false);
             const { messages } = await messageApi.getMessagesByConversation(conversationId);
             setMessageList(messages);
+            setIsLoading(true);
         })();
     }, [conversationId]);
 
@@ -77,7 +80,12 @@ function ChatBox({ me, conversationId }) {
         <div className="chat__box">
             <div className="message">
                 <p className="message__entering">{entering}</p>
-                <MessageList me={me} messageList={messageList} ref={messagesEnd} />
+                <MessageList
+                    me={me}
+                    messageList={messageList}
+                    ref={messagesEnd}
+                    isLoading={isLoading}
+                />
                 <MessageForm
                     handlesendMessage={handlesendMessage}
                     notificationInput={notificationInput}

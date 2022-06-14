@@ -24,7 +24,7 @@ function Header(props) {
                 <h3 style={{ color: '#999' }}>chodoido.vn</h3>
             </Link>
             <nav className="header__nav">
-                <NavLink className="header__link" to="products">
+                <NavLink className="header__link" to="" end>
                     <img className="header__icon" src={HomeIcon} alt="product-icon" />
                 </NavLink>
                 {isLoggedIn && (

@@ -7,6 +7,7 @@ import userApi from '../../../../api/userApi';
 import categoryApi from '../../../../api/categoryApi';
 import ProductRequests from '../ProductRequests';
 import ProductInfomation from '../ProductInfomation';
+import CircularProgress from '@mui/material/CircularProgress';
 
 ProductDetails.propTypes = {};
 
@@ -14,14 +15,16 @@ function ProductDetails({ product }) {
     const [value, setValue] = useState(0);
     const [user, setUser] = useState({});
     const [categoryName, setCategoryName] = useState('');
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         (async () => {
+            setIsLoading(true);
             const user = await userApi.getUserByUserName(product.createdBy);
             const category = await categoryApi.getCategory(product.category_id);
             setUser(user.user);
             setCategoryName(category.category.category_name);
-            setValue(0);
+            setIsLoading(false);
         })();
     }, [product]);
 
@@ -45,10 +48,16 @@ function ProductDetails({ product }) {
                         <Tab label="Yêu cầu" value={1} />
                     </Tabs>
                 </Box>
-                {value === 0 && (
+                {!isLoading && value === 0 && (
                     <ProductInfomation product={product} user={user} categoryName={categoryName} />
                 )}
-                {value === 1 && <ProductRequests product={product} />}
+                {!isLoading && value === 1 && <ProductRequests product={product} />}
+
+                {isLoading && (
+                    <Box sx={{ marginTop: '1rem', textAlign: 'center' }}>
+                        <CircularProgress />
+                    </Box>
+                )}
             </Box>
         </div>
     );

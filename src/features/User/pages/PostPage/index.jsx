@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import productApi from '../../../../api/productApi';
-import { Tabs, Tab, Box } from '@mui/material';
+import { Tabs, Tab } from '@mui/material';
 import PostList from '../../components/PostList';
+import Box from '@mui/material/Box';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import PropTypes from 'prop-types';
 PostPage.propTypes = {};
@@ -9,12 +11,15 @@ PostPage.propTypes = {};
 function PostPage(props) {
     const [productList, setProductList] = useState([]);
     const [tabIndex, setTabIndex] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         const status = tabIndex === 0 ? 'enable' : 'disable';
         (async () => {
+            setIsLoading(true);
             const products = await productApi.getProductsByUser({ status });
             setProductList(products.products);
+            setIsLoading(false);
         })();
     }, [tabIndex]);
 
@@ -54,10 +59,15 @@ function PostPage(props) {
                     <Tab value={1} label="Chưa duyệt" />
                 </Tabs>
             </Box>
-            {productList.length > 0 ? (
-                <PostList productList={productList} handleDeletePost={handleDeletePost} />
+            {isLoading ? (
+                <Box sx={{ marginTop: '1rem', textAlign: 'center' }}>
+                    <CircularProgress />
+                </Box>
             ) : (
-                <div class="notes info">
+                <PostList productList={productList} handleDeletePost={handleDeletePost} />
+            )}
+            {!isLoading && productList.length === 0 && (
+                <div className="notes info">
                     <p> Chưa có bài viết nào !</p>
                 </div>
             )}

@@ -8,21 +8,26 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TablePagination from '@mui/material/TablePagination';
 import TableRow from '@mui/material/TableRow';
-import { formatTime, formatPrice } from '../../../../utils';
+import { formatTime, formatPrice } from '../../../utils';
 
 import { useSelector } from 'react-redux';
 
 import PropTypes from 'prop-types';
 
-TableApprove.propTypes = {};
+TransactionTable.propTypes = {};
 
-function TableApprove({ productsFilter, transactions, onDelete }) {
+function TransactionTable({ productsFilter, transactions, onDelete }) {
     const columns = [
-        { id: 'request_recipient', label: 'Người nhận yêu cầu', minWidth: 170 },
-        { id: 'product_id_requested', label: 'Món đồ được yêu cầu', minWidth: 170 },
-        { id: 'request_sender', label: 'Người yêu cầu', minWidth: 170 },
-        { id: 'exchange_value', label: 'Giá', minWidth: 170 },
-        { id: 'updatedAt', label: 'Thời gian', minWidth: 170 },
+        { id: 'request_recipient', label: 'Bên nhận yêu cầu', minWidth: 100 },
+        { id: 'product_id_requested', label: '', minWidth: 150 },
+        { id: 'request_sender', label: 'Bên gửi yêu cầu', minWidth: 100 },
+        { id: 'exchange_value', label: '', minWidth: 150 },
+        { id: 'updatedAt', label: 'Thời gian', minWidth: 100 },
+        {
+            id: 'transaction_method_of_request_recipient',
+            label: 'Phương thức',
+            minWidth: 100,
+        },
     ];
 
     const me = useSelector((state) => state.user.current);
@@ -46,7 +51,10 @@ function TableApprove({ productsFilter, transactions, onDelete }) {
                             {columns.map((column) => (
                                 <TableCell
                                     sx={{
-                                        textTransform: 'uppercase',
+                                        fontSize: '1.4rem',
+                                        fontWeight: 600,
+                                        backgroundColor: 'var(--color-primary-light)',
+                                        color: 'var(--color-grey-dark)',
                                     }}
                                     key={column.id}
                                     align={column.align}
@@ -66,23 +74,24 @@ function TableApprove({ productsFilter, transactions, onDelete }) {
                                         {columns.map((column) => {
                                             const value = row[column.id];
                                             return (
-                                                <TableCell key={column.id} align={column.align}>
+                                                <TableCell
+                                                    key={column.id}
+                                                    align={column.align}
+                                                    sx={{
+                                                        fontSize: '1.2rem',
+                                                        fontWeight: 400,
+                                                    }}
+                                                >
                                                     {column.id === 'request_recipient' && (
                                                         <Link to={`/${value}`}>{value}</Link>
                                                     )}
                                                     {column.id === 'request_sender' && (
                                                         <Link to={`/${value}`}>{value}</Link>
                                                     )}
-                                                    {column.id === 'product_id_requested' && (
-                                                        <Link to={`/products/${value}`}>
-                                                            {
-                                                                productsFilter.filter(
-                                                                    (product) =>
-                                                                        product._id === value
-                                                                )[0].product_name
-                                                            }
-                                                        </Link>
-                                                    )}
+                                                    {column.id === 'product_id_requested' &&
+                                                        productsFilter.filter(
+                                                            (product) => product._id === value
+                                                        )[0].product_name}
                                                     {column.id === 'exchange_value' &&
                                                         value.length > 12 &&
                                                         productsFilter.filter(
@@ -92,6 +101,21 @@ function TableApprove({ productsFilter, transactions, onDelete }) {
                                                         value.length < 12 &&
                                                         formatPrice(value)}
                                                     {column.id === 'updatedAt' && formatTime(value)}
+                                                    {/* phương thưc giao dịch */}
+                                                    {column.id ===
+                                                        'transaction_method_of_request_recipient' &&
+                                                        value === 'free' &&
+                                                        row[
+                                                            'transaction_method_of_request_sender'
+                                                        ] === 'free' &&
+                                                        'Tự trao đổi'}
+                                                    {column.id ===
+                                                        'transaction_method_of_request_recipient' &&
+                                                        value === 'intermediary' &&
+                                                        row[
+                                                            'transaction_method_of_request_sender'
+                                                        ] === 'intermediary' &&
+                                                        'Trung gian'}
                                                 </TableCell>
                                             );
                                         })}
@@ -114,4 +138,4 @@ function TableApprove({ productsFilter, transactions, onDelete }) {
     );
 }
 
-export default TableApprove;
+export default TransactionTable;

@@ -5,9 +5,10 @@ import { NavLink } from 'react-router-dom';
 import DashboardIcon from '../../../../../images/icon-svg/dashboard-icon.svg';
 import MembersIcon from '../../../../../images/icon-svg/members-icon.svg';
 import PostIcon from '../../../../../images/icon-svg/post-icon.svg';
-import LogoutIcon from '../../../../../images/icon-svg/logout-icon.svg';
 import CategoryIcon from '../../../../../images/icon-svg/categories-icon.svg';
 import MenuIcon from '../../../../../images/icon-svg/menu-icon.svg';
+import ExchangeIcon from '../../../../../images/icon-svg/exchange-icon.svg';
+import DeliveryIcon from '../../../../../images/icon-svg/delivery-icon.svg';
 
 AdminNav.propTypes = {};
 
@@ -37,6 +38,18 @@ function AdminNav({ handleLogout }) {
                         <NavLink className="nav__link" to="post">
                             <img className="nav__icon" src={PostIcon} alt="post-icon" />
                             <p>Bài đăng</p>
+                        </NavLink>
+                    </li>
+                    <li className="nav__item">
+                        <NavLink className="nav__link" to="transactions">
+                            <img className="nav__icon" src={ExchangeIcon} alt="post-icon" />
+                            <p>Giao dịch</p>
+                        </NavLink>
+                    </li>
+                    <li className="nav__item">
+                        <NavLink className="nav__link" to="delivery">
+                            <img className="nav__icon" src={DeliveryIcon} alt="post-icon" />
+                            <p>Vận chuyển</p>
                         </NavLink>
                     </li>
                     <li className="nav__item">

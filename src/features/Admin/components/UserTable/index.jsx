@@ -22,7 +22,7 @@ UserTable.propTypes = {};
 function UserTable({ userList = [] }) {
     const columns = [
         { id: 'avatar', label: 'Ảnh đại diện', minWidth: 50 },
-        { id: 'username', label: 'username', minWidth: 100 },
+        { id: 'username', label: 'Tên đăng nhập', minWidth: 100 },
         // { id: 'full_name', label: 'Tên đầy đủ', minWidth: 100 },
         // { id: 'address', label: 'Địa chỉ', minWidth: 100 },
         // { id: 'province', label: 'Khu vực', minWidth: 100 },
@@ -39,7 +39,7 @@ function UserTable({ userList = [] }) {
 
     const me = useSelector((state) => state.user.current);
     const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(6);
+    const [rowsPerPage, setRowsPerPage] = React.useState(4);
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
@@ -58,7 +58,10 @@ function UserTable({ userList = [] }) {
                             {columns.map((column) => (
                                 <TableCell
                                     sx={{
-                                        textTransform: 'uppercase',
+                                        fontSize: '1.4rem',
+                                        fontWeight: 600,
+                                        backgroundColor: 'var(--color-primary-light)',
+                                        color: 'var(--color-grey-dark)',
                                     }}
                                     key={column.id}
                                     align={column.align}
@@ -78,7 +81,14 @@ function UserTable({ userList = [] }) {
                                         {columns.map((column) => {
                                             const value = row[column.id];
                                             return (
-                                                <TableCell key={column.id} align={column.align}>
+                                                <TableCell
+                                                    key={column.id}
+                                                    align={column.align}
+                                                    sx={{
+                                                        fontSize: '1.2rem',
+                                                        fontWeight: 400,
+                                                    }}
+                                                >
                                                     {column.id === 'username' && (
                                                         <Link to={`/${value}`}>{value}</Link>
                                                     )}
@@ -132,7 +142,7 @@ function UserTable({ userList = [] }) {
                 </Table>
             </TableContainer>
             <TablePagination
-                rowsPerPageOptions={[6, 12, 18]}
+                rowsPerPageOptions={[4, 8, 12]}
                 component="div"
                 count={userList.length}
                 rowsPerPage={rowsPerPage}

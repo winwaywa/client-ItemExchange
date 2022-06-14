@@ -27,7 +27,15 @@ function MessageForm({ handlesendMessage, notificationInput, notificationMouseOu
 
             {message && (
                 <button style={{ backgroundColor: 'transparent', outline: 'none', border: 'none' }}>
-                    <img className="svg-icon" src={SendIcon} alt="send-icon" />
+                    <img
+                        src={SendIcon}
+                        alt="send-icon"
+                        style={{
+                            width: '2.5rem',
+                            cursor: 'pointer',
+                            filter: 'invert(0.3) sepia(1) hue-rotate(180deg) saturate(4) brightness(1)',
+                        }}
+                    />
                 </button>
             )}
         </form>
