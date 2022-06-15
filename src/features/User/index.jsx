@@ -86,6 +86,7 @@ function UserFeature(props) {
             icon: 'warning',
             dangerMode: true,
         });
+
         if (willDelete) {
             try {
                 const { user } = await userApi.updateUser(data);

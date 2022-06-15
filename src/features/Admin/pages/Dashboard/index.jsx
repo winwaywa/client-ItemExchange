@@ -328,7 +328,6 @@ function Dashboard(props) {
                         <SwiperSlide>
                             <Slide4 categoryList={categoryList} dataTopCategory={dataTopCategory} />
                         </SwiperSlide>
-                        <SwiperSlide>Theo Khu vực</SwiperSlide>
                     </Swiper>
                 </>
             )}

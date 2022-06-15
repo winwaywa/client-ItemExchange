@@ -24,7 +24,7 @@ function RenderTopUserChart({ data }) {
                 margin={{
                     top: 20,
                     right: 10,
-                    left: 200,
+                    left: 180,
                     bottom: 5,
                 }}
             >

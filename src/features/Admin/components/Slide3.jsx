@@ -23,7 +23,7 @@ function Slide3({ users, dataTopUser }) {
         <div className="user dashboard__container">
             <div style={{ flex: 0.35 }}>
                 <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem' }}>
-                    <h3 style={{ marginRight: '1rem' }}>Xếp hạng người dùng</h3>
+                    <h3 style={{ marginRight: '1rem' }}>Top người dùng</h3>
                     <select value={time} onChange={handleChange}>
                         <option value={'day'}>Hôm nay</option>
                         <option value={'3day'}>3 ngày gần đây</option>

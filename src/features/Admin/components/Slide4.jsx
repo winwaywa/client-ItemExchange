@@ -22,7 +22,7 @@ function Slide4({ categoryList, dataTopCategory }) {
         <div className="top-category dashboard__container">
             <div style={{ flex: 0.65 }}>
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    <h3 style={{ marginRight: '1rem' }}>Tỉ lệ giao dịch</h3>
+                    <h3 style={{ marginRight: '1rem' }}>Top loại đồ</h3>
                     <select value={time} onChange={handleChange}>
                         <option value={'day'}>Hôm nay</option>
                         <option value={'3day'}>3 ngày gần đây</option>

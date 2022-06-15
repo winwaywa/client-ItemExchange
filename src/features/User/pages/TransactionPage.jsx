@@ -60,91 +60,100 @@ function TransactionPage({ user }) {
         exchange_value,
         method
     ) => {
-        // update transaction into ,then wait remaining person confirm
-        const { transaction } = await transactionApi.findAndUpdateTransaction(transaction_id, {
-            ...method,
+        const willDelete = await swal({
+            title: 'Xác nhận',
+            text: 'Bạn chắc chắn muốn cập nhật phương thức giao dịch?',
+            icon: 'warning',
+            dangerMode: true,
         });
-        console.log('transaction', transaction);
 
-        if (
-            (transaction.transaction_method_of_request_recipient === 'free' &&
-                transaction.transaction_method_of_request_sender) === 'free'
-        ) {
-            await transactionApi.findAndUpdateTransaction(transaction_id, {
-                status: 'completed',
+        if (willDelete) {
+            // update transaction into ,then wait remaining person confirm
+            const { transaction } = await transactionApi.findAndUpdateTransaction(transaction_id, {
+                ...method,
             });
+            console.log('transaction', transaction);
 
-            //updated products into exchanged
-            await productApi.updateProduct(product_id_requested, {
-                status: 'exchanged',
-            });
-            if (exchange_value.length > 12) {
-                await productApi.updateProduct(exchange_value, {
+            if (
+                (transaction.transaction_method_of_request_recipient === 'free' &&
+                    transaction.transaction_method_of_request_sender) === 'free'
+            ) {
+                await transactionApi.findAndUpdateTransaction(transaction_id, {
+                    status: 'completed',
+                });
+
+                //updated products into exchanged
+                await productApi.updateProduct(product_id_requested, {
                     status: 'exchanged',
                 });
-            }
-
-            enqueueSnackbar(
-                'Các bạn cùng chọn tự trao đổi đồ với nhau ! Giao dịch này sẽ xem như hoàn thành !',
-                {
-                    variant: 'success',
+                if (exchange_value.length > 12) {
+                    await productApi.updateProduct(exchange_value, {
+                        status: 'exchanged',
+                    });
                 }
-            );
 
-            //đóng chat
-            //Còn trường hợp cả 2 vẫn còn giao dịch khác nên chưa đóng.
-            // await conversationApi.closeConversation({
-            //     members: [transaction.request_recipient, transaction.request_sender],
-            // });
-
-            // gửi thông báo
-            sendNotification(
-                transaction.request_recipient,
-                `Bạn và ${transaction.request_sender} đã thống nhất tự trao đổi đồ với nhau`
-            );
-            sendNotification(
-                transaction.request_sender,
-                `Bạn và ${transaction.request_recipient} đã thống nhất tự trao đổi đồ với nhau`
-            );
-        } else if (
-            (transaction.transaction_method_of_request_recipient === 'intermediary' &&
-                transaction.transaction_method_of_request_sender) === 'intermediary'
-        ) {
-            enqueueSnackbar('Đơn trao đổi của bạn sẽ được xác nhận sớm !', {
-                variant: 'success',
-            });
-
-            //tạo đơn vận chuyển
-            await deliveryApi.createDelivery({ transaction_id });
-
-            navigate(`/${user.username}/delivery`);
-            //gửi thông báo
-            sendNotification(
-                transaction.request_recipient,
-                `Bạn và ${transaction.request_sender} đã thống nhất đổi đồ qua trung gian`
-            );
-            sendNotification(
-                transaction.request_sender,
-                `Bạn và ${transaction.request_recipient} đã thống nhất đổi đồ qua trung gian`
-            );
-        } else {
-            enqueueSnackbar(
-                'Các bạn cần xác nhận cùng phương thức giao dịch để có thể tiếp tục !',
-                {
-                    variant: 'info',
-                }
-            );
-            if (transaction.transaction_method_of_request_recipient !== 'null') {
-                sendNotification(
-                    transaction.request_sender,
-                    `${transaction.request_recipient} đã cập nhật phương thức giao dịch`
+                enqueueSnackbar(
+                    'Các bạn cùng chọn tự trao đổi đồ với nhau ! Giao dịch này sẽ xem như hoàn thành !',
+                    {
+                        variant: 'success',
+                    }
                 );
-            }
-            if (transaction.transaction_method_of_request_sender !== 'null') {
+
+                //đóng chat
+                //Còn trường hợp cả 2 vẫn còn giao dịch khác nên chưa đóng.
+                // await conversationApi.closeConversation({
+                //     members: [transaction.request_recipient, transaction.request_sender],
+                // });
+
+                // gửi thông báo
                 sendNotification(
                     transaction.request_recipient,
-                    `${transaction.request_sender} đã cập nhật phương thức giao dịch`
+                    `Bạn và ${transaction.request_sender} đã thống nhất tự trao đổi đồ với nhau`
                 );
+                sendNotification(
+                    transaction.request_sender,
+                    `Bạn và ${transaction.request_recipient} đã thống nhất tự trao đổi đồ với nhau`
+                );
+            } else if (
+                (transaction.transaction_method_of_request_recipient === 'intermediary' &&
+                    transaction.transaction_method_of_request_sender) === 'intermediary'
+            ) {
+                enqueueSnackbar('Đơn trao đổi của bạn sẽ được xác nhận sớm !', {
+                    variant: 'success',
+                });
+
+                //tạo đơn vận chuyển
+                await deliveryApi.createDelivery({ transaction_id });
+
+                navigate(`/${user.username}/delivery`);
+                //gửi thông báo
+                sendNotification(
+                    transaction.request_recipient,
+                    `Bạn và ${transaction.request_sender} đã thống nhất đổi đồ qua trung gian`
+                );
+                sendNotification(
+                    transaction.request_sender,
+                    `Bạn và ${transaction.request_recipient} đã thống nhất đổi đồ qua trung gian`
+                );
+            } else {
+                enqueueSnackbar(
+                    'Các bạn cần xác nhận cùng phương thức giao dịch để có thể tiếp tục !',
+                    {
+                        variant: 'info',
+                    }
+                );
+                if (transaction.transaction_method_of_request_recipient !== 'null') {
+                    sendNotification(
+                        transaction.request_sender,
+                        `${transaction.request_recipient} đã cập nhật phương thức giao dịch`
+                    );
+                }
+                if (transaction.transaction_method_of_request_sender !== 'null') {
+                    sendNotification(
+                        transaction.request_recipient,
+                        `${transaction.request_sender} đã cập nhật phương thức giao dịch`
+                    );
+                }
             }
         }
     };
@@ -157,26 +166,41 @@ function TransactionPage({ user }) {
         product_id_requested,
         exchange_value
     ) => {
-        // update transaction to cancelled
-        await transactionApi.findAndUpdateTransaction(transaction_id, {
-            status: 'cancelled',
+        const willDelete = await swal({
+            title: 'Xác nhận',
+            text: 'Bạn chắc chắn muốn huỷ giao dịch này ?',
+            icon: 'warning',
+            dangerMode: true,
         });
 
-        //updated products into exchanged
-        await productApi.updateProduct(product_id_requested, {
-            status: 'enable',
-        });
+        if (willDelete) {
+            // update transaction to cancelled
+            await transactionApi.findAndUpdateTransaction(transaction_id, {
+                status: 'cancelled',
+            });
 
-        if (exchange_value.length > 12) {
-            await productApi.updateProduct(exchange_value, {
+            //updated products into exchanged
+            await productApi.updateProduct(product_id_requested, {
                 status: 'enable',
             });
+
+            if (exchange_value.length > 12) {
+                await productApi.updateProduct(exchange_value, {
+                    status: 'enable',
+                });
+            }
+
+            sendNotification(
+                request_recipient,
+                `Giao dịch giữa bạn và ${request_sender} đã bị huỷ !`
+            );
+            sendNotification(
+                request_sender,
+                `Giao dịch giữa bạn và ${request_recipient} đã bị huỷ !`
+            );
+
+            navigate(`/${user.username}`);
         }
-
-        sendNotification(request_recipient, `Giao dịch giữa bạn và ${request_sender} đã bị huỷ !`);
-        sendNotification(request_sender, `Giao dịch giữa bạn và ${request_recipient} đã bị huỷ !`);
-
-        navigate(`/${user.username}`);
     };
 
     return (

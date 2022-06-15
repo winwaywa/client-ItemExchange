@@ -59,13 +59,41 @@ function PostPage(props) {
         });
         if (willDelete) {
             try {
-                const product = await productApi.deleteProduct(value._id);
+                const { product } = await productApi.updateProduct(value._id, {
+                    status: 'deleted',
+                });
                 setProducts(products.filter((product) => product._id !== value._id));
-                swal('Thành công!', 'Từ chối bài viết thành công!', 'success');
                 sendNotification(
                     value.createdBy,
-                    `Bài viết ${value.product_name} đã bị admin gỡ !`
+                    `Bài viết ${product.product_name} đã bị admin gỡ !`
                 );
+
+                // xoá những yêu cầu đến sp này và những yêu cầu gửi đi từ sp này
+                const { transactions } = await transactionApi.deleteTransaction({
+                    product_id_requested: product._id,
+                    status: 'pending',
+                });
+                console.log(
+                    ' xoá những yêu cầu đến sp này và những yêu cầu gửi đi từ sp này',
+                    transactions
+                );
+                // gửi thông báo đến những người mà gửi yêu cầu đến sp này
+                transactions.forEach((transaction) =>
+                    sendNotification(
+                        transaction.request_sender,
+                        `Yêu cầu của bạn tới món đồ ${product.product_name} đã huỷ do ${product.createdBy} admin đã gỡ món đồ này `
+                    )
+                );
+                const { transactions: transactions_1 } = await transactionApi.deleteTransaction({
+                    exchange_value: product._id,
+                    status: 'pending',
+                });
+                console.log(
+                    ' xoá những yêu cầu đến sp này và những yêu cầu gửi đi từ sp này',
+                    transactions_1
+                );
+
+                swal('Thành công!', 'Từ chối bài viết thành công!', 'success');
             } catch (err) {
                 swal('Thất bại', `${err.message}!`, 'error');
             }
@@ -83,11 +111,11 @@ function PostPage(props) {
                 const product = await productApi.updateProduct(value._id, { status: 'enable' });
 
                 setProducts(products.filter((product) => product._id !== value._id));
-                swal('Thành công!', 'Bài viết đã được duyệt !', 'success');
                 sendNotification(
                     value.createdBy,
                     `Bài viết ${value.product_name} đã được admin duyệt !`
                 );
+                swal('Thành công!', 'Bài viết đã được duyệt !', 'success');
             } catch (err) {
                 swal('Thất bại', `${err.message}!`, 'error');
             }

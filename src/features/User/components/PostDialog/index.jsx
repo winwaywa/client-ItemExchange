@@ -41,9 +41,9 @@ function PostDialog({ handleClose }) {
         });
         if (willDelete) {
             try {
+                handleClose();
                 const product = await productApi.createProduct(values);
                 if (!product) throw new Error('Đăng bài viết thất bại !');
-                handleClose();
                 swal(
                     'Đăng thành công!',
                     ' Người khác có thể nhìn thấy món đồ của bạn sau khi bài đăng được duyệt!',

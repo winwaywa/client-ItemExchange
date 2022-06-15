@@ -5,12 +5,19 @@ ProductList.propTypes = {};
 
 function ProductList({ products, handleClose, handleConfirm }) {
     return (
-        <ul style={{ listStyle: 'square' }}>
+        <ul style={{ minHeight: '20rem' }}>
             <h3 className="heading-tertiary">Đồ của bạn</h3>
             {products &&
                 products.map((product) => (
-                    <li key={product._id}>
-                        {product.product_name}
+                    <li
+                        style={{
+                            display: 'flex',
+                            justifyContent: 'space-between',
+                            marginBottom: '1rem',
+                        }}
+                        key={product._id}
+                    >
+                        <span>{product.product_name}</span>
                         <button
                             href="#"
                             style={{ marginLeft: '1rem' }}

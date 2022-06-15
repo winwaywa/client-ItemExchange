@@ -314,51 +314,6 @@ function ReportDocument({ time }, ref) {
                         </div>
                     )}
 
-                    {/* tỉ lệ giao dịch */}
-                    <h2>Tỉ lệ giao dịch</h2>
-                    <div className="transaction-ratio report__container">
-                        <div style={{ flex: 0.65 }}>
-                            <RenderTransactionRatioChart data={dataTransactionRatio()} />
-                        </div>
-                        <div style={{ flex: 0.35 }}>
-                            <ul className="transaction-ratio__list">
-                                <li className="transaction-ratio__item">
-                                    <i
-                                        style={{
-                                            display: 'inline-block',
-                                            width: '2rem',
-                                            height: '2rem',
-                                            marginRight: '0.5rem',
-                                            borderRadius: '0.3rem',
-                                            backgroundColor: '#04AA6D',
-                                        }}
-                                    />
-                                    <span>Thành công ({dataTransactionRatio()[0].count})</span>
-                                </li>
-                                <li className="transaction-ratio__item">
-                                    <i
-                                        style={{
-                                            display: 'inline-block',
-                                            width: '2rem',
-                                            height: '2rem',
-                                            marginRight: '0.5rem',
-                                            borderRadius: '0.3rem',
-                                            backgroundColor: '#F44336',
-                                        }}
-                                    />
-                                    <span>Đã huỷ ({dataTransactionRatio()[1].count})</span>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <TransactionByTime
-                        transactionList={transactions}
-                        userList={users}
-                        productList={products}
-                        time={time}
-                    />
-
                     {/* danh sách giao dịch */}
 
                     {/* top users */}
@@ -425,6 +380,51 @@ function ReportDocument({ time }, ref) {
                             </ul>
                         </div>
                     </div>
+
+                    {/* tỉ lệ giao dịch */}
+                    <h2>Tỉ lệ giao dịch</h2>
+                    <div className="transaction-ratio report__container">
+                        <div style={{ flex: 0.65 }}>
+                            <RenderTransactionRatioChart data={dataTransactionRatio()} />
+                        </div>
+                        <div style={{ flex: 0.35 }}>
+                            <ul className="transaction-ratio__list">
+                                <li className="transaction-ratio__item">
+                                    <i
+                                        style={{
+                                            display: 'inline-block',
+                                            width: '2rem',
+                                            height: '2rem',
+                                            marginRight: '0.5rem',
+                                            borderRadius: '0.3rem',
+                                            backgroundColor: '#04AA6D',
+                                        }}
+                                    />
+                                    <span>Thành công ({dataTransactionRatio()[0].count})</span>
+                                </li>
+                                <li className="transaction-ratio__item">
+                                    <i
+                                        style={{
+                                            display: 'inline-block',
+                                            width: '2rem',
+                                            height: '2rem',
+                                            marginRight: '0.5rem',
+                                            borderRadius: '0.3rem',
+                                            backgroundColor: '#F44336',
+                                        }}
+                                    />
+                                    <span>Đã huỷ ({dataTransactionRatio()[1].count})</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <TransactionByTime
+                        transactionList={transactions}
+                        userList={users}
+                        productList={products}
+                        time={time}
+                    />
                 </>
             )}
         </div>

@@ -86,11 +86,11 @@ function ProductRequests({ product }) {
                     throw new Error('Yêu cầu của bạn đã gửi không thành công');
                 }
                 setTransactions((preValue) => [{ ...transaction }, ...preValue]);
-                swal('Thành công!', 'Yêu cầu của bạn đã gửi thành công!', 'success');
                 sendNotification(
                     product.createdBy,
                     `${transaction.request_sender} đã gửi 1 yêu cầu trao đổi tới ${product.product_name}`
                 );
+                swal('Thành công!', 'Yêu cầu của bạn đã gửi thành công!', 'success');
             } catch (err) {
                 swal('Thất bại!', 'Yêu cầu của bạn gửi thất bại!', 'error');
             }
@@ -106,13 +106,19 @@ function ProductRequests({ product }) {
         });
         if (willDelete) {
             try {
-                const transaction = await transactionApi.deleteTransaction({ _id: transaction_id });
-                console.log(transaction);
-                if (!transaction) {
+                const { transactions } = await transactionApi.deleteTransaction({
+                    _id: transaction_id,
+                });
+                console.log('đã huỷ yêu cầu này', transactions);
+                if (!transactions) {
                     throw new Error('Yêu cầu huỷ của bạn đã không thành công');
                 }
                 setTransactions((preValue) =>
                     preValue.filter((value) => value._id !== transaction_id)
+                );
+                sendNotification(
+                    transactions[0].request_sender,
+                    `Yêu cầu của bạn gửi tới đã bị từ chối bởi ${product.createdBy}`
                 );
                 swal('Thành công', 'Đã huỷ yêu cầu thành công!', 'success');
             } catch (err) {
@@ -141,41 +147,67 @@ function ProductRequests({ product }) {
                         status: 'approved',
                     }
                 );
-                console.log(transaction_approved);
+                console.log('1.Cập nhật giao dịch được chấp nhận', transaction_approved);
 
                 // Xoá tất cả các transaction còn lại mà gửi khác gửi đến của món đồ được yêu cầu
-                const transaction_cancelled_1 = await transactionApi.deleteTransaction({
-                    product_id_requested: product._id,
-                    status: 'pending',
-                });
-                console.log(transaction_cancelled_1);
+                console.log('2.Huỷ các yêu cầu liên quan đến 2 món đó');
+                const { transactions: transaction_cancelled_1 } =
+                    await transactionApi.deleteTransaction({
+                        product_id_requested: product._id,
+                        status: 'pending',
+                    });
+                console.log(
+                    'huỷ các transaction còn lại mà người khác gửi đến món đồ này',
+                    transaction_cancelled_1
+                );
 
                 // xoá transaction của món đồ được yêu cầu đang gửi tới món khác
-                const transaction_cancelled_2 = await transactionApi.deleteTransaction({
-                    exchange_value: product._id,
-                    status: 'pending',
-                });
-                console.log(transaction_cancelled_2);
+                const { transactions: transaction_cancelled_2 } =
+                    await transactionApi.deleteTransaction({
+                        exchange_value: product._id,
+                        status: 'pending',
+                    });
+                console.log(
+                    'huỷ các transaction của món đồ này đang đem đi yêu cầu với món khác',
+                    transaction_cancelled_2
+                );
 
                 // Xoá tất cả các transaction còn lại mà gửi khác gửi đến món đồ yêu cầu đổi(tiền or món đồ)
                 if (exchange_value.length > 12) {
-                    const transaction_cancelled_3 = await transactionApi.deleteTransaction({
-                        product_id_requested: exchange_value,
-                        status: 'pending',
-                    });
-                    console.log(transaction_cancelled_3);
+                    const { transactions: transaction_cancelled_3 } =
+                        await transactionApi.deleteTransaction({
+                            product_id_requested: exchange_value,
+                            status: 'pending',
+                        });
+                    console.log(
+                        'huỷ các transaction gửi đến món đồ exchange_value',
+                        transaction_cancelled_3
+                    );
+
+                    //thông báo cho những người ko dc chấp nhận
+                    transaction_cancelled_3.forEach((transaction) =>
+                        sendNotification(
+                            transaction.request_sender,
+                            `Yêu cầu của bạn tới món đồ của ${transaction.request_recipient} đã huỷ do ${transaction.request_recipient} đã chấp nhận yêu cầu của người khác`
+                        )
+                    );
                 }
 
                 // xoá transaction của món đồ yêu cầu đổi đang gửi tới các món khác(tiền or món đồ)
                 if (exchange_value.length > 12) {
-                    const transaction_cancelled_4 = await transactionApi.deleteTransaction({
-                        exchange_value: exchange_value,
-                        status: 'pending',
-                    });
-                    console.log(transaction_cancelled_4);
+                    const { transactions: transaction_cancelled_4 } =
+                        await transactionApi.deleteTransaction({
+                            exchange_value: exchange_value,
+                            status: 'pending',
+                        });
+                    console.log(
+                        'huỷ các transaction của món đồ exchange_value đem đi yêu cầu với món khác',
+                        transaction_cancelled_4
+                    );
                 }
 
                 //cập nhật status 2 product thành exchanging
+                console.log('cập nhật status 2 product thành exchanging');
                 const product_of_recipient = await productApi.updateProduct(product._id, {
                     status: 'exchanging',
                 });
@@ -195,28 +227,19 @@ function ProductRequests({ product }) {
                 //Chuyển sang trang chat
                 navigate(`/message`);
 
-                swal(
-                    'Thành công',
-                    `Bây giờ Bạn và ${request_sender} có thể xem thông tin và trò chuyện với nhau!`,
-                    'success'
-                );
-
                 //gửi thông báo
                 //cho người đc chấp nhận
                 sendNotification(
                     request_sender,
                     `${product.createdBy} đã chấp nhận yêu cầu của bạn tới món đồ ${product.product_name}`
                 );
-                //cho người ko dc chấp nhận
-                transactions
-                    .filter((transaction) => transaction.request_sender !== request_sender)
-                    .map((transaction) => transaction.request_sender)
-                    .forEach((user) =>
-                        sendNotification(
-                            user,
-                            `Yêu cầu của bạn tới món đồ ${product.product_name} đã huỷ do ${product.createdBy} chấp nhận yêu cầu của người khác`
-                        )
-                    );
+                //ko được chấp nhận
+                transaction_cancelled_1.forEach((transaction) =>
+                    sendNotification(
+                        transaction.request_sender,
+                        `Yêu cầu của bạn tới món đồ ${product.product_name} đã huỷ do ${product.createdBy} chấp nhận yêu cầu của người khác`
+                    )
+                );
 
                 //gửi mail cho người được chấp nhận biết
                 const {
@@ -235,6 +258,11 @@ function ProductRequests({ product }) {
                     };
                     await mailApi.sendMailNotification(dataMail);
                 }
+                swal(
+                    'Thành công',
+                    `Bây giờ Bạn và ${request_sender} có thể xem thông tin và trò chuyện với nhau!`,
+                    'success'
+                );
             } catch (err) {
                 swal('Thất bại', `Có lỗi:${err.message}!`, 'error');
             }
