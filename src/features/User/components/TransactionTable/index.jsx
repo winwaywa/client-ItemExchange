@@ -13,7 +13,8 @@ function TransactionList({ tabIndex, user, transactions, productList, onDone, on
                     <tr>
                         <th>Nhận yêu cầu</th>
                         <th>Gửi yêu cầu</th>
-                        {tabIndex === 0 && <th>Thao tác</th>}
+                        <th>Thời gian</th>
+                        {tabIndex === 'approved' && <th>Thao tác</th>}
                     </tr>
                     <tbody>
                         {transactions.map((transaction) => (

@@ -40,9 +40,33 @@ function RequestAction({
         e.preventDefault();
         onClickApprove(transaction_id, request_sender, exchange_value);
     };
-    const handleCancelRequest = (e, transaction_id) => {
+    const handleCancelRequest = async (e, transaction_id) => {
         e.preventDefault();
-        onClickCancel(transaction_id);
+        const willDelete = await swal({
+            title: 'Xác nhận',
+            text: 'Bạn chắc chắn huỷ yêu cầu này?',
+            icon: 'warning',
+            dangerMode: true,
+        });
+        if (willDelete) {
+            try {
+                onClickCancel(transaction_id);
+                swal('Thành công', 'Đã huỷ yêu cầu thành công!', 'success');
+            } catch (err) {
+                swal('Thất bại', `${err.message}!`, 'error');
+            }
+        }
+    };
+
+    const getRemainingTime = (createdAt, transaction_id) => {
+        const remainingTime = Number(Date.now() - Number(new Date(createdAt)));
+        const day = Math.floor(3 - remainingTime / (24 * 60 * 60 * 1000));
+        const hour = Math.floor(24 - (remainingTime % (24 * 60 * 60 * 1000)) / (60 * 60 * 1000));
+        const minutes = Math.floor(60 - (remainingTime % (60 * 60 * 1000)) / (60 * 1000));
+        if (Number(Date.now() - Number(new Date(createdAt)) > 72 * 60 * 60 * 1000)) {
+            onClickCancel(transaction_id);
+        }
+        return `${day} ngày ${hour} giờ ${minutes} phút`;
     };
 
     return (
@@ -106,7 +130,8 @@ function RequestAction({
                             <div className="request__item">
                                 <p>
                                     <span className="request__time">
-                                        {formatTime(transaction.createdAt)} :{' '}
+                                        Còn{' '}
+                                        {getRemainingTime(transaction.createdAt, transaction._id)}:{' '}
                                     </span>
                                     <Link to={`/${transaction.request_sender}`}>
                                         {transaction.request_sender}

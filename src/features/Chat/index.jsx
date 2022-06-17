@@ -29,10 +29,12 @@ function ChatFeature() {
     return (
         <div className="chat">
             {!isLoading && <LinearProgress />}
-            {isLoading && (
+            {isLoading && conversations.length > 0 && (
                 <ChatList me={me} conversations={conversations} onClick={handleClickChatItem} />
             )}
-            {isLoading && <ChatBox me={me} conversationId={conversationId} />}
+            {isLoading && conversations.length > 0 && (
+                <ChatBox me={me} conversationId={conversationId} />
+            )}
 
             {isLoading && conversations.length === 0 && (
                 <div className="notes info">

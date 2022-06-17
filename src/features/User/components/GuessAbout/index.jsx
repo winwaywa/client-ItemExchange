@@ -9,7 +9,12 @@ GuessAbout.propTypes = {};
 function GuessAbout({ user }) {
     return (
         <div className="guess__about">
-            <h2 className="heading-secondary">Giới thiệu</h2>
+            <h2
+                className="heading-tertiary"
+                style={{ borderBottom: '1px solid rgb(220, 220, 220)' }}
+            >
+                Giới thiệu
+            </h2>
             <ul className="about__list">
                 <li className="about__item">
                     <img className="svg-icon" src={MapFillIcon} alt="map-icon" />

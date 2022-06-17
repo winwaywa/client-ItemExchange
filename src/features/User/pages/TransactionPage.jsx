@@ -1,7 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import queryString from 'query-string'; // chuyển query thành object
+
 import transactionApi from '../../../api/transactionApi';
 import productApi from '../../../api/productApi';
 import { useSnackbar } from 'notistack';
@@ -18,20 +20,28 @@ TransactionPage.propTypes = {};
 function TransactionPage({ user }) {
     const { enqueueSnackbar } = useSnackbar();
     const navigate = useNavigate();
-    const [tabIndex, setTabIndex] = useState(0);
+    const location = useLocation();
+
     const [transactions, setTransactions] = useState([]);
     const [productList, setProductList] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
+    const [tabIndex, setTabIndex] = useState();
+
+    useMemo(() => {
+        const status = queryString.parse(location.search).status || 'approved';
+        setTabIndex(status);
+    }, [location.search]);
+
     useEffect(() => {
-        const status =
-            tabIndex === 0
-                ? { status_product: 'exchanging', status_transaction: 'approved' }
-                : { status_product: 'exchanged', status_transaction: 'completed' };
         (async () => {
             setIsLoading(true);
+            navigate({
+                pathname: '',
+                search: `?status=${tabIndex}`,
+            });
             const { transactions } = await transactionApi.getTransactionsWithCondition({
-                status: status.status_transaction,
+                status: tabIndex,
             });
             const my_transaction = transactions.filter(
                 (transaction) =>
@@ -39,7 +49,6 @@ function TransactionPage({ user }) {
                     transaction.request_recipient === user.username
             );
             const products = await productApi.getAllProducts({
-                status: status.status_product,
                 _sort: 'createdAt:DESC',
             });
 
@@ -99,11 +108,25 @@ function TransactionPage({ user }) {
                     }
                 );
 
-                //đóng chat
-                //Còn trường hợp cả 2 vẫn còn giao dịch khác nên chưa đóng.
-                // await conversationApi.closeConversation({
-                //     members: [transaction.request_recipient, transaction.request_sender],
-                // });
+                navigate({
+                    pathname: '',
+                    search: `?status=completed`,
+                });
+
+                //kiểm tra còn giao dịch nào giữa 2 người này ko và đóng chat
+                const isExchanging = transactions.filter(
+                    (t) =>
+                        t._id !== transaction._id &&
+                        (t.request_recipient === transaction.request_recipient ||
+                            t.request_recipient === transaction.request_sender) &&
+                        (t.request_sender === transaction.request_recipient ||
+                            t.request_sender === transaction.request_sender)
+                ).length;
+                if (!isExchanging) {
+                    await conversationApi.closeConversation({
+                        members: [transaction.request_recipient, transaction.request_sender],
+                    });
+                }
 
                 // gửi thông báo
                 sendNotification(
@@ -124,6 +147,8 @@ function TransactionPage({ user }) {
 
                 //tạo đơn vận chuyển
                 await deliveryApi.createDelivery({ transaction_id });
+
+                //qua trung gian chưa đóng chat, khi shipper xác nhận mới đóng
 
                 navigate(`/${user.username}/delivery`);
                 //gửi thông báo
@@ -190,6 +215,20 @@ function TransactionPage({ user }) {
                 });
             }
 
+            // kiểm tra còn giao dịch nào giữa 2 người này ko và đóng chat
+            const isExchanging = transactions.filter(
+                (t) =>
+                    t._id !== transaction_id &&
+                    (t.request_recipient === request_recipient ||
+                        t.request_recipient === request_sender) &&
+                    (t.request_sender === request_recipient || t.request_sender === request_sender)
+            ).length;
+            if (!isExchanging) {
+                await conversationApi.closeConversation({
+                    members: [request_recipient, request_sender],
+                });
+            }
+
             sendNotification(
                 request_recipient,
                 `Giao dịch giữa bạn và ${request_sender} đã bị huỷ !`
@@ -212,11 +251,11 @@ function TransactionPage({ user }) {
                 }}
             >
                 <Tabs value={tabIndex} onChange={handleChange}>
-                    <Tab value={0} label="Đang giao dịch" />
-                    <Tab value={1} label="Hoàn thành" />
+                    <Tab value={'approved'} label="Đang giao dịch" />
+                    <Tab value={'completed'} label="Hoàn thành" />
+                    <Tab value={'cancelled'} label="Đã huỷ" />
                 </Tabs>
             </Box>
-
             {!isLoading ? (
                 <TransactionTable
                     tabIndex={tabIndex}

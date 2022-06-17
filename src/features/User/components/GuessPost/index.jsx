@@ -6,7 +6,13 @@ GuessPost.propTypes = {};
 
 function GuessPost({ productList }) {
     return (
-        <div className="guess__post">
+        <div style={{ minHeight: '20rem', backgroundColor: '#fff' }} className="guess__post">
+            <h3
+                className="heading-tertiary"
+                style={{ borderBottom: '1px solid rgb(220, 220, 220)', marginBottom: '1rem' }}
+            >
+                Bài viết
+            </h3>
             <div className="product__list">
                 {productList.map((product) => (
                     <Link

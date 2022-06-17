@@ -16,19 +16,28 @@ import PropTypes from 'prop-types';
 
 TransactionTable.propTypes = {};
 
-function TransactionTable({ productsFilter, transactions, onDelete }) {
-    const columns = [
-        { id: 'request_recipient', label: 'Bên nhận yêu cầu', minWidth: 100 },
-        { id: 'product_id_requested', label: '', minWidth: 150 },
-        { id: 'request_sender', label: 'Bên gửi yêu cầu', minWidth: 100 },
-        { id: 'exchange_value', label: '', minWidth: 150 },
-        { id: 'updatedAt', label: 'Thời gian', minWidth: 100 },
-        {
-            id: 'transaction_method_of_request_recipient',
-            label: 'Phương thức',
-            minWidth: 100,
-        },
-    ];
+function TransactionTable({ tabIndex, productsFilter, transactions }) {
+    const columns =
+        tabIndex === 2
+            ? [
+                  { id: 'request_recipient', label: 'Bên nhận yêu cầu', minWidth: 100 },
+                  { id: 'product_id_requested', label: '', minWidth: 150 },
+                  { id: 'request_sender', label: 'Bên gửi yêu cầu', minWidth: 100 },
+                  { id: 'exchange_value', label: '', minWidth: 150 },
+                  { id: 'updatedAt', label: 'Thời gian', minWidth: 100 },
+              ]
+            : [
+                  { id: 'request_recipient', label: 'Bên nhận yêu cầu', minWidth: 100 },
+                  { id: 'product_id_requested', label: '', minWidth: 150 },
+                  { id: 'request_sender', label: 'Bên gửi yêu cầu', minWidth: 100 },
+                  { id: 'exchange_value', label: '', minWidth: 150 },
+                  { id: 'updatedAt', label: 'Thời gian', minWidth: 100 },
+                  {
+                      id: 'transaction_method_of_request_recipient',
+                      label: 'Phương thức',
+                      minWidth: 100,
+                  },
+              ];
 
     const me = useSelector((state) => state.user.current);
     const [page, setPage] = React.useState(0);

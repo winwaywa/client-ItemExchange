@@ -18,30 +18,28 @@ function TransactionPage(props) {
     const [tabIndex, setTabIndex] = useState(0);
     const [products, setProducts] = useState([]);
     const [transactions, setTransactions] = useState([]);
+    // const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         (async () => {
-            var status_product = '';
-            var status_transaction = '';
+            let status = 'approved';
             switch (tabIndex) {
                 case 0:
-                    status_product = 'exchanging';
-                    status_transaction = 'approved';
+                    status = 'approved';
                     break;
                 case 1:
-                    status_product = 'exchanged';
-                    status_transaction = 'completed';
+                    status = 'completed';
                     break;
-                default:
-                    return;
+                case 2:
+                    status = 'cancelled';
+                    break;
             }
             try {
                 const products = await productApi.getAllProducts({
-                    status: status_product,
                     _sort: 'createdAt:DESC',
                 });
                 const transactions = await transactionApi.getTransactionsWithCondition({
-                    status: status_transaction,
+                    status: status,
                 });
                 setTransactions(transactions.transactions);
                 setProducts(products.products);
@@ -71,6 +69,7 @@ function TransactionPage(props) {
                     <Tabs value={tabIndex} onChange={handleChange}>
                         <Tab label="Đang trao đổi" value={0} />
                         <Tab label="Hoàn thành" value={1} />
+                        <Tab label="Đã huỷ" value={2} />
                     </Tabs>
                 </Box>
                 <div>

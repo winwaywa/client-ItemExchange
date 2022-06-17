@@ -10,7 +10,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
-import { formatPrice } from '../../../../utils';
+import { formatPrice, formatTime } from '../../../../utils';
 
 import PropTypes from 'prop-types';
 TransactionItem.propTypes = {};
@@ -180,7 +180,8 @@ function TransactionItem({ tabIndex, user, transaction, productList, onDone, onC
                     </FormControl>
                 )}
             </td>
-            {tabIndex === 0 && !isDelivery && (
+            <td>{formatTime(transaction.updatedAt)}</td>
+            {tabIndex === 'approved' && !isDelivery && (
                 <td>
                     <a href="#">
                         <img className="svg-icon" src={MessageOutLineIcon} alt="message-icon" />
@@ -227,7 +228,7 @@ function TransactionItem({ tabIndex, user, transaction, productList, onDone, onC
                 </td>
             )}
 
-            {tabIndex === 0 && isDelivery && (
+            {tabIndex === 'approved' && isDelivery && (
                 <td>
                     <Link to={`/${user.username}/delivery`}>
                         <img className="svg-icon" src={DeliveryIcon} alt="message-icon" />

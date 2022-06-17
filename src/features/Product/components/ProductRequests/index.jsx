@@ -67,7 +67,7 @@ function ProductRequests({ product }) {
     const handleConfirm = async (value) => {
         const willDelete = await swal({
             title: 'Xác nhận',
-            text: 'Bạn chắc chắn muốn đổi không?',
+            text: 'Bạn chắc chắn muốn đổi không? Yêu cầu của bạn sẽ tồn tại trong 72 giờ ',
             icon: 'warning',
             dangerMode: true,
         });
@@ -98,32 +98,21 @@ function ProductRequests({ product }) {
     };
 
     const handleCancelRequest = async (transaction_id) => {
-        const willDelete = await swal({
-            title: 'Xác nhận',
-            text: 'Bạn chắc chắn huỷ yêu cầu này?',
-            icon: 'warning',
-            dangerMode: true,
-        });
-        if (willDelete) {
-            try {
-                const { transactions } = await transactionApi.deleteTransaction({
-                    _id: transaction_id,
-                });
-                console.log('đã huỷ yêu cầu này', transactions);
-                if (!transactions) {
-                    throw new Error('Yêu cầu huỷ của bạn đã không thành công');
-                }
-                setTransactions((preValue) =>
-                    preValue.filter((value) => value._id !== transaction_id)
-                );
-                sendNotification(
-                    transactions[0].request_sender,
-                    `Yêu cầu của bạn gửi tới đã bị từ chối bởi ${product.createdBy}`
-                );
-                swal('Thành công', 'Đã huỷ yêu cầu thành công!', 'success');
-            } catch (err) {
-                swal('Thất bại', `${err.message}!`, 'error');
+        try {
+            const { transactions } = await transactionApi.deleteTransaction({
+                _id: transaction_id,
+            });
+            console.log('đã huỷ yêu cầu này', transactions);
+            if (!transactions) {
+                throw new Error('Yêu cầu huỷ của bạn đã không thành công');
             }
+            setTransactions((preValue) => preValue.filter((value) => value._id !== transaction_id));
+            sendNotification(
+                transactions[0].request_sender,
+                `Yêu cầu của bạn gửi tới đã bị từ chối bởi ${product.createdBy}`
+            );
+        } catch (err) {
+            console.log(err);
         }
     };
 
