@@ -2,20 +2,18 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { unwrapResult } from '@reduxjs/toolkit';
-import RegisterForm from '../RegisterForm';
+import RegisterForm from '../../components/RegisterForm';
 import { register } from '../../userSlice';
 
-Register.propTypes = {};
+RegisterPage.propTypes = {};
 
-function Register(props) {
+function RegisterPage(props) {
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const handleSubmit = async (values) => {
         try {
             console.log(values);
             //Mới validate lỗi ở server
-            if (values.password !== values.retypePassword)
-                throw new Error('Mật khẩu nhập lại không khớp!');
             const action = register(values);
             const resultAction = await dispatch(action);
             const user = unwrapResult(resultAction);
@@ -34,4 +32,4 @@ function Register(props) {
     );
 }
 
-export default Register;
+export default RegisterPage;

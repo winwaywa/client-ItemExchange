@@ -60,19 +60,19 @@
             opacity: 0.9;
         }
     }
-}
-.form__images{
-    display: flex;
-    align-items: center;
-    &>*{
-        margin-right:1rem;
+    .form__images{
+        display: flex;
+        align-items: center;
+        &>*{
+            margin-right:1rem;
+        }
     }
     .images{
         display: inline-block;
-        margin-top: 1rem;
         &__img{
-            width:5rem;
-            height: 5rem;
+            width:6rem;
+            height: 6rem;
+            margin-right: 1rem;
         }
     }
 }

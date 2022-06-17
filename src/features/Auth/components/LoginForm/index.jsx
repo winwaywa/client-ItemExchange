@@ -4,21 +4,64 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { GoogleLogin } from '@react-oauth/google';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import InputField from '../../../../components/form-controll/InputField';
+import PasswordField from '../../../../components/form-controll/PasswordField';
+
+import userApi from '../../../../api/userApi';
 
 LoginForm.propTypes = {
     onSubmit: PropTypes.func,
 };
 
 function LoginForm({ onSubmit, handleLoginWithGoogle }) {
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [isRemember, setIsRemember] = useState(false);
+    //yup
+    const schema = yup
+        .object({
+            username: yup
+                .string()
+                .required('Tên tài khoản không được để trống')
+                .min(4, 'Tên tài khoản ít nhất 4 kí tự')
+                .test(
+                    'username',
+                    'Tên tài khoản không được có khoảng trắng',
+                    (value) => value.split(' ').length === 1 // hàm tự đặt
+                ),
+            // .test('existUsername', 'Tên tài khoản đã tồn tại', function (value) {
+            //     ( () => {
+            //         return new Promise((resolve, reject) => {
+            //             const { user } = userApi.getUserByUserName(value);
+            //         })
+            //             .then((res) => {
+            //                 resolve(true);
+            //             })
+            //             .catch((err) => {
+            //                 resolve(false);
+            //             });
+            //     })();
+            // }),
+            password: yup
+                .string()
+                .required('Mật khẩu không được để trống')
+                .min(6, 'Mật khẩu ít nhất 6 kí tự'),
+        })
+        .required();
 
-    const handleSubmit = (e, values) => {
-        e.preventDefault();
-        onSubmit(values);
+    const form = useForm({
+        defaultValues: {
+            username: '',
+            password: '',
+        },
+        resolver: yupResolver(schema), //đem yup vào trong form bằng resolver
+    });
+
+    //action
+    const handleSubmit = (values) => {
+        console.log(values);
+        if (onSubmit) onSubmit(values);
     };
-
     const handleResponseGoogle = async (response) => {
         const { credential } = response;
         // https://www.googleapis.com/oauth2/v3/tokeninfo?id_token=credential sẽ trả về thông tin gmail
@@ -26,26 +69,12 @@ function LoginForm({ onSubmit, handleLoginWithGoogle }) {
     };
 
     return (
-        <form className="form" onSubmit={(e) => handleSubmit(e, { username, password })}>
+        <form className="form" onSubmit={form.handleSubmit(handleSubmit)}>
             <div className="form__heading"></div>
             <div className="form__content">
-                <input
-                    className="form__input"
-                    type="text"
-                    name="username"
-                    id="username"
-                    placeholder="Tên tài khoản..."
-                    onChange={(e) => setUsername(e.target.value)}
-                />
-                <input
-                    className="form__input"
-                    type="password"
-                    name="password"
-                    id="password"
-                    placeholder="Mật khẩu..."
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-                <div style={{ marginBottom: '1rem' }}>
+                <InputField name="username" label="Tên tài khoản" form={form} />
+                <PasswordField name="password" label="Mật khẩu" form={form} />
+                <div style={{ margin: '1rem 0' }}>
                     <input
                         type="checkbox"
                         id="remember"

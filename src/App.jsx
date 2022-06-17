@@ -7,8 +7,8 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 
 import ProductFeature from './features/Product';
-import Login from './features/Auth/components/Login';
-import Register from './features/Auth/components/Register';
+import LoginPage from './features/Auth/pages/LoginPage';
+import RegisterPage from './features/Auth/pages/RegisterPage';
 import About from './components/About';
 
 import ChatFeature from './features/Chat';
@@ -55,8 +55,8 @@ function App() {
                 <Routes>
                     <Route path="" element={<ProductFeature />} />
                     <Route path="products/*" element={<ProductFeature />} />
-                    <Route path="login" element={<Login />} />
-                    <Route path="register" element={<Register />} />
+                    <Route path="login" element={<LoginPage />} />
+                    <Route path="register" element={<RegisterPage />} />
                     <Route path="about" element={<About />} />
 
                     <Route path="admin/*" element={<AdminFeature />} />

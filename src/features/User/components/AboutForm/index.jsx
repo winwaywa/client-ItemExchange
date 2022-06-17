@@ -1,6 +1,10 @@
 import './styles.scss';
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import InputField from '../../../../components/form-controll/InputField';
 
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
@@ -8,129 +12,68 @@ import Autocomplete from '@mui/material/Autocomplete';
 InfoForm.propTypes = {};
 
 function InfoForm({ user = {}, provinces, handleUpdateUser }) {
-    // const [avatar, setAvatar] = useState(user.avatar);
-    const [fullName, setFullName] = useState(user.full_name);
-    const [phone, setPhone] = useState(user.phone);
-    const [email, setEmail] = useState(user.email);
-    const [address, setAddress] = useState(user.address);
-    const [province, setProvince] = useState(user.province);
+    const [province, setProvince] = useState(user?.province);
+    // validate vs yup
+    const schema = yup
+        .object()
+        .shape({
+            full_name: yup
+                .string()
+                .required('Tên đầy đủ không được để trống !')
+                .min(3, 'Tên quá ngắn')
+                .max(20, 'Tên đầy đủ nhiều nhất 20 kí tự'),
+            phone: yup
+                .string()
+                .matches(
+                    /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/,
+                    'Số điện thoại không hợp lệ'
+                ),
+            email: yup.string().required('Email không được để trống !').email('Email không hợp lệ'),
+            address: yup.string().required('Nhập địa chỉ cụ thể của bạn'),
+        })
+        .required();
 
-    // const [previewAvatar, setPreviewAvatar] = useState('');
+    //form
+    const form = useForm({
+        defaultValues: {
+            full_name: user.full_name,
+            phone: user.phone,
+            email: user.email,
+            address: user.address,
+        },
+        //validate vs yup
+        resolver: yupResolver(schema),
+    });
 
-    // Xử lý ảnh xem trước và set file để post lên server
-    // const handleAvatar = (e) => {
-    //     const files = e.target.files;
-    //     const preview = URL.createObjectURL(files[0]);
-    //     setPreviewAvatar(preview);
-    //     setAvatar(files[0]);
-    // };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = (values) => {
+        console.log('alo', values);
         const newData = {
-            // avatar,
-            full_name: fullName,
-            phone,
-            email,
-            address,
+            ...values,
             province,
         };
-        handleUpdateUser(newData);
-        console.log(newData);
+        if (handleUpdateUser) handleUpdateUser(newData);
     };
 
     return (
-        <form className="user__form">
-            {/* <div className="form__avatar">
-                    {!previewAvatar && (
-                        <label htmlFor="avatar">
-                            <img className="avatar" src={avatar} alt="avatar" />
-                        </label>
-                    )}
-                    {previewAvatar && (
-                        <label htmlFor="avatar">
-                            <img className="avatar" src={previewAvatar} alt="preview avatar" />
-                        </label>
-                    )}
-                    <input
-                        type="file"
-                        id="avatar"
-                        name="avatar"
-                        accept="image/*"
-                        onChange={(e) => handleAvatar(e)}
-                    />
-                </div> */}
-            <div className="form__group">
-                <label htmlFor="full_name">Họ Tên</label>
-                <input
-                    id="full_name"
-                    type="text"
-                    placeholder="Họ Tên"
-                    value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
-                />
-            </div>
-            <div className="form__group">
-                <label htmlFor="phone">Số điện thoại</label>
-                <input
-                    id="phone"
-                    type="text"
-                    placeholder="Số điện thoại"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                />
-            </div>
-            <div className="form__group">
-                <label htmlFor="email">Email</label>
-                <input
-                    id="email"
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-            </div>
-            <div className="form__group">
-                <label htmlFor="address">Địa chỉ</label>
-                <input
-                    id="address"
-                    type="text"
-                    placeholder="Địa chỉ"
-                    value={address}
-                    onChange={(e) => setAddress(e.target.value)}
-                />
-            </div>
-            <div>
-                <label
-                    style={{
-                        display: 'inline-block',
-                        minWidth: '10rem',
-                        textAlign: 'left',
-                        fontSize: '1.6rem',
-                    }}
-                    htmlFor=""
-                >
-                    Khu vực
-                </label>
-                <Autocomplete
-                    disablePortal
-                    id="combo-box-provinces"
-                    options={provinces}
-                    sx={{
-                        width: '20rem',
-                        margin: '0 auto',
-                        marginBottom: '1.5rem',
-                        display: 'inline-block',
-                    }}
-                    renderInput={(params) => <TextField {...params} label={province} />}
-                    onChange={(e, newValue) => {
-                        setProvince(newValue);
-                    }}
-                />
-            </div>
-            <button className="btn btn--primary btn--small" onClick={(e) => handleSubmit(e)}>
-                Cập nhật
-            </button>
+        <form className="user__form" onSubmit={form.handleSubmit(handleSubmit)}>
+            <InputField form={form} name="full_name" label="Họ Tên" />
+            <InputField form={form} name="phone" label="Số điện thoại" />
+            <InputField form={form} name="email" label="Email" />
+            <InputField form={form} name="address" label="Địa chỉ" />
+            <Autocomplete
+                disablePortal
+                id="combo-box-provinces"
+                options={provinces}
+                sx={{
+                    marginBottom: '1.5rem',
+                }}
+                fullWidth
+                renderInput={(params) => <TextField {...params} label={province} />}
+                onChange={(e, newValue) => {
+                    setProvince(newValue);
+                }}
+            />
+            <button className="btn btn--primary btn--small">Cập nhật</button>
         </form>
     );
 }

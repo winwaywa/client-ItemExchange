@@ -1,5 +1,9 @@
 import './styles.scss';
 import React, { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import InputField from '../../../../components/form-controll/InputField';
 
 import MarkdownIt from 'markdown-it';
 import MdEditor from 'react-markdown-editor-lite';
@@ -19,9 +23,34 @@ const Input = styled(MuiInput)`
 `;
 
 function PostForm({ categories, handleCreateProduct }) {
-    const [title, setTitle] = useState('');
+    // validate vs yup
+    const schema = yup
+        .object()
+        .shape({
+            product_name: yup
+                .string()
+                .required('Tên món đồ không được để trống')
+                .min(10, 'Tên món đồ ít nhất 10 kí tự')
+                .max(30, 'Tên món đồ nhiều nhất 25 kí tự'),
+            price: yup
+                .number()
+                .typeError('Bắt buộc phải nhập số')
+                .min(0, 'Giá nhỏ nhất là 0')
+                .max(999999999, 'Giá lớn nhất 999999999'),
+        })
+        .required();
+
+    //form
+    const form = useForm({
+        defaultValues: {
+            product_name: '',
+            price: 0,
+        },
+        //validate vs yup
+        resolver: yupResolver(schema),
+    });
+
     const [describe, setDescribe] = useState('');
-    const [price, setPrice] = useState(0);
     const [category, setCategory] = useState(categories[0]?._id);
     const [imagesPreview, setImagesPreview] = useState([]);
     const [images, setImages] = useState([]);
@@ -30,7 +59,7 @@ function PostForm({ categories, handleCreateProduct }) {
     useEffect(() => setCategory(categories[0]?._id), [categories]);
 
     //slider %
-    const [value, setValue] = React.useState(99);
+    const [value, setValue] = React.useState(100);
     const handleSliderChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -63,39 +92,24 @@ function PostForm({ categories, handleCreateProduct }) {
         setImages(files);
     };
 
-    const handleSubmit = (e) => {
-        try {
-            e.preventDefault();
-            //validate
-            // if (images.length > 5) {
-            //     throw new Error('Số ảnh vượt quá 5');
-            // }
-            const values = {
-                product_name: title,
-                describe,
-                price,
-                category_id: category,
-                images_url: images,
-                percent_new: value,
-            };
-            console.log(values);
-            handleCreateProduct(values);
-        } catch (err) {
-            console.log(err);
-        }
+    const handleSubmit = (values) => {
+        console.log(values);
+        const data = {
+            ...values,
+            describe,
+            category_id: category,
+            images_url: images,
+            percent_new: value,
+        };
+        console.log(data);
+        if (handleCreateProduct) handleCreateProduct(data);
     };
 
     return (
-        <form className="post__form">
+        <form className="post__form" onSubmit={form.handleSubmit(handleSubmit)}>
             <div>
                 <div className="form__group">
-                    <input
-                        type="text"
-                        id="title"
-                        placeholder="Tên sản phẩm"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
-                    />
+                    <InputField form={form} name="product_name" label="Tên món đồ" />
                 </div>
                 <div className="form__group">
                     <label htmlFor="describe">Mô tả</label>
@@ -131,14 +145,7 @@ function PostForm({ categories, handleCreateProduct }) {
                     </div>
                 </div>
                 <div className="form__group">
-                    <label htmlFor="price">Giá</label>
-                    <input
-                        type="number"
-                        id="price"
-                        placeholder="vnd"
-                        value={price}
-                        onChange={(e) => setPrice(e.target.value)}
-                    />
+                    <InputField form={form} name="price" label="Giá" />
                 </div>
                 <div className="form__group">
                     <label htmlFor="select-category">Loại đồ</label>
@@ -163,26 +170,21 @@ function PostForm({ categories, handleCreateProduct }) {
                         accept="image/*"
                         onChange={(e) => handlePreviewImages(e)}
                     />
-                    {imagesPreview && (
-                        <div className="images">
-                            {imagesPreview.map((image, index) => (
-                                <img
-                                    key={index}
-                                    className="images__img"
-                                    src={image.url}
-                                    alt={image.name}
-                                />
-                            ))}
-                        </div>
-                    )}
                 </div>
+                {imagesPreview && (
+                    <div className="images">
+                        {imagesPreview.map((image, index) => (
+                            <img
+                                key={index}
+                                className="images__img"
+                                src={image.url}
+                                alt={image.name}
+                            />
+                        ))}
+                    </div>
+                )}
             </div>
-            <button
-                className="btn btn--primary btn--small post__btn"
-                onClick={(e) => handleSubmit(e)}
-            >
-                Đăng
-            </button>
+            <button className="btn btn--primary btn--small post__btn">Đăng</button>
         </form>
     );
 }

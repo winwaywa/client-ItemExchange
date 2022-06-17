@@ -15,7 +15,7 @@ const Transition = forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function RequestDialog({ open, products = [], handleClose, handleConfirm }) {
+function RequestDialog({ open, product = {}, products = [], handleClose, handleConfirm }) {
     return (
         <div className="request__dialog">
             <Dialog open={open} TransitionComponent={Transition} keepMounted onClose={handleClose}>
@@ -35,7 +35,11 @@ function RequestDialog({ open, products = [], handleClose, handleConfirm }) {
                     ) : (
                         'Bạn chưa đăng bất kì sản phẩm nào'
                     )}
-                    <FormValue handleClose={handleClose} handleConfirm={handleConfirm} />
+                    <FormValue
+                        product={product}
+                        handleClose={handleClose}
+                        handleConfirm={handleConfirm}
+                    />
                 </DialogContent>
             </Dialog>
         </div>

@@ -116,7 +116,7 @@ function Header({ user, me, handleLogout, handleUpdateAvatar }) {
                     </>
                 )}
                 <div className="user__text">
-                    <h2>{user.full_name}</h2>
+                    <h2 style={{ textAlign: 'center' }}>{user.full_name}</h2>
                     <p>
                         Đã huỷ: <span>{transactionCancelled}</span>&nbsp;-&nbsp; Đã hoàn thành:{' '}
                         <span>{transactionCompleted}</span>

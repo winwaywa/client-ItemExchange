@@ -284,6 +284,7 @@ function ProductRequests({ product }) {
                         handleClose={handleClose}
                         handleConfirm={handleConfirm}
                         products={products}
+                        product={product}
                     />
                 </>
             )}

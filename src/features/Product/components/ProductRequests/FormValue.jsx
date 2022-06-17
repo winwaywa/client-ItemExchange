@@ -1,37 +1,56 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
+import InputField from '../../../../components/form-controll/InputField';
+import { formatPrice } from '../../../../utils';
 
 FormValue.propTypes = {};
 
-function FormValue({ handleClose, handleConfirm }) {
-    const [price, setPrice] = React.useState();
+function FormValue({ product, handleClose, handleConfirm }) {
+    // validate vs yup
+    const schema = yup
+        .object()
+        .shape({
+            price: yup
+                .number()
+                .typeError('Bắt buộc phải nhập số')
+                .min(
+                    product.price - product.price * 0.2,
+                    `Giá không thể nhỏ hơn ${formatPrice(product.price - product.price * 0.2)}`
+                )
+                .max(
+                    product.price + product.price * 0.2,
+                    `Giá không thể lớn hơn ${formatPrice(product.price + product.price * 0.2)}`
+                ),
+        })
+        .required();
+
+    //form
+    const form = useForm({
+        defaultValues: {
+            price: 0,
+        },
+        //validate vs yup
+        resolver: yupResolver(schema),
+    });
+
+    const handleSubmit = ({ price }) => {
+        handleClose();
+        handleConfirm(price);
+        form.reset();
+    };
     return (
-        <div style={{ display: 'flex', marginTop: '2rem' }}>
-            <input
-                type="text"
-                placeholder="Nhập số tiền"
-                style={{
-                    flex: 1,
-                    padding: 10,
-                    fontSize: '1.6rem',
-                    outline: 'none',
-                    border: '1px solid rgb(179, 176, 176)',
-                    borderRadius: '5px',
-                }}
-                onChange={(e) => setPrice(e.target.value)}
-            />
-            <button
-                href="#"
-                style={{ marginLeft: '1rem' }}
-                className="btn btn--small btn--success"
-                onClick={() => {
-                    handleClose();
-                    handleConfirm(price);
-                }}
-            >
+        <form
+            style={{ display: 'flex', alignItems: 'center', marginTop: '2rem' }}
+            onSubmit={form.handleSubmit(handleSubmit)}
+        >
+            <InputField form={form} name="price" label="Giá tiền" />
+            <button href="#" style={{ marginLeft: '1rem' }} className="btn btn--small btn--success">
                 Gửi
             </button>
-        </div>
+        </form>
     );
 }
 

@@ -16,6 +16,7 @@ function ProductInfomation({ product, user, categoryName }) {
             <p>
                 <strong>{formatPrice(product.price)}</strong>
             </p>
+            <p style={{ fontStyle: 'italic' }}>Cập nhật: {formatTime(product.updatedAt)}</p>
             <p>Độ mới: {product.percent_new}%</p>
             <p>Loại: {categoryName}</p>
             <p className="details__user">
@@ -27,8 +28,8 @@ function ProductInfomation({ product, user, categoryName }) {
                 Địa chỉ: {user.address} - {user.province}
             </p>
             {/* thuộc tính dangerouslySetInnerHTML của React */}
+            Mô tả:
             <div dangerouslySetInnerHTML={{ __html: safeDescription }} />
-            <p style={{ fontStyle: 'italic' }}>Cập nhật: {formatTime(product.updatedAt)}</p>
         </div>
     );
 }

@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { unwrapResult } from '@reduxjs/toolkit';
-import LoginForm from '../LoginForm';
+import LoginForm from '../../components/LoginForm';
 import { login, loginWithGoogle } from '../../userSlice';
 
-Login.propTypes = {};
+LoginPage.propTypes = {};
 
-function Login(props) {
+function LoginPage(props) {
     let navigate = useNavigate();
     let dispatch = useDispatch();
 
@@ -56,4 +56,4 @@ function Login(props) {
     );
 }
 
-export default Login;
+export default LoginPage;
