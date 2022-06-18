@@ -16,7 +16,7 @@ LoginForm.propTypes = {
     onSubmit: PropTypes.func,
 };
 
-function LoginForm({ onSubmit, handleLoginWithGoogle }) {
+function LoginForm({ onSubmit, handleLoginWithGoogle, isLoading }) {
     //yup
     const schema = yup
         .object({
@@ -90,7 +90,17 @@ function LoginForm({ onSubmit, handleLoginWithGoogle }) {
                     />
                     <label htmlFor="remember">Ghi Nhớ</label>
                 </div>
-                <input className="btn btn--primary" type="submit" value="Đăng nhập" />
+                {!isLoading && (
+                    <input className="btn btn--primary" type="submit" value="Đăng nhập" />
+                )}
+                {isLoading && (
+                    <input
+                        className="btn btn--primary disabled"
+                        type="submit"
+                        value="Đăng nhập"
+                        disabled
+                    />
+                )}
                 <p
                     style={{
                         textAlign: 'center',

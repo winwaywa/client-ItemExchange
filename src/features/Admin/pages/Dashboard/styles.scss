@@ -1,12 +1,11 @@
 .admin{
     .dashboard{
         position: relative;
-        margin-top:-2rem;
         .navigation{
             display: flex;
             flex-flow: row nowrap;
             align-items: center;
-            margin-bottom:4rem;
+            margin-bottom:2rem;
             justify-content: space-evenly;
 
             &__box{
@@ -31,7 +30,7 @@
                     justify-content: flex-start;
                     text-align: center;
                     width: 25%;
-                    height: 20rem;
+                    height: 10rem;
                 };
 
                 &:hover{
@@ -60,19 +59,29 @@
                     font-size: 2rem;
                 };
             }
+            .text{
+                @media only screen and (max-width: 37.5em) {
+                    display: none;
+                };
+            }
         }
         
         &__container{
             display: flex;
+            @media only screen and (max-width: 56.25em) {
+               flex-direction: column;
+               padding-top:1rem;
+            };
             
-            // background-color: rgb(223, 219, 219);
-
             width: 100%;
-            height: calc(100vh - 10rem);
+            height: calc(100vh - 5rem);
 
             div{
                 flex:1;
                 position: relative;
+                @media only screen and (max-width: 37.5em) {
+                    font-size: 1.4rem;
+                };
             }
         }
 
@@ -82,17 +91,18 @@
                 padding:0 2rem;
                 margin-bottom:1rem;
                 align-self: center;
+               
             }
             &__item{
                 display: flex;
                 align-items: center;
             }
             
-        }
-    
+    }
     .user{
         &__list{
             padding-left: 3rem;
+            
         }
         &__item{
             text-align: left;

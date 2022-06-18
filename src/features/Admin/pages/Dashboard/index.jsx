@@ -15,6 +15,7 @@ import SwiperCore, { Mousewheel, Pagination } from 'swiper';
 SwiperCore.use([Mousewheel, Pagination]);
 
 import moment from 'moment';
+import { LinearProgress } from '@mui/material';
 
 import PropTypes from 'prop-types';
 import userApi from '../../../../api/userApi';
@@ -34,11 +35,11 @@ function Dashboard(props) {
     const [products, setProducts] = useState([]);
     const [transactions, setTransactions] = useState([]);
     const [categoryList, setCategoryList] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
 
     useEffect(() => {
         (async () => {
-            setIsLoading(false);
+            setIsLoading(true);
             const users = await userApi.getAllUsers();
             const products = await productApi.getAllProducts({
                 _sort: 'createdAt:DESC',
@@ -52,7 +53,7 @@ function Dashboard(props) {
             setProducts(products.products);
             setTransactions(transactions.transactions);
             setCategoryList(categories);
-            setIsLoading(true);
+            setIsLoading(false);
         })();
     }, []);
 
@@ -287,17 +288,18 @@ function Dashboard(props) {
     };
 
     return (
-        <div className="dashboard">
-            <button
-                className="btn btn--small btn--primary dashboard__btn-report"
-                onClick={handleClickOpen}
-            >
-                Báo cáo
-            </button>
-            {open && <FullScreenDialog handleClose={handleClose} />}
+        <>
+            {isLoading && <LinearProgress />}
+            {!isLoading && (
+                <div className="dashboard">
+                    <button
+                        className="btn btn--small btn--primary dashboard__btn-report"
+                        onClick={handleClickOpen}
+                    >
+                        Báo cáo
+                    </button>
+                    {open && <FullScreenDialog handleClose={handleClose} />}
 
-            {isLoading && (
-                <>
                     <Swiper
                         direction={'vertical'}
                         slidesPerView={1}
@@ -329,9 +331,9 @@ function Dashboard(props) {
                             <Slide4 categoryList={categoryList} dataTopCategory={dataTopCategory} />
                         </SwiperSlide>
                     </Swiper>
-                </>
+                </div>
             )}
-        </div>
+        </>
     );
 }
 

@@ -30,12 +30,12 @@ function About(props) {
                 <div className="about__text-box">
                     <h1>Chodoido.vn - Trang chợ trực tuyến hàng đầu tại Việt Nam</h1>
                     <p>
-                        Ra mắt năm 2022, nền tảng Chodoido.vn được xây dựng nhằm cung cấp cho người
-                        dùng những trải nghiệm dễ dàng, an toàn và nhanh chóng khi mua sắm, trao đổi
-                        trực tuyến thông qua hệ thống hỗ trợ thanh toán và vận hành vững mạnh. Chúng
-                        tôi có niềm tin mạnh mẽ rằng trải nghiệm mua sắm, trao đổi trực tuyến phải
-                        đơn giản, dễ dàng và mang đến cảm xúc vui thích. Niềm tin này truyền cảm
-                        hứng và thúc đẩy chúng tôi mỗi ngày tại Chodoido.vn.
+                        Với tiêu chí “Cũ người mới ta”, những món đồ cũ có thể bạn không cần nhưng
+                        nhiều người vẫn đang cần đến chúng. Website là cầu nối giúp gắn kết giữa
+                        những người cần mua bán, trao đổi đồ với nhau một cách nhanh chóng và tiết
+                        kiệm nhất. Ngoài ra các đồ vật cũ được tái sử dụng chính là chúng ta đã
+                        chung tay giảm thải ra môi trường, góp phần bảo vệ môi trường sống xanh –
+                        sạch – đẹp.
                     </p>
                     <a
                         onClick={() => handleNext(1)}

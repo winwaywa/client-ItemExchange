@@ -31,14 +31,15 @@ function Slide1({ users, countPostByStatus, countTransactionByStatus, dataTransa
                 >
                     <img className="navigation__icon" src={LookIcon} alt="look-icon" />
                     <div>
-                        <span className="navigation__quantity">1205</span> lượt truy cập
+                        <span className="navigation__quantity">1205</span>{' '}
+                        <span className="text">Lượt truy cập</span>
                     </div>
                 </div>
                 <Link style={{ backgroundColor: '#599' }} to="user" className="navigation__box">
                     <img className="navigation__icon" src={UserIcon} alt="look-icon" />
                     <div>
                         <span className="navigation__quantity">{users.length}</span>
-                        Người dùng mới
+                        <span className="text">Người dùng</span>
                     </div>
                 </Link>
 
@@ -50,7 +51,7 @@ function Slide1({ users, countPostByStatus, countTransactionByStatus, dataTransa
                     <img className="navigation__icon" src={PostIcon} alt="look-icon" />
                     <div>
                         <span className="navigation__quantity">{countPostByStatus('disable')}</span>{' '}
-                        Bài viết chưa duyệt
+                        <span className="text">Bài viết chưa duyệt</span>
                     </div>
                 </Link>
                 <Link
@@ -63,7 +64,7 @@ function Slide1({ users, countPostByStatus, countTransactionByStatus, dataTransa
                         <span className="navigation__quantity">
                             {countTransactionByStatus('approved')}
                         </span>{' '}
-                        Đang giao dịch
+                        <span className="text"> Đang giao dịch</span>
                     </div>
                 </Link>
             </div>

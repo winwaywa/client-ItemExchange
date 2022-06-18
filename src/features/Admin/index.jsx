@@ -18,7 +18,6 @@ AdminFeature.propTypes = {};
 function AdminFeature(props) {
     const navigate = useNavigate();
     const [isAdmin, setIsAdmin] = useState(false);
-
     useEffect(() => {
         (async () => {
             try {

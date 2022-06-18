@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -11,13 +11,16 @@ LoginPage.propTypes = {};
 function LoginPage(props) {
     let navigate = useNavigate();
     let dispatch = useDispatch();
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSubmit = async (values) => {
         try {
+            setIsLoading(true);
             const action = login(values);
             const resultAction = await dispatch(action);
             const user = unwrapResult(resultAction);
 
+            setIsLoading(false);
             navigate(`/${user.username}/about`);
             swal(
                 'Đăng nhập thành công',
@@ -25,6 +28,7 @@ function LoginPage(props) {
                 'success'
             );
         } catch (err) {
+            setIsLoading(false);
             console.log('ERROR:', err);
             swal('Đăng nhập thất bại', `${err.message}!`, 'error');
         }
@@ -32,18 +36,20 @@ function LoginPage(props) {
 
     const handleLoginWithGoogle = async (credential) => {
         try {
+            setIsLoading(true);
             const action = loginWithGoogle({ credential });
             const resultAction = await dispatch(action);
             const user = unwrapResult(resultAction);
 
+            setIsLoading(false);
             navigate(`/${user.username}/about`);
-
             swal(
                 'Đăng nhập thành công',
                 `Chào mừng ${user.username} đến với chợ đồ cũ!`,
                 'success'
             );
         } catch (err) {
+            setIsLoading(false);
             console.log('ERROR:', err);
             swal('Đăng nhập thất bại', `${err.message}!`, 'error');
         }
@@ -51,7 +57,11 @@ function LoginPage(props) {
 
     return (
         <div>
-            <LoginForm onSubmit={handleSubmit} handleLoginWithGoogle={handleLoginWithGoogle} />
+            <LoginForm
+                onSubmit={handleSubmit}
+                handleLoginWithGoogle={handleLoginWithGoogle}
+                isLoading={isLoading}
+            />
         </div>
     );
 }

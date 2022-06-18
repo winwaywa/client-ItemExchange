@@ -12,7 +12,7 @@ RegisterForm.propTypes = {
     onSubmit: PropTypes.func,
 };
 
-function RegisterForm({ onSubmit }) {
+function RegisterForm({ onSubmit, isLoading }) {
     // validate vs yup
     const schema = yup
         .object()
@@ -63,7 +63,21 @@ function RegisterForm({ onSubmit }) {
                 <PasswordField form={form} name="password" label="Mật khẩu" />
                 <PasswordField form={form} name="retypePassword" label="Nhập lại Mật khẩu" />
 
-                <input className="btn btn--primary btn--register" type="submit" value="Đăng ký" />
+                {!isLoading && (
+                    <input
+                        className="btn btn--primary btn--register"
+                        type="submit"
+                        value="Đăng ký"
+                    />
+                )}
+                {isLoading && (
+                    <input
+                        className="btn btn--primary btn--register disabled"
+                        type="submit"
+                        value="Đăng ký"
+                        disabled
+                    />
+                )}
                 <p>
                     Đã có tài khoản?&nbsp;
                     <Link to="/login">Đăng nhập</Link>
