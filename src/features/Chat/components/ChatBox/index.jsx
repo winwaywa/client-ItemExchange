@@ -8,7 +8,7 @@ import MessageForm from '../MessageForm';
 ChatBox.propTypes = {};
 
 // const host = 'http://localhost:5000';
-const host = 'https:hieppngg.herokuapp.com';
+const host = 'https://hieppngg.herokuapp.com';
 
 function ChatBox({ me, conversationId }) {
     const [messageList, setMessageList] = useState([]);
